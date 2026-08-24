@@ -30,7 +30,7 @@
         <!-- Dashboard Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-white tracking-tight">System Settings</h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">System Settings</h1>
                 <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Configure global application settings and integrations.</p>
             </div>
         </div>
@@ -42,7 +42,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-white tracking-tight">Mail Configuration</h3>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Mail Configuration</h3>
                     <p class="text-sm text-gray-500 font-medium mt-0.5">Setup SMTP credentials for system notifications.</p>
                 </div>
             </div>
@@ -54,28 +54,28 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Mail Mailer</label>
-                            <input type="text" name="MAIL_MAILER" value="{{ env('MAIL_MAILER', 'smtp') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                            <input type="text" name="MAIL_MAILER" value="{{ env('MAIL_MAILER', 'smtp') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Mail Host</label>
-                            <input type="text" name="MAIL_HOST" value="{{ env('MAIL_HOST', 'sandbox.smtp.mailtrap.io') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                            <input type="text" name="MAIL_HOST" value="{{ env('MAIL_HOST', 'sandbox.smtp.mailtrap.io') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                         </div>
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Mail Port</label>
-                            <input type="number" name="MAIL_PORT" value="{{ env('MAIL_PORT', '2525') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                            <input type="number" name="MAIL_PORT" value="{{ env('MAIL_PORT', '2525') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Mail Username</label>
-                            <input type="text" name="MAIL_USERNAME" value="{{ env('MAIL_USERNAME') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                            <input type="text" name="MAIL_USERNAME" value="{{ env('MAIL_USERNAME') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                         </div>
                     </div>
                     
                     <div>
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Mail Password</label>
-                        <input type="password" name="MAIL_PASSWORD" value="{{ env('MAIL_PASSWORD') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                        <input type="password" name="MAIL_PASSWORD" value="{{ env('MAIL_PASSWORD') }}" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                     </div>
                     
                     <div class="pt-6 border-t border-gray-200 dark:border-white/5 flex items-center justify-end">

@@ -25,10 +25,10 @@
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <!-- Logo -->
                 <a href="/" class="flex items-center space-x-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-xl font-black shadow-[0_0_15px_rgba(255,255,255,0.2)] text-black group-hover:scale-105 transition-transform">
+                    <div class="w-10 h-10 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-black flex items-center justify-center text-xl font-black shadow-[0_0_15px_rgba(255,255,255,0.2)] group-hover:scale-105 transition-transform">
                         Y
                     </div>
-                    <span class="text-xl font-bold tracking-widest text-white uppercase group-hover:text-gray-800 dark:text-gray-300 transition-colors">YC Content Planning</span>
+                    <span class="text-xl font-bold tracking-widest text-gray-900 dark:text-white uppercase group-hover:text-blue-600 dark:group-hover:text-gray-300 transition-colors">YC Content Planning</span>
                 </a>
 
                 <!-- Auth Links -->
@@ -42,7 +42,7 @@
                             Log in
                         </a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="text-sm font-semibold px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors border border-gray-200 dark:border-white/5">
+                            <a href="{{ route('register') }}" class="text-sm font-semibold px-4 py-2 bg-gray-200 text-gray-900 dark:bg-white/10 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 transition-colors border border-gray-200 dark:border-white/5">
                                 Register
                             </a>
                         @endif
@@ -62,7 +62,7 @@
                 </div>
 
                 <!-- Headline -->
-                <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white leading-[1.1]">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight text-gray-900 dark:text-white leading-[1.1]">
                     Master your <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Content Pipeline.</span>
                 </h1>
@@ -75,12 +75,12 @@
                 <!-- CTA -->
                 <div class="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-black bg-white rounded-xl hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] flex items-center justify-center">
+                        <a href="{{ url('/dashboard') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-gray-900 dark:text-black dark:bg-white rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] flex items-center justify-center">
                             Go to Dashboard
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-black bg-white rounded-xl hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] flex items-center justify-center">
+                        <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-gray-900 dark:text-black dark:bg-white rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] flex items-center justify-center">
                             Sign In to Workspace
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </a>
@@ -104,7 +104,7 @@
                 </div>
                 
                 <!-- Fade out gradient at bottom -->
-                <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-50 dark:from-[#0a0a0a] to-transparent"></div>
             </div>
 
         </main>
