@@ -50,6 +50,12 @@ class CalendarEventController extends Controller
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
     }
 
+    public function show(CalendarEvent $event)
+    {
+        $event->load('user');
+        return view('events.show', compact('event'));
+    }
+
     public function update(Request $request, CalendarEvent $event)
     {
         if (auth()->id() !== $event->user_id) {
