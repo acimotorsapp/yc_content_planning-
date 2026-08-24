@@ -49,145 +49,121 @@
             @endif
         </div>
 
+        <!-- FullCalendar Container -->
+        <div class="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/5 rounded-xl shadow-sm p-5 mb-8 overflow-hidden">
+            <div id="calendar"></div>
+        </div>
+
+        <!-- FullCalendar Dependencies -->
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+        
         @php
-            $totalEvents = $events->count();
-            $productEvents = $events->where('team_type', 'product_team')->count();
-            $digitalEvents = $events->where('team_type', 'digital_team')->count();
-            $upcomingEvents = $events->where('event_date', '>=', now())->count();
+            $formattedEvents = $events->map(function($event) {
+                $title = $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no;
+                $userName = $event->user ? $event->user->name : 'Unknown User';
+                
+                return [
+                    'id' => $event->id,
+                    'title' => $title,
+                    'start' => $event->event_date->format('Y-m-d'),
+                    'allDay' => true,
+                    'extendedProps' => [
+                        'userName' => $userName,
+                        'aipePillar' => $event->aipe_pillar ?? 'N/A',
+                        'teamType' => $event->team_type
+                    ]
+                ];
+            })->values();
         @endphp
 
-        <!-- Minimalist Stats Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white dark:bg-[#111] rounded-xl border border-gray-200 dark:border-white/5 p-5 shadow-sm">
-                <div class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Total Events</div>
-                <div class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{{ $totalEvents }}</div>
-            </div>
-            <div class="bg-white dark:bg-[#111] rounded-xl border border-gray-200 dark:border-white/5 p-5 shadow-sm">
-                <div class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Upcoming</div>
-                <div class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{{ $upcomingEvents }}</div>
-            </div>
-            <div class="bg-white dark:bg-[#111] rounded-xl border border-gray-200 dark:border-white/5 p-5 shadow-sm flex items-center justify-between group">
-                <div>
-                    <div class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Product Team</div>
-                    <div class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{{ $productEvents }}</div>
-                </div>
-                <div class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
-            </div>
-            <div class="bg-white dark:bg-[#111] rounded-xl border border-gray-200 dark:border-white/5 p-5 shadow-sm flex items-center justify-between group">
-                <div>
-                    <div class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Digital Team</div>
-                    <div class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{{ $digitalEvents }}</div>
-                </div>
-                <div class="w-3 h-3 rounded-full bg-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.5)]"></div>
-            </div>
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                
+                var eventsData = @json($formattedEvents);
 
-        <!-- Clean Linear-style Data Table -->
-        <div class="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/5 rounded-xl shadow-sm overflow-hidden">
-            <div class="px-5 py-4 border-b border-gray-200 dark:border-white/5 flex justify-between items-center bg-gray-50 dark:bg-[#161616]">
-                <h3 class="text-base font-semibold text-gray-900 dark:text-gray-200">Content Schedule</h3>
-                <span class="text-xs font-medium text-gray-500">{{ $totalEvents }} items</span>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-white dark:bg-[#111] border-b border-gray-200 dark:border-white/5">
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-32">Date</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-32">Team</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Title / Objective</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-48">Tags</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-right w-16">Link</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5 bg-white dark:bg-[#111]">
-                        @forelse($events as $event)
-                        <tr class="hover:bg-white dark:bg-[#1a1a1a] transition-colors group">
-                            <!-- Date Column -->
-                            <td class="px-5 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ $event->event_date->format('M d, Y') }}</div>
-                                <div class="text-xs text-gray-500">{{ $event->event_date->format('l') }}</div>
-                            </td>
-                            
-                            <!-- Team Column -->
-                            <td class="px-5 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-teal-500/10 text-teal-400 border-teal-500/20' }}">
-                                    {{ str_replace('_', ' ', $event->team_type) }}
-                                </span>
-                            </td>
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    height: 'auto',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    },
+                    events: eventsData,
+                    eventContent: function(arg) {
+                        var teamClass = arg.event.extendedProps.teamType === 'product_team' 
+                            ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' 
+                            : 'bg-teal-500/10 text-teal-400 border-teal-500/20';
 
-                            <!-- Title & Objective Column -->
-                            <td class="px-5 py-4">
-                                <div class="text-sm font-semibold text-gray-900 dark:text-gray-200">
-                                    {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
-                                </div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate max-w-sm" title="{{ $event->content_objective }}">
-                                    {{ $event->content_objective ?? 'No objective specified' }}
-                                </div>
-                            </td>
+                        var pillarHtml = '';
+                        if (arg.event.extendedProps.aipePillar !== 'N/A') {
+                            pillarHtml = `<span class="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-yellow-500/20 text-yellow-500 border border-yellow-500/30">
+                                ${arg.event.extendedProps.aipePillar}
+                            </span>`;
+                        }
 
-                            <!-- Tags Column -->
-                            <td class="px-5 py-4">
-                                <div class="flex flex-wrap gap-1.5">
-                                    @if($event->product ?? $event->product_focus)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-white/10">
-                                            {{ $event->product ?? $event->product_focus }}
-                                        </span>
-                                    @endif
-                                    @if($event->format)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-white/10">
-                                            {{ $event->format }}
-                                        </span>
-                                    @endif
-                                    @if($event->platform)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-white/10">
-                                            {{ $event->platform }}
-                                        </span>
-                                    @endif
+                        var html = `
+                            <div class="p-1.5 w-full text-xs border rounded-md shadow-sm overflow-hidden flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.2;">
+                                <div class="font-bold" style="word-break: break-word;">${arg.event.title}</div>
+                                <div class="text-[10px] opacity-80 mt-0.5">
+                                    <svg class="w-3 h-3 inline-block mr-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    ${arg.event.extendedProps.userName}
                                 </div>
-                            </td>
+                                ${pillarHtml}
+                            </div>
+                        `;
 
-                            <!-- Action Column -->
-                            <td class="px-5 py-4 whitespace-nowrap text-right">
-                                <div class="flex items-center justify-end space-x-3">
-                                     @if(auth()->id() === $event->user_id)
-                                         <button @click="openEdit({{ htmlspecialchars(json_encode($event)) }})" class="inline-flex text-blue-400 hover:text-blue-300 transition-colors" title="Edit Event">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                        </button>
-                                        <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this event?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="inline-flex text-red-400 hover:text-red-300 transition-colors" title="Delete Event">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            </button>
-                                        </form>
-                                    @endif
-                                    
-                                    @if($event->drive_link)
-                                        <a href="{{ $event->drive_link }}" target="_blank" class="inline-flex text-gray-500 hover:text-white transition-colors" title="Open Link">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                                        </a>
-                                    @else
-                                        <span class="text-gray-700">-</span>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="px-5 py-16 text-center">
-                                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-[#1a1a1a] mb-3">
-                                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                                </div>
-                                <h3 class="text-sm font-medium text-gray-800 dark:text-gray-300">No events found</h3>
-                                <p class="text-xs text-gray-500 mt-1">Get started by creating a new event.</p>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                        return { html: html };
+                    },
+                    eventClassNames: function(arg) {
+                        return ['!bg-transparent', '!border-none', '!p-0', 'hover:opacity-90', 'transition-opacity'];
+                    }
+                });
+                calendar.render();
+            });
+        </script>
+
+        <style>
+            /* Custom styling for FullCalendar to match dark/light theme */
+            .fc {
+                --fc-border-color: rgba(255, 255, 255, 0.05);
+                --fc-button-bg-color: #3b82f6;
+                --fc-button-border-color: #3b82f6;
+                --fc-button-hover-bg-color: #2563eb;
+                --fc-button-hover-border-color: #2563eb;
+                --fc-button-active-bg-color: #1d4ed8;
+                --fc-button-active-border-color: #1d4ed8;
+                --fc-today-bg-color: rgba(59, 130, 246, 0.1);
+            }
+            .fc .fc-toolbar-title {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: inherit;
+            }
+            .fc .fc-daygrid-day-number, .fc .fc-col-header-cell-cushion {
+                color: inherit;
+                text-decoration: none;
+                font-weight: 600;
+            }
+            .fc .fc-col-header-cell-cushion {
+                padding: 12px 4px;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.05em;
+                color: #6b7280;
+            }
+            .dark .fc .fc-col-header-cell-cushion {
+                color: #9ca3af;
+            }
+            .dark .fc {
+                color: #e5e7eb;
+                --fc-border-color: rgba(255, 255, 255, 0.1);
+            }
+            .fc-event {
+                cursor: pointer;
+            }
+        </style>
 
         @php
             $globalEventsRaw = \App\Models\CalendarEvent::where('team_type', 'global_team')

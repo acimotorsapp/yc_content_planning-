@@ -8,7 +8,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $events = \App\Models\CalendarEvent::where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
+    $events = \App\Models\CalendarEvent::with('user')->where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
     return view('dashboard', compact('events'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

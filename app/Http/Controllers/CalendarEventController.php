@@ -112,21 +112,21 @@ class CalendarEventController extends Controller
     public function adminProduct()
     {
         if (auth()->user()->role !== 'super_admin') abort(403);
-        $events = CalendarEvent::where('team_type', 'product_team')->orderBy('event_date', 'asc')->get();
+        $events = CalendarEvent::with('user')->where('team_type', 'product_team')->orderBy('event_date', 'asc')->get();
         return view('dashboard', ['events' => $events, 'filter' => 'Product Team Events']);
     }
 
     public function adminDigital()
     {
         if (auth()->user()->role !== 'super_admin') abort(403);
-        $events = CalendarEvent::where('team_type', 'digital_team')->orderBy('event_date', 'asc')->get();
+        $events = CalendarEvent::with('user')->where('team_type', 'digital_team')->orderBy('event_date', 'asc')->get();
         return view('dashboard', ['events' => $events, 'filter' => 'Digital Team Events']);
     }
 
     public function adminGlobal()
     {
         if (auth()->user()->role !== 'super_admin') abort(403);
-        $events = CalendarEvent::where('team_type', 'global_team')->orderBy('event_date', 'asc')->get();
+        $events = CalendarEvent::with('user')->where('team_type', 'global_team')->orderBy('event_date', 'asc')->get();
         return view('dashboard', ['events' => $events, 'filter' => 'Global Events']);
     }
 }
