@@ -10,7 +10,7 @@ class CalendarEventController extends Controller
     public function storeProduct(Request $request)
     {
         $validated = $request->validate([
-            'event_date' => 'required|date',
+            'event_date' => 'required|date|unique:calendar_events,event_date',
             'content_title' => 'required|string',
             'aipe_pillar' => 'nullable|string',
             'content_objective' => 'nullable|string',
@@ -33,7 +33,7 @@ class CalendarEventController extends Controller
     public function storeDigital(Request $request)
     {
         $validated = $request->validate([
-            'event_date' => 'required|date',
+            'event_date' => 'required|date|unique:calendar_events,event_date',
             'post_no' => 'nullable|string',
             'aipe_pillar' => 'nullable|string',
             'product_focus' => 'nullable|string',
@@ -71,7 +71,7 @@ class CalendarEventController extends Controller
         }
 
         $validated = $request->validate([
-            'event_date' => 'required|date',
+            'event_date' => 'required|date|unique:calendar_events,event_date,' . $event->id,
             'content_title' => 'nullable|string',
             'post_no' => 'nullable|string',
             'aipe_pillar' => 'nullable|string',
@@ -109,7 +109,7 @@ class CalendarEventController extends Controller
         }
 
         $validated = $request->validate([
-            'event_date' => 'required|date',
+            'event_date' => 'required|date|unique:calendar_events,event_date',
             'content_title' => 'required|string',
         ]);
 

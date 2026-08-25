@@ -212,43 +212,74 @@
                         </div>
                     @endif
 
-                    @if(auth()->user()->role === 'product_team' || (auth()->user()->role === 'super_admin' && isset($filter) && $filter === 'Product Team Events'))
-                        <div class="bg-gray-50 dark:bg-[#161616] px-8 py-6 border-b border-gray-200 dark:border-white/5 flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    <div x-data="{ selectedTeam: 'product_team' }" class="w-full">
+                        <div class="bg-gray-50 dark:bg-[#161616] px-8 py-6 border-b border-gray-200 dark:border-white/5">
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors"
+                                         :class="{
+                                            'bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]': selectedTeam === 'product_team',
+                                            'bg-teal-100 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.15)]': selectedTeam === 'digital_team',
+                                            'bg-yellow-100 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.15)]': selectedTeam === 'global_team'
+                                         }">
+                                        <svg x-show="selectedTeam === 'product_team'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                                        <svg x-show="selectedTeam === 'digital_team'" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                        <svg x-show="selectedTeam === 'global_team'" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Create New Event</h3>
+                                        <p class="text-sm text-gray-500 font-medium mt-0.5">Select the type of event you want to schedule</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-white tracking-tight">New Product Event</h3>
-                                    <p class="text-sm text-gray-500 font-medium mt-0.5">Schedule new product content</p>
-                                </div>
+                                <button @click="showModal = false" class="text-gray-500 hover:text-gray-900 dark:hover:text-white bg-gray-200/50 dark:bg-white/5 hover:bg-gray-300/50 dark:hover:bg-white/10 p-2.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-white/20">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
                             </div>
-                            <button @click="showModal = false" class="text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 p-2.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            </button>
+                            
+                            <!-- Segmented Tabs for Type Selection -->
+                            <div class="flex items-center p-1 bg-gray-200/50 dark:bg-black/20 rounded-xl w-full">
+                                <button type="button" @click="selectedTeam = 'product_team'" 
+                                        :class="selectedTeam === 'product_team' ? 'bg-white dark:bg-[#222] text-blue-600 dark:text-blue-400 shadow-sm border border-gray-200/50 dark:border-white/5' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 border border-transparent'"
+                                        class="flex-1 py-2 px-4 text-sm font-bold rounded-lg transition-all text-center">
+                                    Product Event
+                                </button>
+                                <button type="button" @click="selectedTeam = 'digital_team'" 
+                                        :class="selectedTeam === 'digital_team' ? 'bg-white dark:bg-[#222] text-teal-600 dark:text-teal-400 shadow-sm border border-gray-200/50 dark:border-white/5' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 border border-transparent'"
+                                        class="flex-1 py-2 px-4 text-sm font-bold rounded-lg transition-all text-center">
+                                    Digital Event
+                                </button>
+                                @if(auth()->user()->role === 'super_admin')
+                                <button type="button" @click="selectedTeam = 'global_team'" 
+                                        :class="selectedTeam === 'global_team' ? 'bg-white dark:bg-[#222] text-yellow-600 dark:text-yellow-400 shadow-sm border border-gray-200/50 dark:border-white/5' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 border border-transparent'"
+                                        class="flex-1 py-2 px-4 text-sm font-bold rounded-lg transition-all text-center">
+                                    Global Event
+                                </button>
+                                @endif
+                            </div>
                         </div>
                         
                         <div class="px-8 py-6 bg-white dark:bg-[#111]">
-                            <form action="{{ route('events.product.store') }}" method="POST" class="space-y-5">
+                            <!-- Product Form -->
+                            <form x-show="selectedTeam === 'product_team'" action="{{ route('events.product.store') }}" method="POST" class="space-y-5">
                                 @csrf
                                 <div class="grid grid-cols-2 gap-5">
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Publish Date*</label>
-                                        <input type="date" name="event_date" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                                        <input type="date" name="event_date" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                     </div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Shoot Date</label>
-                                        <input type="date" name="shoot_date" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                                        <input type="date" name="shoot_date" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                     </div>
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Content Title*</label>
-                                    <input type="text" name="content_title" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="e.g. Life Style Review">
+                                    <input type="text" name="content_title" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="e.g. Life Style Review">
                                 </div>
                                 <div class="grid grid-cols-2 gap-5">
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Product</label>
-                                        <select name="product" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                                        <select name="product" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Product</option>
                                             <option value="FZS V2">FZS V2</option>
                                             <option value="FZS V4">FZS V4</option>
@@ -262,7 +293,7 @@
                                     </div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Platform</label>
-                                        <select name="platform" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                                        <select name="platform" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Platform</option>
                                             <option value="Facebook">Facebook</option>
                                             <option value="Option 2">Option 2</option>
@@ -271,11 +302,11 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Content Objective</label><input type="text" name="content_objective" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="Briefly describe the goal"></div>
+                                <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Content Objective</label><input type="text" name="content_objective" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="Briefly describe the goal"></div>
                                 <div class="grid grid-cols-3 gap-5">
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">A.I.P.E Pillar</label>
-                                        <select name="aipe_pillar" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                                        <select name="aipe_pillar" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Pillar</option>
                                             <option value="Awareness">Awareness</option>
                                             <option value="Awareness+Interest">Awareness+Interest</option>
@@ -284,10 +315,10 @@
                                             <option value="Experience">Experience</option>
                                         </select>
                                     </div>
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Color</label><input type="text" name="color_concern" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Color</label><input type="text" name="color_concern" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Format</label>
-                                        <select name="format" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                                        <select name="format" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Format</option>
                                             <option value="Product Review">Product Review</option>
                                             <option value="OVC">OVC</option>
@@ -299,13 +330,13 @@
                                 </div>
                                 
                                 <div class="grid grid-cols-2 gap-5">
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Budget</label><input type="text" name="boosting_budget" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Drive Link</label><input type="text" name="drive_link" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="https://drive.google.com/..."></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Budget</label><input type="text" name="boosting_budget" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Drive Link</label><input type="text" name="drive_link" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="https://drive.google.com/..."></div>
                                 </div>
-                                <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Remarks</label><input type="text" name="remarks" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
+                                <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Remarks</label><input type="text" name="remarks" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
                                 
                                 <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200 dark:border-white/5">
-                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-transparent border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
+                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 bg-transparent border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-white/20">
                                         Cancel
                                     </button>
                                     <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#111]">
@@ -313,37 +344,21 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
-                    @elseif(auth()->user()->role === 'digital_team' || (auth()->user()->role === 'super_admin' && isset($filter) && $filter === 'Digital Team Events'))
-                        <div class="bg-gray-50 dark:bg-[#161616] px-8 py-6 border-b border-gray-200 dark:border-white/5 flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-teal-500/10 border border-teal-500/20 rounded-xl flex items-center justify-center text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.15)]">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-white tracking-tight">New Digital Event</h3>
-                                    <p class="text-sm text-gray-500 font-medium mt-0.5">Schedule digital campaigns</p>
-                                </div>
-                            </div>
-                            <button @click="showModal = false" class="text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 p-2.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            </button>
-                        </div>
-                        
-                        <div class="px-8 py-6 bg-white dark:bg-[#111]">
-                            <form action="{{ route('events.digital.store') }}" method="POST" class="space-y-5">
+
+                            <!-- Digital Form -->
+                            <form x-show="selectedTeam === 'digital_team'" x-cloak action="{{ route('events.digital.store') }}" method="POST" class="space-y-5">
                                 @csrf
                                 <div class="grid grid-cols-2 gap-5">
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Event Date*</label>
-                                        <input type="date" name="event_date" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
+                                        <input type="date" name="event_date" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                     </div>
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Post No.</label><input type="text" name="post_no" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="e.g. 1"></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Post No.</label><input type="text" name="post_no" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="e.g. 1"></div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-5">
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Product Focus</label>
-                                        <select name="product_focus" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
+                                        <select name="product_focus" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Product</option>
                                             <option value="FZS V2">FZS V2</option>
                                             <option value="FZS V4">FZS V4</option>
@@ -357,7 +372,7 @@
                                     </div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">A.I.P.E Pillar</label>
-                                        <select name="aipe_pillar" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
+                                        <select name="aipe_pillar" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Pillar</option>
                                             <option value="Awareness">Awareness</option>
                                             <option value="Awareness+Interest">Awareness+Interest</option>
@@ -367,12 +382,12 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Content Objective</label><input type="text" name="content_objective" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="Briefly describe the goal"></div>
+                                <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Content Objective</label><input type="text" name="content_objective" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="Briefly describe the goal"></div>
                                 <div class="grid grid-cols-2 gap-5">
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Asset/Drive Link</label><input type="text" name="drive_link" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="https://drive.google.com/..."></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Asset/Drive Link</label><input type="text" name="drive_link" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="https://drive.google.com/..."></div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Format</label>
-                                        <select name="format" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
+                                        <select name="format" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Format</option>
                                             <option value="Product Review">Product Review</option>
                                             <option value="OVC">OVC</option>
@@ -383,12 +398,12 @@
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-5">
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Budget</label><input type="text" name="boosting_budget" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm"></div>
-                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Remarks</label><input type="text" name="remarks" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm"></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Budget</label><input type="text" name="boosting_budget" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm"></div>
+                                    <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Remarks</label><input type="text" name="remarks" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm"></div>
                                 </div>
                                 
                                 <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200 dark:border-white/5">
-                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-transparent border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
+                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 bg-transparent border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-white/20">
                                         Cancel
                                     </button>
                                     <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-teal-600 border border-transparent rounded-lg hover:bg-teal-500 shadow-[0_0_15px_rgba(20,184,166,0.3)] transition-all focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#111]">
@@ -396,37 +411,22 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
-                    @elseif(auth()->user()->role === 'super_admin' && isset($filter) && $filter === 'Global Events')
-                        <div class="bg-gray-50 dark:bg-[#161616] px-8 py-6 border-b border-gray-200 dark:border-white/5 flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-yellow-500/10 border border-yellow-500/20 rounded-xl flex items-center justify-center text-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.15)]">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-white tracking-tight">New Global Event</h3>
-                                    <p class="text-sm text-gray-500 font-medium mt-0.5">Schedule a global observance or holiday</p>
-                                </div>
-                            </div>
-                            <button @click="showModal = false" class="text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 p-2.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            </button>
-                        </div>
-                        
-                        <div class="px-8 py-6 bg-white dark:bg-[#111]">
-                            <form action="{{ route('events.global.store') }}" method="POST" class="space-y-5">
+
+                            <!-- Global Form -->
+                            @if(auth()->user()->role === 'super_admin')
+                            <form x-show="selectedTeam === 'global_team'" x-cloak action="{{ route('events.global.store') }}" method="POST" class="space-y-5">
                                 @csrf
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Event Date*</label>
-                                    <input type="date" name="event_date" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all shadow-sm">
+                                    <input type="date" name="event_date" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all shadow-sm">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Event Title*</label>
-                                    <input type="text" name="content_title" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-white rounded-lg px-4 py-2.5 focus:bg-[#222] focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all shadow-sm placeholder-gray-600" placeholder="e.g. World Tourism Day">
+                                    <input type="text" name="content_title" required class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all shadow-sm placeholder-gray-400 dark:placeholder-gray-600" placeholder="e.g. World Tourism Day">
                                 </div>
                                 
                                 <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200 dark:border-white/5">
-                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-transparent border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/20">
+                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 bg-transparent border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-white/20">
                                         Cancel
                                     </button>
                                     <button type="submit" class="px-6 py-2.5 text-sm font-bold text-black bg-yellow-400 border border-transparent rounded-lg hover:bg-yellow-300 shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#111]">
@@ -434,18 +434,9 @@
                                     </button>
                                 </div>
                             </form>
+                            @endif
                         </div>
-                    @else
-                        @if(auth()->user()->role === 'super_admin')
-                            <div class="p-8 text-center bg-white dark:bg-[#111]">
-                                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-[#1a1a1a] mb-4">
-                                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Select a Team</h3>
-                                <p class="text-sm text-gray-500">As a Super Admin, please navigate to a specific team's event page (Product, Digital, or Global) from the sidebar to create an event for that team.</p>
-                            </div>
-                        @endif
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>

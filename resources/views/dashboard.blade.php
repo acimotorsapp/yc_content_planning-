@@ -26,21 +26,21 @@
         @endif
 
         <!-- Dashboard Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{{ $filter ?? 'Overview' }}</h1>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Manage and track your content pipeline.</p>
+                <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ $filter ?? 'Schedule Overview' }}</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1.5 font-medium">Manage and track your upcoming content pipeline.</p>
             </div>
             
             @if(auth()->user()->role === 'super_admin')
                 <div class="flex items-center gap-3">
-                    <span class="px-4 py-2 bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-lg text-sm font-bold shadow-[0_0_15px_rgba(168,85,247,0.15)]">Super Admin Mode</span>
+                    <span class="px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-xl text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.1)]">Super Admin Mode</span>
                 </div>
             @endif
         </div>
 
         <!-- FullCalendar Container -->
-        <div class="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/5 rounded-xl shadow-sm p-5 mb-8 overflow-hidden">
+        <div class="bg-white dark:bg-[#0a0a0a] border border-gray-100/80 dark:border-[#1f1f1f] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] p-6 mb-8 overflow-hidden">
             <div id="calendar"></div>
         </div>
 
@@ -83,21 +83,21 @@
                     events: eventsData,
                     eventContent: function(arg) {
                         var teamClass = arg.event.extendedProps.teamType === 'product_team' 
-                            ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' 
-                            : 'bg-teal-500/10 text-teal-400 border-teal-500/20';
+                            ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' 
+                            : 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20';
 
                         var pillarHtml = '';
                         if (arg.event.extendedProps.aipePillar !== 'N/A') {
-                            pillarHtml = `<span class="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-yellow-500/20 text-yellow-500 border border-yellow-500/30">
+                            pillarHtml = `<span class="inline-block mt-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.1)]">
                                 ${arg.event.extendedProps.aipePillar}
                             </span>`;
                         }
 
                         var html = `
-                            <div class="p-1.5 w-full text-xs border rounded-md shadow-sm overflow-hidden flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.2;">
-                                <div class="font-bold" style="word-break: break-word;">${arg.event.title}</div>
-                                <div class="text-[10px] opacity-80 mt-0.5">
-                                    <svg class="w-3 h-3 inline-block mr-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            <div class="p-2 w-full border rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 backdrop-blur-sm flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.3;">
+                                <div class="font-bold text-xs" style="word-break: break-word;">${arg.event.title}</div>
+                                <div class="text-[10px] opacity-80 mt-0.5 flex items-center font-medium">
+                                    <svg class="w-3 h-3 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                     ${arg.event.extendedProps.userName}
                                 </div>
                                 ${pillarHtml}
@@ -107,7 +107,7 @@
                         return { html: html };
                     },
                     eventClassNames: function(arg) {
-                        return ['!bg-transparent', '!border-none', '!p-0', 'hover:opacity-90', 'transition-opacity'];
+                        return ['!bg-transparent', '!border-none', '!p-0', 'hover:opacity-95', 'transition-all'];
                     },
                     eventClick: function(info) {
                         window.location.href = '/events/' + info.event.id;
@@ -118,43 +118,141 @@
         </script>
 
         <style>
-            /* Custom styling for FullCalendar to match dark/light theme */
+            /* Ultra Modern styling for FullCalendar */
             .fc {
-                --fc-border-color: rgba(255, 255, 255, 0.05);
-                --fc-button-bg-color: #3b82f6;
-                --fc-button-border-color: #3b82f6;
-                --fc-button-hover-bg-color: #2563eb;
-                --fc-button-hover-border-color: #2563eb;
-                --fc-button-active-bg-color: #1d4ed8;
-                --fc-button-active-border-color: #1d4ed8;
-                --fc-today-bg-color: rgba(59, 130, 246, 0.1);
+                /* Light Mode Variables */
+                --fc-border-color: #f1f5f9;
+                --fc-button-bg-color: #f8fafc;
+                --fc-button-border-color: #f1f5f9;
+                --fc-button-text-color: #334155;
+                --fc-button-hover-bg-color: #f1f5f9;
+                --fc-button-hover-border-color: #e2e8f0;
+                --fc-button-active-bg-color: #e2e8f0;
+                --fc-button-active-border-color: #cbd5e1;
+                --fc-today-bg-color: #f8fafc;
+                --fc-page-bg-color: transparent;
+                --fc-neutral-bg-color: transparent;
+                font-family: inherit;
             }
+
+            .dark .fc {
+                /* Dark Mode Variables */
+                color: #e2e8f0;
+                --fc-border-color: #1e293b;
+                --fc-button-bg-color: #0f172a;
+                --fc-button-border-color: #1e293b;
+                --fc-button-text-color: #e2e8f0;
+                --fc-button-hover-bg-color: #1e293b;
+                --fc-button-hover-border-color: #334155;
+                --fc-button-active-bg-color: #334155;
+                --fc-button-active-border-color: #475569;
+                --fc-today-bg-color: rgba(59, 130, 246, 0.05);
+            }
+
+            /* Toolbar Typography */
             .fc .fc-toolbar-title {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: inherit;
+                font-size: 1.5rem;
+                font-weight: 800;
+                letter-spacing: -0.025em;
+                color: #0f172a;
             }
-            .fc .fc-daygrid-day-number, .fc .fc-col-header-cell-cushion {
-                color: inherit;
-                text-decoration: none;
-                font-weight: 600;
+            .dark .fc .fc-toolbar-title {
+                color: #f8fafc;
             }
+
+            /* Modern Toolbar Buttons */
+            .fc .fc-button-primary {
+                border-radius: 0.75rem !important;
+                font-weight: 600 !important;
+                text-transform: capitalize;
+                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+                transition: all 0.2s ease;
+                padding: 0.5rem 1.25rem !important;
+                margin-left: 0.25rem !important;
+            }
+            .dark .fc .fc-button-primary {
+                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.5) !important;
+            }
+            .fc .fc-button-primary:focus {
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+            }
+
+            /* Remove grid borders for an airy look, keep only horizontal borders */
+            .fc-theme-standard td, .fc-theme-standard th {
+                border-right: none !important;
+                border-left: none !important;
+                border-bottom: 1px solid var(--fc-border-color) !important;
+                border-top: none !important;
+                background-color: transparent !important;
+            }
+            .fc-scrollgrid {
+                border: none !important;
+            }
+            
+            /* Day Headers */
             .fc .fc-col-header-cell-cushion {
-                padding: 12px 4px;
+                padding: 16px 8px;
                 text-transform: uppercase;
                 font-size: 0.75rem;
+                font-weight: 800;
                 letter-spacing: 0.05em;
-                color: #6b7280;
+                color: #64748b;
             }
             .dark .fc .fc-col-header-cell-cushion {
-                color: #9ca3af;
+                color: #94a3b8;
             }
-            .dark .fc {
-                color: #e5e7eb;
-                --fc-border-color: rgba(255, 255, 255, 0.1);
+
+            /* Day Numbers */
+            .fc .fc-daygrid-day-number {
+                color: inherit;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 0.875rem;
+                padding: 12px;
+                transition: color 0.2s;
+                opacity: 0.7;
             }
+            .fc .fc-daygrid-day-number:hover {
+                color: #3b82f6;
+                opacity: 1;
+            }
+
+            /* Today Cell Highlight */
+            .fc .fc-day-today {
+                background-color: var(--fc-today-bg-color) !important;
+            }
+            .fc .fc-day-today .fc-daygrid-day-number {
+                color: #3b82f6;
+                opacity: 1;
+                position: relative;
+            }
+            .fc .fc-day-today .fc-daygrid-day-number::after {
+                content: '';
+                position: absolute;
+                bottom: 6px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background-color: #3b82f6;
+            }
+
+            /* Event Cards */
             .fc-event {
                 cursor: pointer;
+                border-radius: 0.75rem;
+                overflow: hidden;
+                margin-top: 2px;
+                margin-bottom: 2px;
+            }
+            
+            /* Make past days slightly faded */
+            .fc-day-past {
+                background-color: #f8fafc;
+            }
+            .dark .fc-day-past {
+                background-color: #0f172a;
             }
         </style>
 
@@ -163,64 +261,64 @@
         @endphp
 
         <!-- Clean Linear-style Data Table -->
-        <div class="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/5 rounded-xl shadow-sm overflow-hidden mb-8">
-            <div class="px-5 py-4 border-b border-gray-200 dark:border-white/5 flex justify-between items-center bg-gray-50 dark:bg-[#161616]">
-                <h3 class="text-base font-semibold text-gray-900 dark:text-gray-200">Content Schedule</h3>
-                <span class="text-xs font-medium text-gray-500">{{ $totalEvents }} items</span>
+        <div class="bg-white dark:bg-[#0a0a0a] border border-gray-100/80 dark:border-[#1f1f1f] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] overflow-hidden mb-12">
+            <div class="px-6 py-5 border-b border-gray-100/80 dark:border-[#1f1f1f] flex justify-between items-center bg-transparent">
+                <h3 class="text-lg font-extrabold text-gray-900 dark:text-white tracking-tight">Content Schedule</h3>
+                <span class="px-3 py-1 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 rounded-full text-xs font-bold">{{ $totalEvents }} Events</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-white dark:bg-[#111] border-b border-gray-200 dark:border-white/5">
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-32">Date</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-32">Team</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Title / Objective</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-48">Tags</th>
-                            <th class="px-5 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-right w-16">Link</th>
+                        <tr class="bg-gray-50/50 dark:bg-[#0f0f0f] border-b border-gray-100/80 dark:border-[#1f1f1f]">
+                            <th class="px-6 py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest w-32">Date</th>
+                            <th class="px-6 py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest w-32">Team</th>
+                            <th class="px-6 py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Title / Objective</th>
+                            <th class="px-6 py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest w-48">Tags</th>
+                            <th class="px-6 py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest text-right w-16">Link</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5 bg-white dark:bg-[#111]">
+                    <tbody class="divide-y divide-gray-100/80 dark:divide-[#1f1f1f] bg-transparent">
                         @forelse($events as $event)
-                        <tr class="hover:bg-white dark:bg-[#1a1a1a] transition-colors group">
+                        <tr class="hover:bg-blue-50/30 dark:hover:bg-[#141414] transition-colors duration-200 group">
                             <!-- Date Column -->
-                            <td class="px-5 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ $event->event_date->format('M d, Y') }}</div>
-                                <div class="text-xs text-gray-500">{{ $event->event_date->format('l') }}</div>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-bold text-gray-900 dark:text-white">{{ $event->event_date->format('M d, Y') }}</div>
+                                <div class="text-[11px] font-medium text-gray-500 mt-0.5">{{ $event->event_date->format('l') }}</div>
                             </td>
                             
                             <!-- Team Column -->
-                            <td class="px-5 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-teal-500/10 text-teal-400 border-teal-500/20' }}">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider border
+                                    {{ $event->team_type == 'product_team' ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-500/20' : 'bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-200 dark:border-teal-500/20' }}">
                                     {{ str_replace('_', ' ', $event->team_type) }}
                                 </span>
                             </td>
 
                             <!-- Title & Objective Column -->
-                            <td class="px-5 py-4">
-                                <div class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                            <td class="px-6 py-4">
+                                <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                     {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
                                 </div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate max-w-sm" title="{{ $event->content_objective }}">
+                                <div class="text-[12px] text-gray-500 dark:text-gray-400 mt-1 truncate max-w-sm font-medium" title="{{ $event->content_objective }}">
                                     {{ $event->content_objective ?? 'No objective specified' }}
                                 </div>
                             </td>
 
                             <!-- Tags Column -->
-                            <td class="px-5 py-4">
+                            <td class="px-6 py-4">
                                 <div class="flex flex-wrap gap-1.5">
                                     @if($event->product ?? $event->product_focus)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-white/10">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-gray-100 dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-300 border border-transparent dark:border-white/5">
                                             {{ $event->product ?? $event->product_focus }}
                                         </span>
                                     @endif
                                     @if($event->format)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-white/10">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-gray-100 dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-300 border border-transparent dark:border-white/5">
                                             {{ $event->format }}
                                         </span>
                                     @endif
                                     @if($event->platform)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-white/10">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-gray-100 dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-300 border border-transparent dark:border-white/5">
                                             {{ $event->platform }}
                                         </span>
                                     @endif
