@@ -7,13 +7,7 @@
 
     <!-- Alpine Wrapper for Modal State -->
     <div x-data="{ 
-            showModal: {{ $errors->any() || request()->query('action') === 'create' ? 'true' : 'false' }},
-            editModal: false,
-            eventData: null,
-            openEdit(event) {
-                this.eventData = event;
-                this.editModal = true;
-            }
+            showModal: {{ $errors->any() || request()->query('action') === 'create' ? 'true' : 'false' }}
         }" class="max-w-7xl mx-auto pb-12 pt-4 px-4 sm:px-6 lg:px-8">
 
         <!-- Alerts -->
@@ -130,9 +124,9 @@
                                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                      </a>
                                      @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
-                                         <button @click="openEdit({{ htmlspecialchars(json_encode($event)) }})" class="inline-flex p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Edit Event">
+                                         <a href="{{ route('events.edit', $event) }}" class="inline-flex p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Edit Event">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                        </button>
+                                        </a>
                                         <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this event?');">
                                             @csrf
                                             @method('DELETE')
@@ -454,71 +448,6 @@
                             </form>
                             @endif
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Edit Modal -->
-        <div x-show="editModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div x-show="editModal"
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0"
-                 x-transition:enter-end="opacity-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 bg-gray-900/40 backdrop-blur-xs transition-opacity" @click="editModal = false"></div>
-
-            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-                <div x-show="editModal"
-                     x-transition:enter="ease-out duration-300"
-                     x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
-                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave="ease-in duration-200"
-                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl border border-gray-200 ring-1 ring-black/5">
-                    
-                    <div class="bg-slate-50 px-8 py-6 border-b border-gray-200 flex items-center justify-between">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-purple-100 border border-purple-200 rounded-xl flex items-center justify-center text-purple-600 shadow-xs">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900 tracking-tight">Edit Event</h3>
-                                <p class="text-sm text-gray-500 font-medium mt-0.5" x-text="eventData ? eventData.content_title || 'Post #'+eventData.post_no : ''"></p>
-                            </div>
-                        </div>
-                        <button @click="editModal = false" type="button" class="text-gray-400 hover:text-gray-700 bg-white hover:bg-gray-100 p-2.5 rounded-full border border-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    
-                    <div class="px-8 py-6 bg-white">
-                        <form x-bind:action="'/events/' + eventData?.id" method="POST" class="space-y-5">
-                            @csrf
-                            @method('PUT')
-                            <div class="grid grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
-                                    <input type="date" name="event_date" x-bind:value="eventData?.event_date ? eventData.event_date.substring(0,10) : ''" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all shadow-xs font-medium">
-                                </div>
-                                <div x-show="eventData?.team_type === 'product_team'">
-                                    <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Shoot Date</label>
-                                    <input type="date" name="shoot_date" x-bind:value="eventData?.shoot_date ? eventData.shoot_date.substring(0,10) : ''" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all shadow-xs font-medium">
-                                </div>
-                            </div>
-                            
-                            <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200">
-                                <button type="button" @click="editModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                    Cancel
-                                </button>
-                                <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-purple-600 border border-transparent rounded-xl hover:bg-purple-700 shadow-md shadow-purple-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

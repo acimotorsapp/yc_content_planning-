@@ -5,17 +5,7 @@
         </h2>
     </x-slot>
 
-    <!-- Alpine Wrapper for Modal State -->
-    <div x-data="{ 
-            editModal: false,
-            eventData: null,
-            openEdit(event) {
-                this.eventData = event;
-                this.editModal = true;
-            }
-        }" 
-        id="dashboard-modal-wrapper"
-        class="max-w-7xl mx-auto pb-12">
+    <div class="max-w-7xl mx-auto pb-12">
 
         <!-- Top Actions -->
         <div class="flex justify-end mb-6 animate-fade-in-up">
@@ -141,6 +131,7 @@
                 var calendarEl = document.getElementById('calendar');
                 
                 var eventsData = @json($formattedEvents);
+                var eventDatesSet = new Set(eventsData.map(function(ev) { return ev.start; }));
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
@@ -151,6 +142,27 @@
                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     },
                     events: eventsData,
+                    dayCellDidMount: function(arg) {
+                        var dateStr = arg.el.getAttribute('data-date');
+                        if (!dateStr && arg.date) {
+                            var y = arg.date.getFullYear();
+                            var m = String(arg.date.getMonth() + 1).padStart(2, '0');
+                            var d = String(arg.date.getDate()).padStart(2, '0');
+                            dateStr = y + '-' + m + '-' + d;
+                        }
+                        if (eventDatesSet.has(dateStr)) {
+                            arg.el.classList.add('fc-has-event-day');
+                        }
+                    },
+                    eventDidMount: function(info) {
+                        var dateStr = info.event.startStr;
+                        if (dateStr) {
+                            var dayCell = document.querySelector('.fc-daygrid-day[data-date="' + dateStr + '"]');
+                            if (dayCell) {
+                                dayCell.classList.add('fc-has-event-day');
+                            }
+                        }
+                    },
                     eventContent: function(arg) {
                         var isProduct = arg.event.extendedProps.teamType === 'product_team';
                         var teamClass = isProduct
@@ -203,17 +215,17 @@
 
             /* Ultra Modern styling for FullCalendar in Light Theme */
             .fc {
-                --fc-border-color: rgba(226, 232, 240, 0.8);
+                --fc-border-color: #e2e8f0;
                 --fc-button-bg-color: #ffffff;
                 --fc-button-border-color: #e2e8f0;
-                --fc-button-text-color: #334155;
+                --fc-button-text-color: #1e293b;
                 --fc-button-hover-bg-color: #f8fafc;
                 --fc-button-hover-border-color: #cbd5e1;
                 --fc-button-active-bg-color: #e2e8f0;
                 --fc-button-active-border-color: #94a3b8;
-                --fc-today-bg-color: rgba(59, 130, 246, 0.05);
-                --fc-page-bg-color: transparent;
-                --fc-neutral-bg-color: transparent;
+                --fc-today-bg-color: transparent;
+                --fc-page-bg-color: #ffffff;
+                --fc-neutral-bg-color: #ffffff;
                 font-family: inherit;
             }
 
@@ -243,63 +255,88 @@
                 box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
             }
 
-            /* Subtle horizontal grid borders */
+            /* Day Cell & Frame - Default Pure White */
             .fc-theme-standard td, .fc-theme-standard th {
-                border-right: none !important;
-                border-left: none !important;
-                border-bottom: 1px solid var(--fc-border-color) !important;
-                border-top: none !important;
-                background-color: transparent !important;
+                border: 1px solid #f1f5f9 !important;
+                background-color: #ffffff !important;
             }
-            .fc-scrollgrid {
-                border: none !important;
+            .fc .fc-scrollgrid {
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 1.25rem;
+                overflow: hidden;
+                background-color: #ffffff !important;
             }
-            
+            .fc-daygrid-day {
+                background-color: #ffffff !important;
+            }
+            .fc-daygrid-day-frame {
+                background-color: #ffffff !important;
+                transition: all 0.2s ease;
+                border-radius: 0.75rem;
+                margin: 2px;
+                min-height: 110px;
+                border: 1px solid transparent;
+            }
+            .fc-daygrid-day:hover .fc-daygrid-day-frame {
+                background-color: #f8fafc !important;
+            }
+
+            /* ONLY DATES WITH EVENTS GET THE LIGHT SOFT YELLOW BACKGROUND */
+            .fc-daygrid-day.fc-has-event-day,
+            .fc-has-event-day,
+            .fc-has-event-day .fc-daygrid-day-frame {
+                background-color: #fefce8 !important; /* Soft Light Yellow (Tailwind yellow-50) */
+            }
+            .fc-has-event-day .fc-daygrid-day-frame {
+                border: 1px solid #fef08a !important; /* Subtle yellow border (yellow-200) */
+            }
+            .fc-has-event-day:hover .fc-daygrid-day-frame {
+                background-color: #fef9c3 !important; /* Light pastel yellow on hover (yellow-100) */
+                border-color: #fde047 !important;
+            }
+
             /* Day Headers */
+            .fc .fc-col-header-cell {
+                background-color: #f8fafc !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+            }
             .fc .fc-col-header-cell-cushion {
-                padding: 16px 8px;
+                padding: 14px 8px;
                 text-transform: uppercase;
-                font-size: 0.7rem;
+                font-size: 0.75rem;
                 font-weight: 800;
-                letter-spacing: 0.1em;
-                color: #64748b;
+                letter-spacing: 0.05em;
+                color: #475569;
             }
 
             /* Day Numbers */
             .fc .fc-daygrid-day-number {
-                color: #334155;
+                color: #1e293b;
                 text-decoration: none;
                 font-weight: 800;
                 font-size: 0.875rem;
-                padding: 12px;
+                padding: 10px 12px;
                 transition: color 0.2s;
-                opacity: 0.7;
             }
             .fc .fc-daygrid-day-number:hover {
                 color: #2563eb;
-                opacity: 1;
-            }
-
-            /* Day Cell Background */
-            .fc-daygrid-day-frame {
-                background-color: #fafafa;
-                transition: background-color 0.2s ease;
-                border-radius: 0.5rem;
-                margin: 2px;
-            }
-            .fc-daygrid-day-frame:hover {
-                background-color: #f1f5f9;
             }
 
             /* Today Cell Highlight */
             .fc .fc-day-today {
-                background-color: var(--fc-today-bg-color) !important;
-                border-radius: 1rem;
+                background-color: transparent !important;
+            }
+            .fc .fc-day-today:not(.fc-has-event-day) .fc-daygrid-day-frame {
+                background-color: #ffffff !important;
+                border: 2px solid #3b82f6 !important;
+            }
+            .fc .fc-day-today.fc-has-event-day .fc-daygrid-day-frame {
+                background-color: #fefce8 !important;
+                border: 2px solid #2563eb !important;
             }
             .fc .fc-day-today .fc-daygrid-day-number {
-                color: #2563eb;
-                opacity: 1;
-                font-weight: 900;
+                color: #2563eb !important;
+                font-weight: 900 !important;
             }
 
             /* Event Cards Wrapper */
@@ -314,8 +351,8 @@
             }
             
             /* Faded past days */
-            .fc-day-past {
-                opacity: 0.7;
+            .fc-day-past:not(.fc-has-event-day) {
+                opacity: 0.8;
             }
         </style>
 
@@ -392,9 +429,16 @@
 
                             <!-- Action Column -->
                             <td class="px-8 py-5 whitespace-nowrap text-right">
-                                <a href="{{ route('events.show', $event) }}" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-0.5" title="View Event">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                </a>
+                                <div class="flex items-center justify-end space-x-2">
+                                    <a href="{{ route('events.show', $event) }}" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-0.5" title="View Event">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                    </a>
+                                    @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
+                                    <a href="{{ route('events.edit', $event) }}" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-0.5" title="Edit Event">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                    </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -476,9 +520,9 @@
                                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                      </a>
                                      @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
-                                         <button @click="openEdit({{ htmlspecialchars(json_encode($event)) }})" class="inline-flex p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Edit Event">
+                                         <a href="{{ route('events.edit', $event) }}" class="inline-flex p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Edit Event">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                        </button>
+                                        </a>
                                         <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this event?');">
                                             @csrf
                                             @method('DELETE')
@@ -558,71 +602,6 @@
             </div>
         </div>
         @endif
-
-        <!-- Edit Modal -->
-        <div x-show="editModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div x-show="editModal"
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0"
-                 x-transition:enter-end="opacity-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 bg-gray-900/40 backdrop-blur-xs transition-opacity" @click="editModal = false"></div>
-
-            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-                <div x-show="editModal"
-                     x-transition:enter="ease-out duration-300"
-                     x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
-                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave="ease-in duration-200"
-                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl border border-gray-200 ring-1 ring-black/5">
-                    
-                    <div class="bg-slate-50 px-8 py-6 border-b border-gray-200 flex items-center justify-between">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-purple-100 border border-purple-200 rounded-xl flex items-center justify-center text-purple-600 shadow-xs">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900 tracking-tight">Edit Event</h3>
-                                <p class="text-sm text-gray-500 font-medium mt-0.5" x-text="eventData ? eventData.content_title || 'Post #'+eventData.post_no : ''"></p>
-                            </div>
-                        </div>
-                        <button @click="editModal = false" type="button" class="text-gray-400 hover:text-gray-700 bg-white hover:bg-gray-100 p-2.5 rounded-full border border-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    
-                    <div class="px-8 py-6 bg-white">
-                        <form x-bind:action="'/events/' + eventData?.id" method="POST" class="space-y-5">
-                            @csrf
-                            @method('PUT')
-                            <div class="grid grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
-                                    <input type="date" name="event_date" x-bind:value="eventData?.event_date ? eventData.event_date.substring(0,10) : ''" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all shadow-xs font-medium">
-                                </div>
-                                <div x-show="eventData?.team_type === 'product_team'">
-                                    <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Shoot Date</label>
-                                    <input type="date" name="shoot_date" x-bind:value="eventData?.shoot_date ? eventData.shoot_date.substring(0,10) : ''" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all shadow-xs font-medium">
-                                </div>
-                            </div>
-                            
-                            <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200">
-                                <button type="button" @click="editModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                    Cancel
-                                </button>
-                                <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-purple-600 border border-transparent rounded-xl hover:bg-purple-700 shadow-md shadow-purple-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 </x-app-layout>

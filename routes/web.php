@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/events/create', [\App\Http\Controllers\CalendarEventController::class, 'create'])->name('events.create');
     Route::get('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'show'])->name('events.show');
+    Route::get('/events/{event}/edit', [\App\Http\Controllers\CalendarEventController::class, 'edit'])->name('events.edit');
     Route::put('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'destroy'])->name('events.destroy');
 

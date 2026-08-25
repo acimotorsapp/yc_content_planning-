@@ -65,6 +65,16 @@ class CalendarEventController extends Controller
         return view('events.show', compact('event'));
     }
 
+    public function edit(CalendarEvent $event)
+    {
+        if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('events.edit', compact('event', 'masterData'));
+    }
+
     public function update(Request $request, CalendarEvent $event)
     {
         if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
@@ -72,7 +82,7 @@ class CalendarEventController extends Controller
         }
 
         $validated = $request->validate([
-            'event_date' => 'required|date|unique:calendar_events,event_date,' . $event->id,
+            'event_date' => 'required|date',
             'content_title' => 'nullable|string',
             'post_no' => 'nullable|string',
             'aipe_pillar' => 'nullable|string',
