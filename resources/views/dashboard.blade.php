@@ -32,53 +32,80 @@
                 $digital = $totalCount->where('team_type', 'digital_team')->count();
                 $product = $totalCount->where('team_type', 'product_team')->count();
             @endphp
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
                 <!-- Total Events -->
-                <div class="bg-white dark:bg-[#111] rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden group">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all"></div>
-                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Total Scheduled Posts</p>
-                    <h3 class="text-4xl font-black text-gray-900 dark:text-white">{{ $total }}</h3>
+                <div class="bg-white/40 dark:bg-[#111]/40 backdrop-blur-xl rounded-2xl p-6 border border-white/20 dark:border-white/5 shadow-xl relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="absolute -right-12 -top-12 w-40 h-40 bg-gradient-to-br from-indigo-500/20 to-purple-500/10 rounded-full blur-3xl group-hover:from-indigo-500/30 group-hover:to-purple-500/20 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/0 dark:from-white/5 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1">Total Scheduled</p>
+                            <h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">{{ $total }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Digital Team -->
-                <div class="bg-white dark:bg-[#111] rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden group">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl group-hover:bg-teal-500/20 transition-all"></div>
-                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Digital Team Events</p>
-                    <h3 class="text-4xl font-black text-teal-600 dark:text-teal-400">{{ $digital }}</h3>
+                <div class="bg-white/40 dark:bg-[#111]/40 backdrop-blur-xl rounded-2xl p-6 border border-white/20 dark:border-white/5 shadow-xl relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="absolute -right-12 -top-12 w-40 h-40 bg-gradient-to-br from-teal-500/20 to-emerald-500/10 rounded-full blur-3xl group-hover:from-teal-500/30 group-hover:to-emerald-500/20 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/0 dark:from-white/5 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1">Digital Team</p>
+                            <h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500 dark:from-teal-400 dark:to-emerald-300">{{ $digital }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-500 border border-teal-500/20 shadow-[0_0_15px_rgba(20,184,166,0.2)]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Product Team -->
-                <div class="bg-white dark:bg-[#111] rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden group">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
-                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Product Team Events</p>
-                    <h3 class="text-4xl font-black text-blue-600 dark:text-blue-400">{{ $product }}</h3>
+                <div class="bg-white/40 dark:bg-[#111]/40 backdrop-blur-xl rounded-2xl p-6 border border-white/20 dark:border-white/5 shadow-xl relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="absolute -right-12 -top-12 w-40 h-40 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 rounded-full blur-3xl group-hover:from-blue-500/30 group-hover:to-cyan-500/20 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/0 dark:from-white/5 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1">Product Team</p>
+                            <h3 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">{{ $product }}</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         @endif
 
         <!-- Dashboard Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
             <div>
-                <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ $filter ?? 'Schedule Overview' }}</h1>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1.5 font-medium">Manage and track your upcoming content pipeline.</p>
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">{{ $filter ?? 'Schedule Overview' }}</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-2 font-medium tracking-wide">Manage and track your upcoming content pipeline.</p>
             </div>
             
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
                 @if(auth()->user()->role === 'super_admin')
-                    <span class="px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-xl text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.1)] hidden sm:inline-block">Super Admin Mode</span>
+                    <span class="px-4 py-2 bg-[#111] text-white border border-gray-800 dark:bg-white/5 dark:text-white dark:border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest shadow-2xl hidden sm:inline-flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                        Admin Mode
+                    </span>
                 @endif
                 
                 @if(isset($filter))
-                <a href="{{ route('events.create', ['filter' => $filter, 'action' => 'create']) }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#0a0a0a] focus:ring-indigo-500 transition-all shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Add Event
+                <a href="{{ route('events.create', ['filter' => $filter, 'action' => 'create']) }}" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#0a0a0a] focus:ring-gray-900 dark:focus:ring-white transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 group">
+                    <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    New Event
                 </a>
                 @endif
             </div>
         </div>
 
         <!-- FullCalendar Container -->
-        <div class="bg-white dark:bg-[#0a0a0a] border border-gray-100/80 dark:border-[#1f1f1f] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] p-6 mb-8 overflow-hidden">
+        <div class="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_40px_rgb(0,0,0,0.8)] p-8 mb-12 overflow-hidden animate-fade-in-up" style="animation-delay: 0.3s;">
             <div id="calendar"></div>
         </div>
 
@@ -120,22 +147,25 @@
                     },
                     events: eventsData,
                     eventContent: function(arg) {
-                        var teamClass = arg.event.extendedProps.teamType === 'product_team' 
-                            ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' 
-                            : 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20';
+                        var isProduct = arg.event.extendedProps.teamType === 'product_team';
+                        var teamClass = isProduct
+                            ? 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20' 
+                            : 'bg-gradient-to-r from-teal-500/10 to-emerald-500/10 text-teal-700 dark:text-teal-300 border-teal-500/20';
 
                         var pillarHtml = '';
                         if (arg.event.extendedProps.aipePillar !== 'N/A') {
-                            pillarHtml = `<span class="inline-block mt-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.1)]">
+                            pillarHtml = `<span class="inline-flex items-center justify-center mt-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20">
                                 ${arg.event.extendedProps.aipePillar}
                             </span>`;
                         }
 
                         var html = `
-                            <div class="p-2 w-full border rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 backdrop-blur-sm flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.3;">
-                                <div class="font-bold text-xs" style="word-break: break-word;">${arg.event.title}</div>
-                                <div class="text-[10px] opacity-80 mt-0.5 flex items-center font-medium">
-                                    <svg class="w-3 h-3 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            <div class="px-2.5 py-2 w-full border rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 backdrop-blur-md flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.4;">
+                                <div class="font-extrabold text-[11px] leading-tight" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    ${arg.event.title}
+                                </div>
+                                <div class="text-[9px] opacity-75 mt-0.5 flex items-center font-bold tracking-wide uppercase">
+                                    <svg class="w-3 h-3 inline-block mr-1 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                     ${arg.event.extendedProps.userName}
                                 </div>
                                 ${pillarHtml}
@@ -156,18 +186,28 @@
         </script>
 
         <style>
+            /* Entrance Animations */
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in-up {
+                animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                opacity: 0;
+            }
+
             /* Ultra Modern styling for FullCalendar */
             .fc {
                 /* Light Mode Variables */
-                --fc-border-color: #f1f5f9;
+                --fc-border-color: rgba(226, 232, 240, 0.5);
                 --fc-button-bg-color: #f8fafc;
-                --fc-button-border-color: #f1f5f9;
+                --fc-button-border-color: rgba(226, 232, 240, 0.8);
                 --fc-button-text-color: #334155;
                 --fc-button-hover-bg-color: #f1f5f9;
-                --fc-button-hover-border-color: #e2e8f0;
+                --fc-button-hover-border-color: #cbd5e1;
                 --fc-button-active-bg-color: #e2e8f0;
-                --fc-button-active-border-color: #cbd5e1;
-                --fc-today-bg-color: #f8fafc;
+                --fc-button-active-border-color: #94a3b8;
+                --fc-today-bg-color: rgba(59, 130, 246, 0.03);
                 --fc-page-bg-color: transparent;
                 --fc-neutral-bg-color: transparent;
                 font-family: inherit;
@@ -176,46 +216,51 @@
             .dark .fc {
                 /* Dark Mode Variables */
                 color: #e2e8f0;
-                --fc-border-color: #1e293b;
-                --fc-button-bg-color: #0f172a;
-                --fc-button-border-color: #1e293b;
-                --fc-button-text-color: #e2e8f0;
-                --fc-button-hover-bg-color: #1e293b;
-                --fc-button-hover-border-color: #334155;
-                --fc-button-active-bg-color: #334155;
-                --fc-button-active-border-color: #475569;
-                --fc-today-bg-color: rgba(59, 130, 246, 0.05);
+                --fc-border-color: rgba(255, 255, 255, 0.05);
+                --fc-button-bg-color: rgba(255, 255, 255, 0.03);
+                --fc-button-border-color: rgba(255, 255, 255, 0.05);
+                --fc-button-text-color: #f8fafc;
+                --fc-button-hover-bg-color: rgba(255, 255, 255, 0.08);
+                --fc-button-hover-border-color: rgba(255, 255, 255, 0.1);
+                --fc-button-active-bg-color: rgba(255, 255, 255, 0.12);
+                --fc-button-active-border-color: rgba(255, 255, 255, 0.2);
+                --fc-today-bg-color: rgba(59, 130, 246, 0.08);
             }
 
             /* Toolbar Typography */
             .fc .fc-toolbar-title {
-                font-size: 1.5rem;
-                font-weight: 800;
+                font-size: 1.75rem;
+                font-weight: 900;
                 letter-spacing: -0.025em;
                 color: #0f172a;
             }
             .dark .fc .fc-toolbar-title {
-                color: #f8fafc;
+                color: #ffffff;
             }
 
             /* Modern Toolbar Buttons */
             .fc .fc-button-primary {
                 border-radius: 0.75rem !important;
-                font-weight: 600 !important;
+                font-weight: 700 !important;
                 text-transform: capitalize;
                 box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
-                transition: all 0.2s ease;
-                padding: 0.5rem 1.25rem !important;
-                margin-left: 0.25rem !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 0.6rem 1.25rem !important;
+                margin-left: 0.5rem !important;
+                border-width: 1px !important;
+                backdrop-filter: blur(10px);
             }
             .dark .fc .fc-button-primary {
-                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.5) !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3) !important;
+            }
+            .fc .fc-button-primary:hover {
+                transform: translateY(-1px);
             }
             .fc .fc-button-primary:focus {
-                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
             }
 
-            /* Remove grid borders for an airy look, keep only horizontal borders */
+            /* Remove grid borders for an airy look, keep only subtle horizontal borders */
             .fc-theme-standard td, .fc-theme-standard th {
                 border-right: none !important;
                 border-left: none !important;
@@ -229,11 +274,11 @@
             
             /* Day Headers */
             .fc .fc-col-header-cell-cushion {
-                padding: 16px 8px;
+                padding: 20px 8px;
                 text-transform: uppercase;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 font-weight: 800;
-                letter-spacing: 0.05em;
+                letter-spacing: 0.1em;
                 color: #64748b;
             }
             .dark .fc .fc-col-header-cell-cushion {
@@ -244,11 +289,11 @@
             .fc .fc-daygrid-day-number {
                 color: inherit;
                 text-decoration: none;
-                font-weight: 700;
-                font-size: 0.875rem;
-                padding: 12px;
+                font-weight: 800;
+                font-size: 0.9rem;
+                padding: 16px;
                 transition: color 0.2s;
-                opacity: 0.7;
+                opacity: 0.5;
             }
             .fc .fc-daygrid-day-number:hover {
                 color: #3b82f6;
@@ -258,6 +303,7 @@
             /* Today Cell Highlight */
             .fc .fc-day-today {
                 background-color: var(--fc-today-bg-color) !important;
+                border-radius: 1.5rem;
             }
             .fc .fc-day-today .fc-daygrid-day-number {
                 color: #3b82f6;
@@ -267,30 +313,30 @@
             .fc .fc-day-today .fc-daygrid-day-number::after {
                 content: '';
                 position: absolute;
-                bottom: 6px;
+                bottom: 8px;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 4px;
-                height: 4px;
+                width: 6px;
+                height: 6px;
                 border-radius: 50%;
                 background-color: #3b82f6;
+                box-shadow: 0 0 10px rgba(59,130,246,0.5);
             }
 
-            /* Event Cards */
+            /* Event Cards Wrapper */
             .fc-event {
                 cursor: pointer;
                 border-radius: 0.75rem;
-                overflow: hidden;
-                margin-top: 2px;
-                margin-bottom: 2px;
+                overflow: visible !important; /* Allow shadow to pop out */
+                margin-top: 3px;
+                margin-bottom: 3px;
+                background: transparent !important;
+                border: none !important;
             }
             
-            /* Make past days slightly faded */
+            /* Faded past days */
             .fc-day-past {
-                background-color: #f8fafc;
-            }
-            .dark .fc-day-past {
-                background-color: #0f172a;
+                opacity: 0.6;
             }
         </style>
 

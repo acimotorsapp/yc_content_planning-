@@ -28,5 +28,5 @@ Artisan::command('events:notify', function () {
 })->purpose('Send notifications to users for their events scheduled for today');
 
 use Illuminate\Support\Facades\Schedule;
-// Run the notification command daily at 8:00 AM
-Schedule::command('events:notify')->dailyAt('08:00');
+// Run the notification command daily at 12:00 AM (midnight)
+Schedule::command('events:notify')->dailyAt('00:00');
