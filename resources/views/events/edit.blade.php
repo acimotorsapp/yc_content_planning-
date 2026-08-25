@@ -20,13 +20,13 @@
             <div class="px-8 py-6 border-b border-gray-100 bg-slate-50/70 flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <div class="w-12 h-12 rounded-2xl flex items-center justify-center font-bold shadow-xs
-                        {{ $event->team_type === 'product_team' ? 'bg-blue-100 text-blue-600 border border-blue-200' : ($event->team_type === 'digital_team' ? 'bg-teal-100 text-teal-600 border border-teal-200' : 'bg-amber-100 text-amber-600 border border-amber-200') }}">
+                        {{ $event->team_type === 'product_team' ? 'bg-amber-100 text-amber-600 border border-amber-200' : ($event->team_type === 'digital_team' ? 'bg-purple-100 text-purple-600 border border-purple-200' : 'bg-blue-100 text-blue-600 border border-blue-200') }}">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border
-                                {{ $event->team_type == 'product_team' ? 'bg-blue-50 text-blue-700 border-blue-200' : ($event->team_type == 'digital_team' ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-amber-50 text-amber-700 border-amber-200') }}">
+                                {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : ($event->team_type == 'digital_team' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
                                 {{ str_replace('_', ' ', $event->team_type) }}
                             </span>
                         </div>

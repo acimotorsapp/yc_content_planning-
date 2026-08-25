@@ -75,7 +75,7 @@
                             <!-- Team Column -->
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-teal-50 text-teal-700 border-teal-200' }}">
+                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
                                     {{ str_replace('_', ' ', $event->team_type) }}
                                 </span>
                             </td>

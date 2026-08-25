@@ -7,13 +7,15 @@
 
     <div class="max-w-7xl mx-auto pb-12">
 
+        @if(!isset($filter))
         <!-- Top Actions -->
         <div class="flex justify-end mb-6 animate-fade-in-up">
-            <a href="{{ route('events.create', isset($filter) ? ['filter' => $filter, 'action' => 'create'] : ['action' => 'create']) }}" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/20 hover:shadow-lg transform hover:-translate-y-0.5 group">
+            <a href="{{ route('events.create', ['action' => 'create']) }}" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/20 hover:shadow-lg transform hover:-translate-y-0.5 group">
                 <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add New Event
             </a>
         </div>
+        @endif
 
 
 
@@ -83,13 +85,6 @@
                         Admin Mode
                     </span>
                 @endif
-                
-                @if(isset($filter))
-                <a href="{{ route('events.create', ['filter' => $filter, 'action' => 'create']) }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-bold text-white rounded-xl bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/20">
-                    <svg class="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    New Event
-                </a>
-                @endif
             </div>
         </div>
 
@@ -125,7 +120,33 @@
                 var calendarEl = document.getElementById('calendar');
                 
                 var eventsData = @json($formattedEvents);
-                var eventDatesSet = new Set(eventsData.map(function(ev) { return ev.start; }));
+                
+                // Categorize dates by team type
+                var dateTeamMap = {};
+                eventsData.forEach(function(ev) {
+                    var d = ev.start;
+                    var t = ev.extendedProps.teamType;
+                    if (!dateTeamMap[d]) {
+                        dateTeamMap[d] = new Set();
+                    }
+                    dateTeamMap[d].add(t);
+                });
+
+                function applyDayCellClass(el, dateStr) {
+                    if (!dateStr || !dateTeamMap[dateStr]) return;
+                    var teams = dateTeamMap[dateStr];
+                    if (teams.has('digital_team') && !teams.has('product_team')) {
+                        el.classList.add('fc-has-digital-event-day');
+                    } else if (teams.has('product_team') && !teams.has('digital_team')) {
+                        el.classList.add('fc-has-product-event-day');
+                    } else if (teams.has('digital_team') && teams.has('product_team')) {
+                        el.classList.add('fc-has-mixed-event-day');
+                    } else if (teams.has('global_team')) {
+                        el.classList.add('fc-has-global-event-day');
+                    } else {
+                        el.classList.add('fc-has-product-event-day');
+                    }
+                }
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
@@ -144,35 +165,42 @@
                             var d = String(arg.date.getDate()).padStart(2, '0');
                             dateStr = y + '-' + m + '-' + d;
                         }
-                        if (eventDatesSet.has(dateStr)) {
-                            arg.el.classList.add('fc-has-event-day');
-                        }
+                        applyDayCellClass(arg.el, dateStr);
                     },
                     eventDidMount: function(info) {
                         var dateStr = info.event.startStr;
                         if (dateStr) {
                             var dayCell = document.querySelector('.fc-daygrid-day[data-date="' + dateStr + '"]');
                             if (dayCell) {
-                                dayCell.classList.add('fc-has-event-day');
+                                applyDayCellClass(dayCell, dateStr);
                             }
                         }
                     },
                     eventContent: function(arg) {
-                        var isProduct = arg.event.extendedProps.teamType === 'product_team';
-                        var teamClass = isProduct
-                            ? 'bg-blue-50 text-blue-700 border-blue-200 shadow-xs' 
-                            : 'bg-teal-50 text-teal-700 border-teal-200 shadow-xs';
+                        var teamType = arg.event.extendedProps.teamType;
+                        var teamClass = '';
+                        
+                        if (teamType === 'digital_team') {
+                            teamClass = 'bg-purple-50 text-purple-900 border-purple-200 shadow-xs';
+                        } else if (teamType === 'product_team') {
+                            teamClass = 'bg-amber-50 text-amber-900 border-amber-200 shadow-xs';
+                        } else {
+                            teamClass = 'bg-blue-50 text-blue-900 border-blue-200 shadow-xs';
+                        }
 
                         var pillarHtml = '';
-                        if (arg.event.extendedProps.aipePillar !== 'N/A') {
-                            pillarHtml = `<span class="inline-flex items-center justify-center mt-1 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
+                        if (arg.event.extendedProps.aipePillar && arg.event.extendedProps.aipePillar !== 'N/A') {
+                            var pillarBadge = teamType === 'digital_team' 
+                                ? 'bg-purple-100 text-purple-800 border-purple-200' 
+                                : 'bg-amber-100 text-amber-800 border-amber-200';
+                            pillarHtml = `<span class="inline-flex items-center justify-center mt-1 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${pillarBadge} border">
                                 ${arg.event.extendedProps.aipePillar}
                             </span>`;
                         }
 
                         var html = `
                             <div class="px-2.5 py-2 w-full border rounded-xl shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.4;">
-                                <div class="font-extrabold text-[13px] leading-tight text-gray-900" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                <div class="font-extrabold text-[13px] leading-tight" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     ${arg.event.title}
                                 </div>
                                 <div class="text-[10px] text-gray-500 mt-0.5 flex items-center font-bold tracking-wide uppercase">
@@ -275,18 +303,55 @@
                 background-color: #f8fafc !important;
             }
 
-            /* ONLY DATES WITH EVENTS GET THE LIGHT SOFT YELLOW BACKGROUND */
-            .fc-daygrid-day.fc-has-event-day,
-            .fc-has-event-day,
-            .fc-has-event-day .fc-daygrid-day-frame {
-                background-color: #fefce8 !important; /* Soft Light Yellow (Tailwind yellow-50) */
+            /* PRODUCT TEAM DATES: LIGHT SOFT YELLOW */
+            .fc-daygrid-day.fc-has-product-event-day,
+            .fc-has-product-event-day,
+            .fc-has-product-event-day .fc-daygrid-day-frame {
+                background-color: #fefce8 !important; /* Tailwind yellow-50 */
             }
-            .fc-has-event-day .fc-daygrid-day-frame {
-                border: 1px solid #fef08a !important; /* Subtle yellow border (yellow-200) */
+            .fc-has-product-event-day .fc-daygrid-day-frame {
+                border: 1px solid #fef08a !important; /* Tailwind yellow-200 */
             }
-            .fc-has-event-day:hover .fc-daygrid-day-frame {
-                background-color: #fef9c3 !important; /* Light pastel yellow on hover (yellow-100) */
+            .fc-has-product-event-day:hover .fc-daygrid-day-frame {
+                background-color: #fef9c3 !important; /* Tailwind yellow-100 */
                 border-color: #fde047 !important;
+            }
+
+            /* DIGITAL TEAM DATES: LIGHT SOFT PURPLE */
+            .fc-daygrid-day.fc-has-digital-event-day,
+            .fc-has-digital-event-day,
+            .fc-has-digital-event-day .fc-daygrid-day-frame {
+                background-color: #faf5ff !important; /* Tailwind purple-50 */
+            }
+            .fc-has-digital-event-day .fc-daygrid-day-frame {
+                border: 1px solid #e9d5ff !important; /* Tailwind purple-200 */
+            }
+            .fc-has-digital-event-day:hover .fc-daygrid-day-frame {
+                background-color: #f3e8ff !important; /* Tailwind purple-100 */
+                border-color: #d8b4fe !important;
+            }
+
+            /* MIXED DATES: DUAL PASTEL GRADIENT */
+            .fc-daygrid-day.fc-has-mixed-event-day,
+            .fc-has-mixed-event-day,
+            .fc-has-mixed-event-day .fc-daygrid-day-frame {
+                background: linear-gradient(135deg, #fefce8 50%, #faf5ff 50%) !important;
+            }
+            .fc-has-mixed-event-day .fc-daygrid-day-frame {
+                border: 1px solid #e9d5ff !important;
+            }
+            .fc-has-mixed-event-day:hover .fc-daygrid-day-frame {
+                background: linear-gradient(135deg, #fef9c3 50%, #f3e8ff 50%) !important;
+            }
+
+            /* GLOBAL EVENTS DATES: LIGHT BLUE */
+            .fc-daygrid-day.fc-has-global-event-day,
+            .fc-has-global-event-day,
+            .fc-has-global-event-day .fc-daygrid-day-frame {
+                background-color: #eff6ff !important;
+            }
+            .fc-has-global-event-day .fc-daygrid-day-frame {
+                border: 1px solid #bfdbfe !important;
             }
 
             /* Day Headers */
@@ -320,13 +385,21 @@
             .fc .fc-day-today {
                 background-color: transparent !important;
             }
-            .fc .fc-day-today:not(.fc-has-event-day) .fc-daygrid-day-frame {
+            .fc .fc-day-today:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day) .fc-daygrid-day-frame {
                 background-color: #ffffff !important;
                 border: 2px solid #3b82f6 !important;
             }
-            .fc .fc-day-today.fc-has-event-day .fc-daygrid-day-frame {
+            .fc .fc-day-today.fc-has-product-event-day .fc-daygrid-day-frame {
                 background-color: #fefce8 !important;
-                border: 2px solid #2563eb !important;
+                border: 2px solid #eab308 !important;
+            }
+            .fc .fc-day-today.fc-has-digital-event-day .fc-daygrid-day-frame {
+                background-color: #faf5ff !important;
+                border: 2px solid #9333ea !important;
+            }
+            .fc .fc-day-today.fc-has-mixed-event-day .fc-daygrid-day-frame {
+                background: linear-gradient(135deg, #fefce8 50%, #faf5ff 50%) !important;
+                border: 2px solid #9333ea !important;
             }
             .fc .fc-day-today .fc-daygrid-day-number {
                 color: #2563eb !important;
@@ -345,7 +418,7 @@
             }
             
             /* Faded past days */
-            .fc-day-past:not(.fc-has-event-day) {
+            .fc-day-past:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day) {
                 opacity: 0.8;
             }
         </style>
@@ -356,7 +429,7 @@
         @endphp
 
         <!-- Upcoming Events Table -->
-        @if($upcomingEvents->count() > 0)
+        @if(!isset($filter) && $upcomingEvents->count() > 0)
         <div class="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden mb-12 animate-fade-in-up" style="animation-delay: 0.4s;">
             <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-slate-50/50">
                 <div class="flex items-center gap-3">
@@ -390,7 +463,7 @@
                             <!-- Team Column -->
                             <td class="px-8 py-5 whitespace-nowrap">
                                 <span class="inline-flex items-center px-3 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-teal-50 text-teal-700 border-teal-200' }}">
+                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
                                     {{ str_replace('_', ' ', $event->team_type) }}
                                 </span>
                             </td>
@@ -431,6 +504,13 @@
                                     <a href="{{ route('events.edit', $event) }}" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-0.5" title="Edit Event">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                     </a>
+                                    <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline delete-form" data-confirm="Are you sure you want to delete this event?">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-red-600 hover:text-white transition-all transform hover:-translate-y-0.5" title="Delete Event">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        </button>
+                                    </form>
                                     @endif
                                 </div>
                             </td>
@@ -471,7 +551,7 @@
                             <!-- Team Column -->
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-teal-50 text-teal-700 border-teal-200' }}">
+                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
                                     {{ str_replace('_', ' ', $event->team_type) }}
                                 </span>
                             </td>
@@ -562,7 +642,7 @@
         @endphp
 
         <!-- Global Calendar & Observances from Database -->
-        @if($globalEventsRaw->count() > 0)
+        @if(!isset($filter) && $globalEventsRaw->count() > 0)
         <div class="mt-8">
             <h2 class="text-lg font-bold text-gray-900 mb-4 tracking-tight">Global Calendar & Observances</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
