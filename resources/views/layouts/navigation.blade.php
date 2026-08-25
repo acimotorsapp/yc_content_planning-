@@ -25,10 +25,12 @@
             <span>New Event</span>
         </button>
 
+        @if(auth()->check() && auth()->user()->role !== 'super_admin')
         <a href="{{ route('events.my') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('events.my') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
             <svg class="w-5 h-5 {{ request()->routeIs('events.my') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
             <span>My Events</span>
         </a>
+        @endif
 
         @if(auth()->check() && auth()->user()->role === 'super_admin')
             <div class="pt-5 pb-2">
