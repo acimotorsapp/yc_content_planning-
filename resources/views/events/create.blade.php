@@ -7,7 +7,7 @@
 
     <!-- Alpine Wrapper for Modal State -->
     <div x-data="{ 
-            showModal: {{ $errors->any() ? 'true' : 'false' }},
+            showModal: {{ $errors->any() || request()->query('action') === 'create' ? 'true' : 'false' }},
             editModal: false,
             eventData: null,
             openEdit(event) {
@@ -46,12 +46,10 @@
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         Super Admin
                     </span>
-                    @if(isset($filter))
                     <button @click="showModal = true" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#0a0a0a] focus:ring-indigo-500 transition-all duration-300 shadow-[0_0_15px_rgba(79,70,229,0.3)] dark:shadow-[0_0_20px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.4)] dark:hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] transform hover:-translate-y-1">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        New {{ str_replace(' Events', '', str_replace(' Team', '', $filter)) }}
+                        Create New Event
                     </button>
-                    @endif
                 </div>
             @endif
         </div>
@@ -136,7 +134,7 @@
                                      <a href="{{ route('events.show', $event) }}" class="inline-flex text-gray-400 hover:text-white transition-colors" title="View Event">
                                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                      </a>
-                                     @if(auth()->id() === $event->user_id)
+                                     @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
                                          <button @click="openEdit({{ htmlspecialchars(json_encode($event)) }})" class="inline-flex text-blue-400 hover:text-blue-300 transition-colors" title="Edit Event">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </button>
@@ -281,24 +279,22 @@
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Product</label>
                                         <select name="product" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Product</option>
-                                            <option value="FZS V2">FZS V2</option>
-                                            <option value="FZS V4">FZS V4</option>
-                                            <option value="FZS FI Hybrid">FZS FI Hybrid</option>
-                                            <option value="FZX">FZX</option>
-                                            <option value="Fazer">Fazer</option>
-                                            <option value="FZ 25">FZ 25</option>
-                                            <option value="MT">MT</option>
-                                            <option value="R15">R15</option>
+                                            @if(isset($masterData['product']))
+                                                @foreach($masterData['product'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Platform</label>
                                         <select name="platform" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Platform</option>
-                                            <option value="Facebook">Facebook</option>
-                                            <option value="Option 2">Option 2</option>
-                                            <option value="YRC Page">YRC Page</option>
-                                            <option value="Yamaha Lovers BD">Yamaha Lovers BD</option>
+                                            @if(isset($masterData['platform']))
+                                                @foreach($masterData['platform'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -308,11 +304,11 @@
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">A.I.P.E Pillar</label>
                                         <select name="aipe_pillar" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Pillar</option>
-                                            <option value="Awareness">Awareness</option>
-                                            <option value="Awareness+Interest">Awareness+Interest</option>
-                                            <option value="Interest">Interest</option>
-                                            <option value="Interest+Experience">Interest+Experience</option>
-                                            <option value="Experience">Experience</option>
+                                            @if(isset($masterData['aipe_pillar']))
+                                                @foreach($masterData['aipe_pillar'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div><label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Color</label><input type="text" name="color_concern" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm"></div>
@@ -320,11 +316,11 @@
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Format</label>
                                         <select name="format" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Format</option>
-                                            <option value="Product Review">Product Review</option>
-                                            <option value="OVC">OVC</option>
-                                            <option value="Special Content">Special Content</option>
-                                            <option value="Get Together">Get Together</option>
-                                            <option value="Reels">Reels</option>
+                                            @if(isset($masterData['format']))
+                                                @foreach($masterData['format'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -360,25 +356,22 @@
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Product Focus</label>
                                         <select name="product_focus" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Product</option>
-                                            <option value="FZS V2">FZS V2</option>
-                                            <option value="FZS V4">FZS V4</option>
-                                            <option value="FZS FI Hybrid">FZS FI Hybrid</option>
-                                            <option value="FZX">FZX</option>
-                                            <option value="Fazer">Fazer</option>
-                                            <option value="FZ 25">FZ 25</option>
-                                            <option value="MT">MT</option>
-                                            <option value="R15">R15</option>
+                                            @if(isset($masterData['product']))
+                                                @foreach($masterData['product'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div>
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">A.I.P.E Pillar</label>
                                         <select name="aipe_pillar" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Pillar</option>
-                                            <option value="Awareness">Awareness</option>
-                                            <option value="Awareness+Interest">Awareness+Interest</option>
-                                            <option value="Interest">Interest</option>
-                                            <option value="Interest+Experience">Interest+Experience</option>
-                                            <option value="Experience">Experience</option>
+                                            @if(isset($masterData['aipe_pillar']))
+                                                @foreach($masterData['aipe_pillar'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -389,11 +382,11 @@
                                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Format</label>
                                         <select name="format" class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:bg-gray-50 dark:focus:bg-[#222] focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all shadow-sm">
                                             <option value="">Select Format</option>
-                                            <option value="Product Review">Product Review</option>
-                                            <option value="OVC">OVC</option>
-                                            <option value="Special Content">Special Content</option>
-                                            <option value="Get Together">Get Together</option>
-                                            <option value="Reels">Reels</option>
+                                            @if(isset($masterData['format']))
+                                                @foreach($masterData['format'] as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->value }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>

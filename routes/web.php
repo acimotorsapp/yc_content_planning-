@@ -9,7 +9,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $events = \App\Models\CalendarEvent::with('user')->where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
-    return view('dashboard', compact('events'));
+    $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+    return view('dashboard', compact('events', 'masterData'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -21,6 +22,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Settings Route
     Route::get('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'mailSettings'])->name('admin.settings');
     Route::post('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'updateMailSettings'])->name('admin.settings.update');
+    
+    // User Management Route
+    Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::put('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    // Master Data Route
+    Route::get('/admin/master-data', [\App\Http\Controllers\Admin\MasterDataController::class, 'index'])->name('admin.master_data.index');
+    Route::post('/admin/master-data', [\App\Http\Controllers\Admin\MasterDataController::class, 'store'])->name('admin.master_data.store');
+    Route::delete('/admin/master-data/{masterData}', [\App\Http\Controllers\Admin\MasterDataController::class, 'destroy'])->name('admin.master_data.destroy');
 });
 
 Route::middleware('auth')->group(function () {

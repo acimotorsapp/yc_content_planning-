@@ -25,6 +25,37 @@
             </div>
         @endif
 
+        @if(auth()->user()->role === 'super_admin' && !isset($filter))
+            @php
+                $totalCount = clone $events;
+                $total = $totalCount->count();
+                $digital = $totalCount->where('team_type', 'digital_team')->count();
+                $product = $totalCount->where('team_type', 'product_team')->count();
+            @endphp
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Total Events -->
+                <div class="bg-white dark:bg-[#111] rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden group">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all"></div>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Total Scheduled Posts</p>
+                    <h3 class="text-4xl font-black text-gray-900 dark:text-white">{{ $total }}</h3>
+                </div>
+                
+                <!-- Digital Team -->
+                <div class="bg-white dark:bg-[#111] rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden group">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl group-hover:bg-teal-500/20 transition-all"></div>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Digital Team Events</p>
+                    <h3 class="text-4xl font-black text-teal-600 dark:text-teal-400">{{ $digital }}</h3>
+                </div>
+
+                <!-- Product Team -->
+                <div class="bg-white dark:bg-[#111] rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden group">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+                    <p class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Product Team Events</p>
+                    <h3 class="text-4xl font-black text-blue-600 dark:text-blue-400">{{ $product }}</h3>
+                </div>
+            </div>
+        @endif
+
         <!-- Dashboard Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <div>
@@ -32,11 +63,18 @@
                 <p class="text-gray-500 dark:text-gray-400 text-sm mt-1.5 font-medium">Manage and track your upcoming content pipeline.</p>
             </div>
             
-            @if(auth()->user()->role === 'super_admin')
-                <div class="flex items-center gap-3">
-                    <span class="px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-xl text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.1)]">Super Admin Mode</span>
-                </div>
-            @endif
+            <div class="flex items-center gap-3">
+                @if(auth()->user()->role === 'super_admin')
+                    <span class="px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-xl text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.1)] hidden sm:inline-block">Super Admin Mode</span>
+                @endif
+                
+                @if(isset($filter))
+                <a href="{{ route('events.create', ['filter' => $filter, 'action' => 'create']) }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#0a0a0a] focus:ring-indigo-500 transition-all shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Add Event
+                </a>
+                @endif
+            </div>
         </div>
 
         <!-- FullCalendar Container -->
@@ -331,7 +369,7 @@
                                      <a href="{{ route('events.show', $event) }}" class="inline-flex text-gray-400 hover:text-white transition-colors" title="View Event">
                                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                      </a>
-                                     @if(auth()->id() === $event->user_id)
+                                     @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
                                          <button @click="openEdit({{ htmlspecialchars(json_encode($event)) }})" class="inline-flex text-blue-400 hover:text-blue-300 transition-colors" title="Edit Event">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </button>

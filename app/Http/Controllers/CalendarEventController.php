@@ -55,7 +55,8 @@ class CalendarEventController extends Controller
         // For Super Admin to switch between teams, they might need a filter like they have on dashboard.
         $filter = request()->query('filter');
         $events = CalendarEvent::with('user')->where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
-        return view('events.create', compact('filter', 'events'));
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('events.create', compact('filter', 'events', 'masterData'));
     }
 
     public function show(CalendarEvent $event)
@@ -66,7 +67,7 @@ class CalendarEventController extends Controller
 
     public function update(Request $request, CalendarEvent $event)
     {
-        if (auth()->id() !== $event->user_id) {
+        if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
             abort(403, 'Unauthorized action.');
         }
 
@@ -94,7 +95,7 @@ class CalendarEventController extends Controller
 
     public function destroy(CalendarEvent $event)
     {
-        if (auth()->id() !== $event->user_id) {
+        if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
             abort(403, 'Unauthorized action.');
         }
 
@@ -127,20 +128,23 @@ class CalendarEventController extends Controller
     {
         if (auth()->user()->role !== 'super_admin') abort(403);
         $events = CalendarEvent::with('user')->where('team_type', 'product_team')->orderBy('event_date', 'asc')->get();
-        return view('dashboard', ['events' => $events, 'filter' => 'Product Team Events']);
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', ['events' => $events, 'filter' => 'Product Team Events', 'masterData' => $masterData]);
     }
 
     public function adminDigital()
     {
         if (auth()->user()->role !== 'super_admin') abort(403);
         $events = CalendarEvent::with('user')->where('team_type', 'digital_team')->orderBy('event_date', 'asc')->get();
-        return view('dashboard', ['events' => $events, 'filter' => 'Digital Team Events']);
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', ['events' => $events, 'filter' => 'Digital Team Events', 'masterData' => $masterData]);
     }
 
     public function adminGlobal()
     {
         if (auth()->user()->role !== 'super_admin') abort(403);
         $events = CalendarEvent::with('user')->where('team_type', 'global_team')->orderBy('event_date', 'asc')->get();
-        return view('dashboard', ['events' => $events, 'filter' => 'Global Events']);
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', ['events' => $events, 'filter' => 'Global Events', 'masterData' => $masterData]);
     }
 }
