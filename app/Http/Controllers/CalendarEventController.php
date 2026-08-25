@@ -50,6 +50,14 @@ class CalendarEventController extends Controller
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
     }
 
+    public function create()
+    {
+        // For Super Admin to switch between teams, they might need a filter like they have on dashboard.
+        $filter = request()->query('filter');
+        $events = CalendarEvent::with('user')->where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
+        return view('events.create', compact('filter', 'events'));
+    }
+
     public function show(CalendarEvent $event)
     {
         $event->load('user');
