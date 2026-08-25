@@ -12,37 +12,37 @@
         <!-- Tailwind CSS -->
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
-    <body class="font-sans antialiased bg-gray-50 dark:bg-[#0a0a0a] text-gray-800 dark:text-gray-300 min-h-screen flex flex-col selection:bg-blue-500/30">
+    <body class="font-sans antialiased bg-slate-50 text-gray-900 min-h-screen flex flex-col selection:bg-blue-500/20">
         
         <!-- Background Ambient Glows -->
         <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-            <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[150px]"></div>
-            <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-teal-600/10 rounded-full blur-[150px]"></div>
+            <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-400/10 rounded-full blur-[150px]"></div>
+            <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-indigo-400/10 rounded-full blur-[150px]"></div>
         </div>
 
         <!-- Navigation -->
-        <header class="w-full border-b border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-[#0a0a0a]/50 backdrop-blur-md sticky top-0 z-50">
+        <header class="w-full border-b border-gray-200/80 bg-white/80 backdrop-blur-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <!-- Logo -->
                 <a href="/" class="flex items-center space-x-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-black flex items-center justify-center text-xl font-black shadow-[0_0_15px_rgba(255,255,255,0.2)] group-hover:scale-105 transition-transform">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center text-xl font-black shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
                         Y
                     </div>
-                    <span class="text-xl font-bold tracking-widest text-gray-900 dark:text-white uppercase group-hover:text-blue-600 dark:group-hover:text-gray-300 transition-colors">YC Content Planning</span>
+                    <span class="text-xl font-bold tracking-widest text-gray-900 uppercase group-hover:text-blue-600 transition-colors">YC Content Planning</span>
                 </a>
 
                 <!-- Auth Links -->
-                <nav class="flex items-center gap-6">
+                <nav class="flex items-center gap-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-white transition-colors">
+                        <a href="{{ url('/dashboard') }}" class="text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors">
                             Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-white transition-colors">
+                        <a href="{{ route('login') }}" class="text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors">
                             Log in
                         </a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="text-sm font-semibold px-4 py-2 bg-gray-200 text-gray-900 dark:bg-white/10 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 transition-colors border border-gray-200 dark:border-white/5">
+                            <a href="{{ route('register') }}" class="text-sm font-bold px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors shadow-xs">
                                 Register
                             </a>
                         @endif
@@ -52,35 +52,35 @@
         </header>
 
         <!-- Hero Section -->
-        <main class="flex-1 flex flex-col items-center justify-center px-6 relative">
+        <main class="flex-1 flex flex-col items-center justify-center px-6 relative pt-12">
             
             <div class="max-w-3xl w-full text-center space-y-8">
                 <!-- Badge -->
-                <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-gray-300 dark:border-white/10 bg-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(255,255,255,0.05)] text-sm font-medium text-gray-800 dark:text-gray-300">
-                    <span class="w-2 h-2 rounded-full bg-blue-500 mr-2 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></span>
+                <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 shadow-xs text-sm font-bold text-blue-700">
+                    <span class="w-2 h-2 rounded-full bg-blue-600 mr-2 animate-pulse"></span>
                     Centralized Workspace for Product & Digital Teams
                 </div>
 
                 <!-- Headline -->
-                <h1 class="text-5xl md:text-7xl font-black tracking-tight text-gray-900 dark:text-white leading-[1.1]">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight text-gray-900 leading-[1.1]">
                     Master your <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Content Pipeline.</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Content Pipeline.</span>
                 </h1>
 
                 <!-- Subheadline -->
-                <p class="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-medium">
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
                     The ultimate scheduling and strategy dashboard for YC Content Planning's internal marketing teams. Plan, align, and execute without conflicts.
                 </p>
 
                 <!-- CTA -->
-                <div class="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-gray-900 dark:text-black dark:bg-white rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] flex items-center justify-center">
+                        <a href="{{ url('/dashboard') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-blue-600 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25 flex items-center justify-center">
                             Go to Dashboard
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-gray-900 dark:text-black dark:bg-white rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] flex items-center justify-center">
+                        <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-blue-600 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25 flex items-center justify-center">
                             Sign In to Workspace
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </a>
@@ -89,27 +89,27 @@
             </div>
 
             <!-- Decorative Dashboard Preview -->
-            <div class="mt-20 w-full max-w-5xl rounded-2xl border border-gray-300 dark:border-white/10 bg-white dark:bg-[#111]/80 backdrop-blur-xl shadow-2xl overflow-hidden p-2">
-                <div class="w-full h-8 border-b border-gray-200 dark:border-white/5 flex items-center px-4 gap-2 mb-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+            <div class="mt-16 w-full max-w-5xl rounded-3xl border border-gray-200 bg-white shadow-xl overflow-hidden p-2 relative">
+                <div class="w-full h-8 border-b border-gray-100 flex items-center px-4 gap-2 mb-2 bg-slate-50 rounded-t-2xl">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
                 </div>
                 <!-- Abstract Table representation -->
-                <div class="p-6 space-y-4 opacity-50">
-                    <div class="h-6 w-1/4 bg-white/10 rounded"></div>
-                    <div class="h-10 w-full bg-white/5 rounded"></div>
-                    <div class="h-10 w-full bg-white/5 rounded"></div>
-                    <div class="h-10 w-full bg-white/5 rounded"></div>
+                <div class="p-6 space-y-4 opacity-40">
+                    <div class="h-6 w-1/4 bg-gray-200 rounded-md"></div>
+                    <div class="h-10 w-full bg-gray-100 rounded-xl"></div>
+                    <div class="h-10 w-full bg-gray-100 rounded-xl"></div>
+                    <div class="h-10 w-full bg-gray-100 rounded-xl"></div>
                 </div>
                 
                 <!-- Fade out gradient at bottom -->
-                <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-50 dark:from-[#0a0a0a] to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
             </div>
 
         </main>
 
-        <footer class="w-full text-center py-8 text-sm text-gray-600">
+        <footer class="w-full text-center py-8 text-sm text-gray-500 font-medium">
             &copy; {{ date('Y') }} YC Content Planning. All rights reserved.
         </footer>
     </body>

@@ -121,7 +121,7 @@ class CalendarEventController extends Controller
             'content_title' => $validated['content_title'],
         ]);
 
-        return back()->with('success', 'Global Event added successfully!');
+        return redirect()->route('dashboard')->with('success', 'Global Event added successfully!');
     }
 
     public function adminProduct()
