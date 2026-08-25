@@ -13,19 +13,7 @@
 
     <div class="max-w-4xl mx-auto pb-12 pt-4 px-4 sm:px-6 lg:px-8">
         
-        <!-- Alerts -->
-        @if($errors->any())
-            <div class="bg-red-50 border border-red-200 p-5 mb-6 rounded-2xl shadow-xs" role="alert">
-                <div class="flex">
-                    <svg class="w-6 h-6 text-red-500 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <ul class="list-disc list-inside text-red-600 text-sm font-medium">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
+
 
         <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
             <!-- Header Section -->

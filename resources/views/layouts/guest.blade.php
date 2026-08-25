@@ -14,6 +14,7 @@
         <!-- Scripts -->
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
     <body class="font-sans antialiased bg-slate-50 text-gray-900">
@@ -37,5 +38,41 @@
                 {{ $slot }}
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if(session('status'))
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Notice',
+                        text: @json(session('status')),
+                        timer: 3500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        customClass: { popup: 'rounded-2xl shadow-xl' }
+                    });
+                @endif
+                @if(session('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: @json(session('success')),
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        customClass: { popup: 'rounded-2xl shadow-xl' }
+                    });
+                @endif
+                @if(session('error'))
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: @json(session('error')),
+                        confirmButtonColor: '#2563eb',
+                        customClass: { popup: 'rounded-2xl shadow-xl' }
+                    });
+                @endif
+            });
+        </script>
     </body>
 </html>

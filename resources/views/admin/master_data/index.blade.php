@@ -10,13 +10,7 @@
             activeTab: 'platform'
          }" class="max-w-7xl mx-auto pb-12 pt-4 px-4 sm:px-6 lg:px-8">
         
-        <!-- Alerts -->
-        @if(session('success'))
-            <div class="bg-emerald-50 border border-emerald-200 p-4 mb-6 rounded-2xl shadow-xs flex items-center" role="alert">
-                <svg class="w-5 h-5 text-emerald-600 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <p class="text-emerald-800 text-sm font-semibold">{{ session('success') }}</p>
-            </div>
-        @endif
+
 
         <div class="relative flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 p-8 rounded-3xl bg-white border border-gray-200/80 shadow-sm overflow-hidden">
             <div class="absolute -top-32 -right-32 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -64,7 +58,7 @@
                                             <div class="text-sm font-bold text-gray-900">{{ $item->value }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form action="{{ route('admin.master_data.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this entry?');" class="inline">
+                                            <form action="{{ route('admin.master_data.destroy', $item) }}" method="POST" class="inline delete-form" data-confirm="Are you sure you want to delete this entry?">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">

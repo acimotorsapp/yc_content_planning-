@@ -6,26 +6,7 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto pb-12">
-        <!-- Alerts -->
-        @if(session('success'))
-            <div class="bg-emerald-50 border border-emerald-200 p-4 mb-6 rounded-2xl shadow-xs flex items-center" role="alert">
-                <svg class="w-5 h-5 text-emerald-600 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <p class="text-emerald-800 text-sm font-semibold">{{ session('success') }}</p>
-            </div>
-        @endif
 
-        @if($errors->any())
-            <div class="bg-red-50 border border-red-200 p-5 mb-6 rounded-2xl shadow-xs" role="alert">
-                <div class="flex">
-                    <svg class="w-6 h-6 text-red-500 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <ul class="list-disc list-inside text-red-600 text-sm font-medium">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
 
         <!-- Dashboard Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">

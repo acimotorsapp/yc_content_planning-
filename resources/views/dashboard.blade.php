@@ -15,13 +15,7 @@
             </a>
         </div>
 
-        <!-- Alerts -->
-        @if(session('success'))
-            <div class="bg-emerald-50 border border-emerald-200 p-4 mb-6 rounded-2xl shadow-xs flex items-center" role="alert">
-                <svg class="w-5 h-5 text-emerald-600 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <p class="text-emerald-800 text-sm font-semibold">{{ session('success') }}</p>
-            </div>
-        @endif
+
 
         @if(auth()->user()->role === 'super_admin' && !isset($filter))
             @php
@@ -523,7 +517,7 @@
                                          <a href="{{ route('events.edit', $event) }}" class="inline-flex p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Edit Event">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </a>
-                                        <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                        <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline delete-form" data-confirm="Are you sure you want to delete this event?">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete Event">
