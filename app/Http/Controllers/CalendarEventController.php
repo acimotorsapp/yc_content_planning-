@@ -50,6 +50,17 @@ class CalendarEventController extends Controller
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
     }
 
+    public function myEvents(Request $request)
+    {
+        $events = $request->user()->events()->with('user')->orderBy('event_date', 'asc')->get();
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', [
+            'events' => $events,
+            'filter' => 'My Events',
+            'masterData' => $masterData
+        ]);
+    }
+
     public function create()
     {
         // For Super Admin to switch between teams, they might need a filter like they have on dashboard.

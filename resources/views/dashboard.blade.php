@@ -100,6 +100,7 @@
             $formattedEvents = $events->map(function($event) {
                 $title = $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no;
                 $userName = $event->user ? $event->user->name : 'Unknown User';
+                $shootDate = $event->shoot_date ? $event->shoot_date->format('M d, Y') : null;
                 
                 return [
                     'id' => $event->id,
@@ -109,7 +110,8 @@
                     'extendedProps' => [
                         'userName' => $userName,
                         'aipePillar' => $event->aipe_pillar ?? 'N/A',
-                        'teamType' => $event->team_type
+                        'teamType' => $event->team_type,
+                        'shootDate' => $shootDate
                     ]
                 ];
             })->values();
@@ -198,6 +200,16 @@
                             </span>`;
                         }
 
+                        var shootHtml = '';
+                        if (arg.event.extendedProps.shootDate) {
+                            shootHtml = `
+                                <div class="mt-1 px-2 py-0.5 rounded-md bg-rose-500 text-white font-extrabold text-[9px] flex items-center gap-1 shadow-xs tracking-tight">
+                                    <svg class="w-2.5 h-2.5 inline-block shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <span>Shoot: ${arg.event.extendedProps.shootDate}</span>
+                                </div>
+                            `;
+                        }
+
                         var html = `
                             <div class="px-2.5 py-2 w-full border rounded-xl shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.4;">
                                 <div class="font-extrabold text-[13px] leading-tight" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
@@ -208,6 +220,7 @@
                                     ${arg.event.extendedProps.userName}
                                 </div>
                                 ${pillarHtml}
+                                ${shootHtml}
                             </div>
                         `;
 
@@ -458,6 +471,12 @@
                             <td class="px-8 py-5 whitespace-nowrap">
                                 <div class="text-sm font-bold text-gray-900">{{ $event->event_date->format('M d, Y') }}</div>
                                 <div class="text-xs font-semibold text-blue-600 mt-0.5 uppercase tracking-wider">{{ $event->event_date->format('l') }}</div>
+                                @if($event->shoot_date)
+                                    <div class="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200 shadow-xs">
+                                        <svg class="w-3 h-3 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                        <span>Shoot: {{ $event->shoot_date->format('M d, Y') }}</span>
+                                    </div>
+                                @endif
                             </td>
                             
                             <!-- Team Column -->
@@ -546,6 +565,12 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-bold text-gray-900">{{ $event->event_date->format('M d, Y') }}</div>
                                 <div class="text-[11px] font-medium text-gray-500 mt-0.5">{{ $event->event_date->format('l') }}</div>
+                                @if($event->shoot_date)
+                                    <div class="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200 shadow-xs">
+                                        <svg class="w-3 h-3 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                        <span>Shoot: {{ $event->shoot_date->format('M d, Y') }}</span>
+                                    </div>
+                                @endif
                             </td>
                             
                             <!-- Team Column -->
