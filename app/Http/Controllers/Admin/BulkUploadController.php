@@ -62,6 +62,7 @@ class BulkUploadController extends Controller
         try {
             $spreadsheet = IOFactory::load($filePath);
             $importedCount = 0;
+            $duplicatesCount = 0;
             $skippedCount = 0;
             $errors = [];
 
@@ -76,12 +77,14 @@ class BulkUploadController extends Controller
                     if (str_contains($lowerName, 'product')) {
                         $res = $this->importProductSheet($sheet, $targetYear);
                         $importedCount += $res['imported'];
+                        $duplicatesCount += $res['duplicates'] ?? 0;
                         $skippedCount += $res['skipped'];
                         $errors = array_merge($errors, $res['errors']);
                         $processedAny = true;
                     } elseif (str_contains($lowerName, 'digital')) {
                         $res = $this->importDigitalSheet($sheet, $targetYear);
                         $importedCount += $res['imported'];
+                        $duplicatesCount += $res['duplicates'] ?? 0;
                         $skippedCount += $res['skipped'];
                         $errors = array_merge($errors, $res['errors']);
                         $processedAny = true;
@@ -95,11 +98,13 @@ class BulkUploadController extends Controller
                     if ($this->isProductHeader($headers)) {
                         $res = $this->importProductSheet($activeSheet, $targetYear);
                         $importedCount += $res['imported'];
+                        $duplicatesCount += $res['duplicates'] ?? 0;
                         $skippedCount += $res['skipped'];
                         $errors = array_merge($errors, $res['errors']);
                     } else {
                         $res = $this->importDigitalSheet($activeSheet, $targetYear);
                         $importedCount += $res['imported'];
+                        $duplicatesCount += $res['duplicates'] ?? 0;
                         $skippedCount += $res['skipped'];
                         $errors = array_merge($errors, $res['errors']);
                     }
@@ -108,23 +113,29 @@ class BulkUploadController extends Controller
                 $sheet = $spreadsheet->getActiveSheet();
                 $res = $this->importProductSheet($sheet, $targetYear);
                 $importedCount += $res['imported'];
+                $duplicatesCount += $res['duplicates'] ?? 0;
                 $skippedCount += $res['skipped'];
                 $errors = array_merge($errors, $res['errors']);
             } elseif ($teamType === 'digital_team') {
                 $sheet = $spreadsheet->getActiveSheet();
                 $res = $this->importDigitalSheet($sheet, $targetYear);
                 $importedCount += $res['imported'];
+                $duplicatesCount += $res['duplicates'] ?? 0;
                 $skippedCount += $res['skipped'];
                 $errors = array_merge($errors, $res['errors']);
             } elseif ($teamType === 'global_team') {
                 $sheet = $spreadsheet->getActiveSheet();
                 $res = $this->importGlobalSheet($sheet, $targetYear);
                 $importedCount += $res['imported'];
+                $duplicatesCount += $res['duplicates'] ?? 0;
                 $skippedCount += $res['skipped'];
                 $errors = array_merge($errors, $res['errors']);
             }
 
-            $message = "Successfully uploaded and imported {$importedCount} events.";
+            $message = "Successfully uploaded and imported {$importedCount} new events.";
+            if ($duplicatesCount > 0) {
+                $message .= " {$duplicatesCount} duplicate events were skipped (already exist in database).";
+            }
             if ($skippedCount > 0) {
                 $message .= " {$skippedCount} rows were skipped (empty or unparseable).";
             }
@@ -185,6 +196,7 @@ class BulkUploadController extends Controller
             }
 
             $imported = 0;
+            $duplicates = 0;
             $skipped = 0;
             $validCategories = ['platform', 'format', 'aipe_pillar', 'product'];
 
@@ -213,15 +225,29 @@ class BulkUploadController extends Controller
                     continue;
                 }
 
-                MasterData::firstOrCreate(
-                    ['category' => $category, 'value' => $valueRaw],
-                    ['is_active' => true]
-                );
+                $exists = MasterData::where('category', $category)->where('value', $valueRaw)->exists();
+                if ($exists) {
+                    $duplicates++;
+                    continue;
+                }
+
+                MasterData::create([
+                    'category' => $category,
+                    'value' => $valueRaw,
+                    'is_active' => true,
+                ]);
                 $imported++;
             }
 
-            return redirect()->route('admin.bulk_upload.index')
-                ->with('success', "Successfully imported {$imported} Master Data entries ({$skipped} skipped).");
+            $message = "Successfully imported {$imported} new Master Data entries.";
+            if ($duplicates > 0) {
+                $message .= " {$duplicates} duplicate entries were skipped (already exist).";
+            }
+            if ($skipped > 0) {
+                $message .= " {$skipped} invalid/empty rows skipped.";
+            }
+
+            return redirect()->route('admin.bulk_upload.index')->with('success', $message);
 
         } catch (\Exception $e) {
             return redirect()->route('admin.bulk_upload.index')
@@ -373,13 +399,14 @@ class BulkUploadController extends Controller
     {
         $rows = $sheet->toArray(null, true, true, true);
         if (empty($rows)) {
-            return ['imported' => 0, 'skipped' => 0, 'errors' => []];
+            return ['imported' => 0, 'duplicates' => 0, 'skipped' => 0, 'errors' => []];
         }
 
         $headerRow = array_shift($rows);
         $colMap = $this->mapColumns($headerRow);
 
         $imported = 0;
+        $duplicates = 0;
         $skipped = 0;
         $errors = [];
 
@@ -430,6 +457,21 @@ class BulkUploadController extends Controller
                 $contentTitle = $product ? "Product: {$product}" : 'Product Content (' . $eventDate->format('d M') . ')';
             }
 
+            // Check if this event already exists in database (avoid duplication)
+            $existsQuery = CalendarEvent::where('team_type', 'product_team')
+                ->where('event_date', $eventDate->format('Y-m-d'))
+                ->where(function ($q) use ($contentTitle, $product) {
+                    $q->where('content_title', $contentTitle);
+                    if (!empty($product)) {
+                        $q->orWhere('product', $product);
+                    }
+                });
+
+            if ($existsQuery->exists()) {
+                $duplicates++;
+                continue;
+            }
+
             $shootDateRaw = $row[$colMap['shoot_date'] ?? ''] ?? null;
             $shootDate = $this->parseDateValue($shootDateRaw, $targetYear);
 
@@ -453,7 +495,7 @@ class BulkUploadController extends Controller
             $imported++;
         }
 
-        return ['imported' => $imported, 'skipped' => $skipped, 'errors' => $errors];
+        return ['imported' => $imported, 'duplicates' => $duplicates, 'skipped' => $skipped, 'errors' => $errors];
     }
 
     /**
@@ -463,13 +505,14 @@ class BulkUploadController extends Controller
     {
         $rows = $sheet->toArray(null, true, true, true);
         if (empty($rows)) {
-            return ['imported' => 0, 'skipped' => 0, 'errors' => []];
+            return ['imported' => 0, 'duplicates' => 0, 'skipped' => 0, 'errors' => []];
         }
 
         $headerRow = array_shift($rows);
         $colMap = $this->mapColumns($headerRow);
 
         $imported = 0;
+        $duplicates = 0;
         $skipped = 0;
         $errors = [];
 
@@ -531,6 +574,24 @@ class BulkUploadController extends Controller
 
             $contentTitle = !empty($productFocus) ? "Post #{$postNo}: {$productFocus}" : ($postNo ? "Post #{$postNo}" : "Digital Content");
 
+            // Check if this digital event already exists in database
+            $existsQuery = CalendarEvent::where('team_type', 'digital_team')
+                ->where('event_date', $eventDate->format('Y-m-d'))
+                ->where(function ($q) use ($postNo, $contentTitle, $productFocus) {
+                    if (!empty($postNo)) {
+                        $q->where('post_no', $postNo);
+                    }
+                    $q->orWhere('content_title', $contentTitle);
+                    if (!empty($productFocus)) {
+                        $q->orWhere('product_focus', $productFocus);
+                    }
+                });
+
+            if ($existsQuery->exists()) {
+                $duplicates++;
+                continue;
+            }
+
             CalendarEvent::create([
                 'user_id' => $user->id,
                 'team_type' => 'digital_team',
@@ -549,7 +610,7 @@ class BulkUploadController extends Controller
             $imported++;
         }
 
-        return ['imported' => $imported, 'skipped' => $skipped, 'errors' => $errors];
+        return ['imported' => $imported, 'duplicates' => $duplicates, 'skipped' => $skipped, 'errors' => $errors];
     }
 
     /**
@@ -559,13 +620,14 @@ class BulkUploadController extends Controller
     {
         $rows = $sheet->toArray(null, true, true, true);
         if (empty($rows)) {
-            return ['imported' => 0, 'skipped' => 0, 'errors' => []];
+            return ['imported' => 0, 'duplicates' => 0, 'skipped' => 0, 'errors' => []];
         }
 
         $headerRow = array_shift($rows);
         $colMap = $this->mapColumns($headerRow);
 
         $imported = 0;
+        $duplicates = 0;
         $skipped = 0;
         $errors = [];
         $user = auth()->user();
@@ -587,6 +649,16 @@ class BulkUploadController extends Controller
                 continue;
             }
 
+            $exists = CalendarEvent::where('team_type', 'global_team')
+                ->where('event_date', $eventDate->format('Y-m-d'))
+                ->where('content_title', $title)
+                ->exists();
+
+            if ($exists) {
+                $duplicates++;
+                continue;
+            }
+
             CalendarEvent::create([
                 'user_id' => $user->id,
                 'team_type' => 'global_team',
@@ -598,7 +670,7 @@ class BulkUploadController extends Controller
             $imported++;
         }
 
-        return ['imported' => $imported, 'skipped' => $skipped, 'errors' => $errors];
+        return ['imported' => $imported, 'duplicates' => $duplicates, 'skipped' => $skipped, 'errors' => $errors];
     }
 
     /**
