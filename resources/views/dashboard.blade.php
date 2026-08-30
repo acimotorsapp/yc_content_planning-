@@ -5,7 +5,21 @@
         </h2>
     </x-slot>
 
-    <div class="max-w-7xl mx-auto pb-12">
+    <div x-data="{ showGlobalModal: false }" class="max-w-7xl mx-auto pb-12">
+
+        @if(isset($filter) && $filter === 'Global Events')
+        <!-- Global Events Top Header & Action -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 animate-fade-in-up">
+            <div>
+                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Global Events & Observances</h1>
+                <p class="text-gray-500 text-sm mt-1 font-medium">Manage worldwide events and special company-wide observances.</p>
+            </div>
+            <button type="button" @click="showGlobalModal = true" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all shadow-md shadow-amber-500/20 hover:shadow-lg transform hover:-translate-y-0.5 group cursor-pointer">
+                <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Add Global Event
+            </button>
+        </div>
+        @endif
 
         @if(!isset($filter))
         <!-- Top Actions -->
@@ -71,6 +85,7 @@
             </div>
         @endif
 
+        @if(!isset($filter) || $filter !== 'Global Events')
         <!-- Dashboard Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
             <div>
@@ -87,6 +102,7 @@
                 @endif
             </div>
         </div>
+        @endif
 
         <!-- FullCalendar Container -->
         <div class="bg-white border border-gray-200 rounded-3xl shadow-sm p-6 sm:p-8 mb-12 overflow-hidden animate-fade-in-up" style="animation-delay: 0.3s;">
@@ -667,7 +683,7 @@
         @endphp
 
         <!-- Global Calendar & Observances from Database -->
-        @if(!isset($filter) && $globalEventsRaw->count() > 0)
+        @if((!isset($filter) || $filter === 'Global Events') && $globalEventsRaw->count() > 0)
         <div class="mt-8">
             <h2 class="text-lg font-bold text-gray-900 mb-4 tracking-tight">Global Calendar & Observances</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -701,6 +717,68 @@
             </div>
         </div>
         @endif
+
+        <!-- Global Event Modal -->
+        <div x-show="showGlobalModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div x-show="showGlobalModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 bg-gray-900/40 backdrop-blur-xs transition-opacity" @click="showGlobalModal = false"></div>
+
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div x-show="showGlobalModal"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
+                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
+                     class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl border border-gray-200">
+                    
+                    <div class="bg-amber-50/70 px-8 py-6 border-b border-gray-100 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 border border-amber-200 shadow-xs">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 tracking-tight">Add Global Event</h3>
+                                <p class="text-xs text-gray-500 font-medium">Create a company-wide or observance event.</p>
+                            </div>
+                        </div>
+                        <button @click="showGlobalModal = false" type="button" class="text-gray-400 hover:text-gray-700 bg-white hover:bg-gray-100 p-2 rounded-full border border-gray-200 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    
+                    <div class="p-8 bg-white">
+                        <form action="{{ route('events.global.store') }}" method="POST" class="space-y-5">
+                            @csrf
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
+                                <input type="date" name="event_date" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Title*</label>
+                                <input type="text" name="content_title" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs placeholder-gray-400 font-medium" placeholder="e.g. World Tourism Day">
+                            </div>
+                            
+                            <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-100">
+                                <button type="button" @click="showGlobalModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-amber-600 border border-transparent rounded-xl hover:bg-amber-700 shadow-md shadow-amber-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                                    Create Global Event
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </x-app-layout>
