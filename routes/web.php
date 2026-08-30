@@ -32,6 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/master-data', [\App\Http\Controllers\Admin\MasterDataController::class, 'index'])->name('admin.master_data.index');
     Route::post('/admin/master-data', [\App\Http\Controllers\Admin\MasterDataController::class, 'store'])->name('admin.master_data.store');
     Route::delete('/admin/master-data/{masterData}', [\App\Http\Controllers\Admin\MasterDataController::class, 'destroy'])->name('admin.master_data.destroy');
+
+    // Bulk Upload Route
+    Route::get('/admin/bulk-upload', [\App\Http\Controllers\Admin\BulkUploadController::class, 'index'])->name('admin.bulk_upload.index');
+    Route::post('/admin/bulk-upload/events', [\App\Http\Controllers\Admin\BulkUploadController::class, 'uploadEvents'])->name('admin.bulk_upload.events');
+    Route::post('/admin/bulk-upload/master-data', [\App\Http\Controllers\Admin\BulkUploadController::class, 'uploadMasterData'])->name('admin.bulk_upload.master_data');
+    Route::get('/admin/bulk-upload/sample/{type}', [\App\Http\Controllers\Admin\BulkUploadController::class, 'downloadSample'])->name('admin.bulk_upload.sample');
 });
 
 Route::middleware('auth')->group(function () {
