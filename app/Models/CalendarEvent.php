@@ -25,10 +25,24 @@ class CalendarEvent extends Model
         'product_focus',
     ];
 
+    protected $attributes = [
+        'boosting_budget' => '0',
+    ];
+
     protected $casts = [
         'event_date' => 'date',
         'shoot_date' => 'date',
     ];
+
+    public function setBoostingBudgetAttribute($value)
+    {
+        $this->attributes['boosting_budget'] = (is_null($value) || trim((string)$value) === '') ? '0' : trim((string)$value);
+    }
+
+    public function getBoostingBudgetAttribute($value)
+    {
+        return (is_null($value) || trim((string)$value) === '') ? '0' : $value;
+    }
 
     public function user()
     {

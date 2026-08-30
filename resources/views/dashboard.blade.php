@@ -127,7 +127,8 @@
                         'userName' => $userName,
                         'aipePillar' => $event->aipe_pillar ?? 'N/A',
                         'teamType' => $event->team_type,
-                        'shootDate' => $shootDate
+                        'shootDate' => $shootDate,
+                        'boostingBudget' => $event->boosting_budget ?? '0'
                     ]
                 ];
             })->values();
@@ -226,6 +227,17 @@
                             `;
                         }
 
+                        var budgetHtml = '';
+                        if (teamType !== 'global_team') {
+                            var bVal = arg.event.extendedProps.boostingBudget || '0';
+                            budgetHtml = `
+                                <div class="mt-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[9px] flex items-center justify-between shadow-2xs">
+                                    <span>Budget:</span>
+                                    <span class="font-extrabold text-emerald-700">৳ ${bVal}</span>
+                                </div>
+                            `;
+                        }
+
                         var html = `
                             <div class="px-2.5 py-2 w-full border rounded-xl shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.4;">
                                 <div class="font-extrabold text-[13px] leading-tight" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
@@ -237,6 +249,7 @@
                                 </div>
                                 ${pillarHtml}
                                 ${shootHtml}
+                                ${budgetHtml}
                             </div>
                         `;
 

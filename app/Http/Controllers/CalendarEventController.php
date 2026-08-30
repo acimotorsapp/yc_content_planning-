@@ -25,6 +25,7 @@ class CalendarEventController extends Controller
         ]);
 
         $validated['team_type'] = 'product_team';
+        $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
         $request->user()->events()->create($validated);
 
         return redirect()->route('dashboard')->with('success', 'Product Team Event added successfully!');
@@ -45,6 +46,7 @@ class CalendarEventController extends Controller
         ]);
 
         $validated['team_type'] = 'digital_team';
+        $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
         $request->user()->events()->create($validated);
 
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
@@ -109,6 +111,7 @@ class CalendarEventController extends Controller
             'remarks' => 'nullable|string',
         ]);
 
+        $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
         $event->update($validated);
 
         return redirect()->route('dashboard')->with('success', 'Event updated successfully!');

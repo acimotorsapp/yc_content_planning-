@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('content_objective')->nullable();
             $table->string('format')->nullable();
             $table->text('remarks')->nullable();
-            $table->string('boosting_budget')->nullable();
+            $table->string('boosting_budget')->default('0')->nullable();
             $table->string('drive_link')->nullable(); 
 
             // Product Team Fields

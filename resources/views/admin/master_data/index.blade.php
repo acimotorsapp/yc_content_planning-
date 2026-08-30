@@ -224,6 +224,7 @@
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Team</th>
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Product / Focus</th>
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Category Details</th>
+                                <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Boosting Budget</th>
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                             </tr>
                         </thead>
@@ -286,6 +287,13 @@
                                                 </span>
                                             @endif
                                         </div>
+                                    </td>
+
+                                    <!-- Boosting Budget -->
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                            ৳ {{ $event->boosting_budget ?? '0' }}
+                                        </span>
                                     </td>
 
                                     <!-- Actions -->

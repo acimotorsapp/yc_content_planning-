@@ -122,8 +122,8 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Budget</label>
-                                <input type="text" name="boosting_budget" value="{{ old('boosting_budget', $event->boosting_budget) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Boosting Budget</label>
+                                <input type="text" name="boosting_budget" value="{{ old('boosting_budget', $event->boosting_budget ?? '0') }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Drive Link</label>
@@ -199,8 +199,8 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Budget</label>
-                                <input type="text" name="boosting_budget" value="{{ old('boosting_budget', $event->boosting_budget) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Boosting Budget</label>
+                                <input type="text" name="boosting_budget" value="{{ old('boosting_budget', $event->boosting_budget ?? '0') }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Remarks</label>
