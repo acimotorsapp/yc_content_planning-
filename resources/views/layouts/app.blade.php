@@ -235,6 +235,50 @@
                         });
                     }
                 });
+
+                // Global AJAX Pagination
+                document.addEventListener('click', function(e) {
+                    let link = e.target.closest('nav[role="navigation"] a') || e.target.closest('.pagination a');
+                    if (!link) return;
+
+                    let container = link.closest('.bg-white.shadow-sm');
+                    if (!container) return;
+                    
+                    e.preventDefault();
+                    let url = link.href;
+                    
+                    // Add loading state
+                    container.style.opacity = '0.6';
+                    container.style.pointerEvents = 'none';
+
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        let parser = new DOMParser();
+                        let doc = parser.parseFromString(html, 'text/html');
+                        
+                        let currentContainers = Array.from(document.querySelectorAll('.bg-white.shadow-sm'));
+                        let index = currentContainers.indexOf(container);
+                        
+                        let newContainers = Array.from(doc.querySelectorAll('.bg-white.shadow-sm'));
+                        
+                        if (index !== -1 && newContainers[index]) {
+                            container.innerHTML = newContainers[index].innerHTML;
+                            container.style.opacity = '1';
+                            container.style.pointerEvents = 'auto';
+                            window.history.pushState({}, '', url);
+                        } else {
+                            window.location.href = url;
+                        }
+                    })
+                    .catch(() => {
+                        window.location.href = url;
+                    });
+                });
             });
         </script>
     </body>
