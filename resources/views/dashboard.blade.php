@@ -1,29 +1,34 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-2xl text-gray-900 leading-tight">
+        <h2 class="font-bold text-lg sm:text-2xl text-gray-900 leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
     @php
-        $bookedDates = $bookedDates ?? (\App\Models\CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all());
+        $dateCounts = $dateCounts ?? (\App\Models\CalendarEvent::selectRaw('event_date, count(*) as count')
+            ->groupBy('event_date')
+            ->pluck('count', 'event_date')
+            ->mapWithKeys(fn($count, $date) => [\Carbon\Carbon::parse($date)->format('Y-m-d') => (int)$count])
+            ->all());
     @endphp
 
     <div x-data="{ 
         showGlobalModal: false, 
         globalDate: '', 
-        bookedDates: {{ json_encode($bookedDates) }}, 
-        isBooked(d) { return d && this.bookedDates.includes(d); } 
+        dateCounts: {{ json_encode($dateCounts) }}, 
+        getCount(d) { return (d && this.dateCounts[d]) ? Number(this.dateCounts[d]) : 0; },
+        isFullyBooked(d) { return this.getCount(d) >= 6; } 
     }" class="max-w-7xl mx-auto pb-12">
 
         @if(isset($filter) && $filter === 'Global Events')
         <!-- Global Events Top Header & Action -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 animate-fade-in-up">
-            <div>
-                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Global Events & Observances</h1>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Manage worldwide events and special company-wide observances.</p>
+        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-4 animate-fade-in-up">
+            <div class="min-w-0">
+                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">Global Events &amp; Observances</h1>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1 font-medium">Manage worldwide events and special company-wide observances.</p>
             </div>
-            <button type="button" @click="showGlobalModal = true" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all shadow-md shadow-amber-500/20 hover:shadow-lg transform hover:-translate-y-0.5 group cursor-pointer">
+            <button type="button" @click="showGlobalModal = true" class="w-full sm:w-auto shrink-0 inline-flex items-center justify-center px-5 sm:px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all shadow-md shadow-amber-500/20 hover:shadow-lg sm:transform sm:hover:-translate-y-0.5 group cursor-pointer">
                 <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add Global Event
             </button>
@@ -32,8 +37,8 @@
 
         @if(!isset($filter))
         <!-- Top Actions -->
-        <div class="flex justify-end mb-6 animate-fade-in-up">
-            <a href="{{ route('events.create', ['action' => 'create']) }}" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/20 hover:shadow-lg transform hover:-translate-y-0.5 group">
+        <div class="flex justify-stretch sm:justify-end mb-4 sm:mb-6 animate-fade-in-up">
+            <a href="{{ route('events.create', ['action' => 'create']) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-5 sm:px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/20 hover:shadow-lg sm:transform sm:hover:-translate-y-0.5 group">
                 <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add New Event
             </a>
@@ -49,45 +54,45 @@
                 $digital = $totalCount->where('team_type', 'digital_team')->count();
                 $product = $totalCount->where('team_type', 'product_team')->count();
             @endphp
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
                 <!-- Total Events -->
-                <div class="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group hover:-translate-y-0.5 transition-all duration-300">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="absolute -right-12 -top-12 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Total Scheduled</p>
-                            <h3 class="text-4xl font-black text-gray-900">{{ $total }}</h3>
+                    <div class="relative z-10 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest mb-0.5 sm:mb-1">Total Scheduled</p>
+                            <h3 class="text-3xl sm:text-4xl font-black text-gray-900">{{ $total }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-xs">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-xs">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Digital Team -->
-                <div class="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group hover:-translate-y-0.5 transition-all duration-300">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="absolute -right-12 -top-12 w-40 h-40 bg-teal-500/10 rounded-full blur-3xl group-hover:bg-teal-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Digital Team</p>
-                            <h3 class="text-4xl font-black text-teal-600">{{ $digital }}</h3>
+                    <div class="relative z-10 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest mb-0.5 sm:mb-1">Digital Team</p>
+                            <h3 class="text-3xl sm:text-4xl font-black text-teal-600">{{ $digital }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 border border-teal-100 shadow-xs">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 border border-teal-100 shadow-xs">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product Team -->
-                <div class="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group hover:-translate-y-0.5 transition-all duration-300">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Product Team</p>
-                            <h3 class="text-4xl font-black text-blue-600">{{ $product }}</h3>
+                    <div class="relative z-10 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest mb-0.5 sm:mb-1">Product Team</p>
+                            <h3 class="text-3xl sm:text-4xl font-black text-blue-600">{{ $product }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         </div>
                     </div>
                 </div>
@@ -96,10 +101,10 @@
 
         @if(!isset($filter) || $filter !== 'Global Events')
         <!-- Dashboard Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
-            <div>
-                <h1 class="text-3xl font-black text-gray-900 tracking-tight">{{ $filter ?? 'Schedule Overview' }}</h1>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Manage and track your upcoming content pipeline.</p>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 sm:mb-8 gap-3 sm:gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="min-w-0">
+                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">{{ $filter ?? 'Schedule Overview' }}</h1>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1 font-medium">Manage and track your upcoming content pipeline.</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -114,7 +119,14 @@
         @endif
 
         <!-- FullCalendar Container -->
-        <div class="bg-white border border-gray-200 rounded-3xl shadow-sm p-6 sm:p-8 mb-12 overflow-hidden animate-fade-in-up" style="animation-delay: 0.3s;">
+        <div class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm p-3 sm:p-6 lg:p-8 mb-6 sm:mb-12 overflow-hidden animate-fade-in-up" style="animation-delay: 0.3s;">
+            <!-- Colour legend (most useful on small screens where badges are compact) -->
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3 sm:mb-4 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 ring-1 ring-amber-200"></span>Product</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400 ring-1 ring-purple-200"></span>Digital</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 ring-1 ring-rose-200"></span>Global</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-amber-400 to-purple-400 ring-1 ring-gray-200"></span>Mixed</span>
+            </div>
             <div id="calendar"></div>
         </div>
 
@@ -165,7 +177,9 @@
                 function applyDayCellClass(el, dateStr) {
                     if (!dateStr || !dateTeamMap[dateStr]) return;
                     var teams = dateTeamMap[dateStr];
-                    if (teams.has('digital_team')) {
+                    if (teams.has('product_team') && teams.has('digital_team')) {
+                        el.classList.add('fc-has-mixed-event-day');
+                    } else if (teams.has('digital_team')) {
                         el.classList.add('fc-has-digital-event-day');
                     } else if (teams.has('product_team')) {
                         el.classList.add('fc-has-product-event-day');
@@ -174,15 +188,44 @@
                     }
                 }
 
+                // --- Responsive breakpoints -------------------------------------------------
+                function isSmall()  { return window.innerWidth < 768; }   // phones
+                function isMedium() { return window.innerWidth < 1024; }  // small tablets
+
+                function toolbarFor(small) {
+                    return small
+                        ? { left: 'prev,next', center: 'title', right: 'today' }
+                        : { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' };
+                }
+                function footerFor(small) {
+                    return small ? { center: 'dayGridMonth,listMonth' } : false;
+                }
+
+                var startedSmall = isSmall();
+
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
+                    initialView: startedSmall ? 'listMonth' : 'dayGridMonth',
                     height: 'auto',
-                    dayMaxEvents: 1,
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    expandRows: true,
+                    handleWindowResize: true,
+                    dayMaxEvents: startedSmall ? 2 : 6,
+                    headerToolbar: toolbarFor(startedSmall),
+                    footerToolbar: footerFor(startedSmall),
+                    titleFormat: startedSmall
+                        ? { year: 'numeric', month: 'short' }
+                        : { year: 'numeric', month: 'long' },
+                    dayHeaderFormat: { weekday: startedSmall ? 'narrow' : 'short' },
+                    buttonText: {
+                        today: 'Today',
+                        month: 'Month',
+                        week: 'Week',
+                        day: 'Day',
+                        list: 'List'
                     },
+                    views: {
+                        listMonth: { buttonText: 'List', noEventsContent: 'No events scheduled this month' }
+                    },
+                    noEventsContent: 'No events scheduled this month',
                     events: eventsData,
                     dayCellDidMount: function(arg) {
                         var dateStr = arg.el.getAttribute('data-date');
@@ -205,9 +248,66 @@
                     },
                     eventContent: function(arg) {
                         var teamType = arg.event.extendedProps.teamType;
+                        var props = arg.event.extendedProps;
+                        var viewType = arg.view.type;
+
+                        function esc(v) {
+                            return String(v == null ? '' : v)
+                                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                        }
+
+                        var dotColor = teamType === 'digital_team' ? 'bg-purple-500'
+                                     : teamType === 'product_team' ? 'bg-amber-500'
+                                     : teamType === 'global_team'  ? 'bg-rose-500'
+                                     : 'bg-blue-500';
+
+                        var chipClass = teamType === 'digital_team' ? 'bg-purple-50 text-purple-900 border-purple-200'
+                                      : teamType === 'product_team' ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                      : teamType === 'global_team'  ? 'bg-rose-50 text-rose-900 border-rose-200'
+                                      : 'bg-blue-50 text-blue-900 border-blue-200';
+
+                        var teamLabel = teamType === 'digital_team' ? 'Digital'
+                                      : teamType === 'product_team' ? 'Product'
+                                      : teamType === 'global_team'  ? 'Global'
+                                      : 'Event';
+
+                        // List view — the default on phones: one readable, tappable row per event
+                        if (viewType.indexOf('list') === 0) {
+                            var meta = ['<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ' + chipClass + '">' + teamLabel + '</span>'];
+                            if (props.userName) {
+                                meta.push('<span class="text-[11px] font-semibold text-gray-500">' + esc(props.userName) + '</span>');
+                            }
+                            if (props.aipePillar && props.aipePillar !== 'N/A') {
+                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-gray-100 text-gray-700 border border-gray-200">' + esc(props.aipePillar) + '</span>');
+                            }
+                            if (props.shootDate) {
+                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">Shoot: ' + esc(props.shootDate) + '</span>');
+                            }
+                            if (teamType !== 'global_team') {
+                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">৳ ' + esc(props.boostingBudget || '0') + '</span>');
+                            }
+                            return { html:
+                                '<div class="py-1 min-w-0">' +
+                                    '<div class="font-extrabold text-[13px] text-gray-900 leading-snug" style="word-break: break-word;">' + esc(arg.event.title) + '</div>' +
+                                    '<div class="flex flex-wrap items-center gap-1.5 mt-1">' + meta.join('') + '</div>' +
+                                '</div>'
+                            };
+                        }
+
+                        // Month grid on phones: compact chip so all 7 columns stay legible
+                        if (isSmall()) {
+                            return { html:
+                                '<div class="flex items-center gap-1 px-1 py-0.5 rounded-md border ' + chipClass + '" style="white-space:nowrap; overflow:hidden;">' +
+                                    '<span class="w-1.5 h-1.5 rounded-full shrink-0 ' + dotColor + '"></span>' +
+                                    '<span class="text-[9px] font-bold leading-tight" style="overflow:hidden; text-overflow:ellipsis;">' + esc(arg.event.title) + '</span>' +
+                                '</div>'
+                            };
+                        }
+
                         var teamClass = '';
                         var teamBadge = '';
-                        
+
                         if (teamType === 'digital_team') {
                             teamClass = 'bg-purple-50 text-purple-900 border-purple-200 shadow-xs';
                             teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-200">Digital</span>';
@@ -280,6 +380,35 @@
                     }
                 });
                 calendar.render();
+
+                // Re-shape the calendar when the viewport crosses the phone breakpoint
+                var wasSmall = startedSmall;
+                var resizeTimer = null;
+
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(function() {
+                        var nowSmall = isSmall();
+                        if (nowSmall === wasSmall) return;
+                        wasSmall = nowSmall;
+
+                        calendar.setOption('headerToolbar', toolbarFor(nowSmall));
+                        calendar.setOption('footerToolbar', footerFor(nowSmall));
+                        calendar.setOption('dayMaxEvents', nowSmall ? 2 : 6);
+                        calendar.setOption('dayHeaderFormat', { weekday: nowSmall ? 'narrow' : 'short' });
+                        calendar.setOption('titleFormat', nowSmall
+                            ? { year: 'numeric', month: 'short' }
+                            : { year: 'numeric', month: 'long' });
+
+                        var current = calendar.view.type;
+                        if (nowSmall && current === 'dayGridMonth') {
+                            calendar.changeView('listMonth');
+                        } else if (!nowSmall && (current === 'listMonth' || current.indexOf('list') === 0)) {
+                            calendar.changeView('dayGridMonth');
+                        }
+                        calendar.updateSize();
+                    }, 180);
+                });
             });
         </script>
 
@@ -480,6 +609,122 @@
             .fc-day-past:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day) {
                 opacity: 0.8;
             }
+
+            /* ---------- List view (the default on phones) ---------- */
+            .fc .fc-list {
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 1rem;
+                overflow: hidden;
+                background: #ffffff;
+            }
+            .fc .fc-list-day-cushion {
+                background-color: #f8fafc !important;
+                padding: 10px 14px !important;
+            }
+            .fc .fc-list-day-text,
+            .fc .fc-list-day-side-text {
+                font-weight: 800;
+                font-size: 0.78rem;
+                color: #0f172a;
+                text-decoration: none;
+            }
+            .fc .fc-list-event { cursor: pointer; }
+            .fc .fc-list-event:hover td { background-color: #f8fafc !important; }
+            .fc .fc-list-event-time { display: none; }
+            .fc .fc-list-event-graphic { padding-left: 14px !important; padding-right: 6px !important; vertical-align: top; }
+            .fc .fc-list-event-dot { border-width: 4px; margin-top: 8px; }
+            .fc .fc-list-event-title { padding: 8px 14px 8px 4px !important; }
+            .fc .fc-list-empty {
+                background: #ffffff;
+                color: #64748b;
+                font-weight: 600;
+                padding: 2.5rem 1rem;
+            }
+
+            /* The mini popover shown by the "+N more" link */
+            .fc .fc-popover {
+                max-width: 92vw;
+                border-radius: 1rem;
+                border: 1px solid #e2e8f0;
+                box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.25);
+                z-index: 45;
+            }
+            .fc .fc-popover-header { border-radius: 1rem 1rem 0 0; background: #f8fafc; font-weight: 800; }
+            .fc .fc-popover-body { max-height: 55vh; overflow-y: auto; }
+
+            /* ---------- Tablet ---------- */
+            @media (max-width: 1023px) {
+                .fc .fc-toolbar-title { font-size: 1.2rem; }
+                .fc .fc-button-primary { padding: 0.45rem 0.85rem !important; font-size: 0.8rem !important; }
+                .fc-daygrid-day-frame { min-height: 92px; }
+            }
+
+            /* ---------- Phones ---------- */
+            @media (max-width: 767px) {
+                .fc .fc-toolbar.fc-header-toolbar {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 0.4rem;
+                    margin-bottom: 0.75rem !important;
+                }
+                .fc .fc-toolbar.fc-footer-toolbar {
+                    margin-top: 0.75rem !important;
+                    justify-content: center;
+                }
+                .fc .fc-toolbar-chunk { display: flex; align-items: center; min-width: 0; }
+                .fc .fc-toolbar-title {
+                    font-size: 0.98rem;
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .fc .fc-button-primary {
+                    padding: 0.4rem 0.6rem !important;
+                    font-size: 0.72rem !important;
+                    margin-left: 0.2rem !important;
+                    border-radius: 0.6rem !important;
+                }
+                .fc .fc-button-primary:hover { transform: none; }
+                .fc .fc-icon { font-size: 1rem; }
+
+                .fc .fc-scrollgrid { border-radius: 0.85rem !important; }
+                .fc-daygrid-day-frame {
+                    min-height: 62px;
+                    margin: 1px;
+                    border-radius: 0.4rem;
+                }
+                .fc .fc-daygrid-day-number {
+                    padding: 4px 5px;
+                    font-size: 0.7rem;
+                    font-weight: 700;
+                }
+                .fc .fc-col-header-cell-cushion {
+                    padding: 8px 1px;
+                    font-size: 0.6rem;
+                    letter-spacing: 0;
+                }
+                .fc .fc-daygrid-day-events { margin-bottom: 2px; }
+                .fc .fc-daygrid-event-harness { margin-top: 1px !important; }
+                .fc-event { margin-top: 1px; margin-bottom: 1px; border-radius: 0.35rem; }
+                .fc .fc-daygrid-more-link {
+                    font-size: 0.58rem;
+                    font-weight: 800;
+                    padding: 0 2px;
+                    color: #2563eb;
+                }
+                /* Today ring is thinner so it doesn't eat the tiny cell */
+                .fc .fc-day-today .fc-daygrid-day-frame { border-width: 1.5px !important; }
+            }
+
+            /* Very small phones (≤360px) */
+            @media (max-width: 380px) {
+                .fc .fc-toolbar-title { font-size: 0.88rem; }
+                .fc .fc-button-primary { padding: 0.35rem 0.5rem !important; font-size: 0.66rem !important; }
+                .fc-daygrid-day-frame { min-height: 54px; }
+            }
         </style>
 
         @php
@@ -489,18 +734,77 @@
 
         <!-- Upcoming Events Table -->
         @if(!isset($filter) && $upcomingEvents->count() > 0)
-        <div class="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden mb-12 animate-fade-in-up" style="animation-delay: 0.4s;">
-            <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-slate-50/50">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
+        <div class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden mb-6 sm:mb-12 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <div class="px-4 sm:px-8 py-4 sm:py-5 border-b border-gray-100 flex flex-wrap justify-between items-center gap-2 sm:gap-3 bg-slate-50/50">
+                <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 tracking-tight">Upcoming Events</h3>
+                    <h3 class="text-base sm:text-xl font-bold text-gray-900 tracking-tight truncate">Upcoming Events</h3>
                 </div>
-                <span class="px-3.5 py-1 bg-blue-50 text-blue-600 border border-blue-200 rounded-full text-xs font-bold uppercase tracking-wider">Next {{ $upcomingEvents->count() }} Events</span>
+                <span class="px-3 sm:px-3.5 py-1 bg-blue-50 text-blue-600 border border-blue-200 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider shrink-0">Next {{ $upcomingEvents->count() }} Events</span>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+
+            <!-- Mobile: stacked cards -->
+            <div class="md:hidden divide-y divide-gray-100">
+                @foreach($upcomingEvents as $event)
+                <div class="p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider border
+                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
+                                    {{ str_replace('_', ' ', $event->team_type) }}
+                                </span>
+                                <span class="text-[11px] font-bold text-gray-900">{{ $event->event_date->format('M d, Y') }}</span>
+                                <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider">{{ $event->event_date->format('D') }}</span>
+                            </div>
+                            <div class="text-sm font-bold text-gray-900 leading-snug break-words">
+                                {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1 font-medium line-clamp-2">
+                                {{ $event->content_objective ?? 'No objective specified' }}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <a href="{{ route('events.show', $event) }}" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 active:bg-blue-600 active:text-white transition-colors" title="View Event">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </a>
+                            @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
+                            <a href="{{ route('events.edit', $event) }}" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 active:bg-blue-600 active:text-white transition-colors" title="Edit Event">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </a>
+                            <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline delete-form" data-confirm="Are you sure you want to delete this event?">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex items-center justify-center p-2 rounded-xl bg-gray-100 text-gray-600 active:bg-red-600 active:text-white transition-colors" title="Delete Event">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </form>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-2.5">
+                        @if($event->shoot_date)
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">
+                                Shoot: {{ $event->shoot_date->format('M d, Y') }}
+                            </span>
+                        @endif
+                        @if($event->product ?? $event->product_focus)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->product ?? $event->product_focus }}</span>
+                        @endif
+                        @if($event->format)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->format }}</span>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Desktop / tablet: table -->
+            <div class="hidden md:block overflow-x-auto nice-scroll">
+                <table class="w-full text-left border-collapse min-w-[820px]">
                     <thead>
                         <tr class="bg-slate-50/80 border-b border-gray-100">
                             <th class="px-8 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest w-40">Date</th>
@@ -588,13 +892,88 @@
         @endif
 
         <!-- Clean Linear-style Data Table -->
-        <div class="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden mb-12 animate-fade-in-up" style="animation-delay: 0.5s;">
-            <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-slate-50/50">
-                <h3 class="text-lg font-bold text-gray-900 tracking-tight">Content Schedule</h3>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold">{{ $totalEvents }} Events</span>
+        <div id="schedule" class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden mb-6 sm:mb-12 animate-fade-in-up scroll-mt-24" style="animation-delay: 0.5s;">
+            <div class="px-4 sm:px-8 py-4 sm:py-5 border-b border-gray-100 flex flex-wrap justify-between items-center gap-2 bg-slate-50/50">
+                <h3 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight">Content Schedule</h3>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-[10px] sm:text-xs font-bold shrink-0">{{ $totalEvents }} Events</span>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+
+            <!-- Mobile: stacked cards -->
+            <div class="md:hidden divide-y divide-gray-100">
+                @forelse($tableEvents as $event)
+                <div class="p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider border
+                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
+                                    {{ str_replace('_', ' ', $event->team_type) }}
+                                </span>
+                                <span class="text-[11px] font-bold text-gray-900">{{ $event->event_date->format('M d, Y') }}</span>
+                                <span class="text-[10px] font-medium text-gray-500">{{ $event->event_date->format('D') }}</span>
+                            </div>
+                            <div class="text-sm font-bold text-gray-900 leading-snug break-words">
+                                {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1 font-medium line-clamp-2">
+                                {{ $event->content_objective ?? 'No objective specified' }}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <a href="{{ route('events.show', $event) }}" class="inline-flex p-2 rounded-lg text-gray-400 active:text-blue-600 active:bg-blue-50 transition-colors" title="View Event">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </a>
+                            @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
+                            <a href="{{ route('events.edit', $event) }}" class="inline-flex p-2 rounded-lg text-gray-400 active:text-blue-600 active:bg-blue-50 transition-colors" title="Edit Event">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </a>
+                            <form action="{{ route('events.destroy', $event) }}" method="POST" class="inline delete-form" data-confirm="Are you sure you want to delete this event?">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex p-2 rounded-lg text-gray-400 active:text-red-600 active:bg-red-50 transition-colors" title="Delete Event">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </form>
+                            @endif
+                            @if($event->drive_link)
+                            <a href="{{ $event->drive_link }}" target="_blank" class="inline-flex p-2 rounded-lg text-gray-400 active:text-blue-600 active:bg-blue-50 transition-colors" title="Open Link">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-2.5">
+                        @if($event->shoot_date)
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">
+                                Shoot: {{ $event->shoot_date->format('M d, Y') }}
+                            </span>
+                        @endif
+                        @if($event->product ?? $event->product_focus)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->product ?? $event->product_focus }}</span>
+                        @endif
+                        @if($event->format)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->format }}</span>
+                        @endif
+                        @if($event->platform)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->platform }}</span>
+                        @endif
+                    </div>
+                </div>
+                @empty
+                <div class="px-5 py-12 text-center">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-gray-400 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-semibold text-gray-800">No events found</h3>
+                    <p class="text-xs text-gray-500 mt-1">Get started by creating a new event.</p>
+                </div>
+                @endforelse
+            </div>
+
+            <!-- Desktop / tablet: table -->
+            <div class="hidden md:block overflow-x-auto nice-scroll">
+                <table class="w-full text-left border-collapse min-w-[860px]">
                     <thead>
                         <tr class="bg-slate-50/80 border-b border-gray-100">
                             <th class="px-6 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest w-32">Date</th>
@@ -605,7 +984,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 bg-white">
-                        @forelse($events as $event)
+                        @forelse($tableEvents as $event)
                         <tr class="hover:bg-slate-50 transition-colors duration-150 group">
                             <!-- Date Column -->
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -701,6 +1080,12 @@
                     </tbody>
                 </table>
             </div>
+
+            @if($tableEvents->hasPages())
+                <div class="px-4 sm:px-8 py-4 border-t border-gray-100 bg-slate-50/50">
+                    {{ $tableEvents->links() }}
+                </div>
+            @endif
         </div>
 
         @php
@@ -715,8 +1100,8 @@
         <!-- Global Calendar & Observances from Database -->
         @if((!isset($filter) || $filter === 'Global Events') && $globalEventsRaw->count() > 0)
         <div class="mt-8">
-            <h2 class="text-lg font-bold text-gray-900 mb-4 tracking-tight">Global Calendar & Observances</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h2 class="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">Global Calendar &amp; Observances</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 @foreach($globalEventsRaw as $month => $eventsList)
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden flex flex-col hover:border-gray-300 transition-colors">
                         <div class="px-5 py-3 border-b border-gray-100 bg-slate-50">
@@ -759,7 +1144,7 @@
                  x-transition:leave-end="opacity-0"
                  class="fixed inset-0 bg-gray-900/40 backdrop-blur-xs transition-opacity" @click="showGlobalModal = false"></div>
 
-            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div class="flex min-h-full items-center justify-center p-3 text-center sm:p-4">
                 <div x-show="showGlobalModal"
                      x-transition:enter="ease-out duration-300"
                      x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
@@ -767,16 +1152,16 @@
                      x-transition:leave="ease-in duration-200"
                      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                      x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl border border-gray-200">
-                    
-                    <div class="bg-amber-50/70 px-8 py-6 border-b border-gray-100 flex items-center justify-between">
+                     class="relative transform w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white text-left shadow-2xl transition-all my-4 sm:my-8 sm:max-w-xl border border-gray-200 max-h-[92vh] overflow-y-auto nice-scroll">
+
+                    <div class="bg-amber-50/70 px-5 sm:px-8 py-4 sm:py-6 border-b border-gray-100 flex items-center justify-between gap-3">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 border border-amber-200 shadow-xs">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 tracking-tight">Add Global Event</h3>
-                                <p class="text-xs text-gray-500 font-medium">Create a company-wide or observance event.</p>
+                                <h3 class="text-base sm:text-xl font-bold text-gray-900 tracking-tight">Add Global Event</h3>
+                                <p class="hidden sm:block text-xs text-gray-500 font-medium">Create a company-wide or observance event.</p>
                             </div>
                         </div>
                         <button @click="showGlobalModal = false" type="button" class="text-gray-400 hover:text-gray-700 bg-white hover:bg-gray-100 p-2 rounded-full border border-gray-200 transition-colors">
@@ -784,15 +1169,26 @@
                         </button>
                     </div>
                     
-                    <div class="p-8 bg-white">
+                    <div class="p-5 sm:p-8 bg-white">
                         <form action="{{ route('events.global.store') }}" method="POST" class="space-y-5">
                             @csrf
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
-                                <input type="date" name="event_date" x-model="globalDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(globalDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
-                                <div x-show="isBooked(globalDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest">Event Date*</label>
+                                    <span x-show="globalDate && !isFullyBooked(globalDate)" x-cloak class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                                        <span x-text="getCount(globalDate)"></span>/6 slots used
+                                    </span>
+                                </div>
+                                <input type="date" name="event_date" x-model="globalDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium" :class="isFullyBooked(globalDate) ? '!border-rose-500 !bg-rose-50/40' : (getCount(globalDate) > 0 ? '!border-amber-400 !bg-amber-50/20' : '')">
+                                
+                                <div x-show="isFullyBooked(globalDate)" x-cloak class="mt-1.5 p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
                                     <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                    <span>⚠️ This date already has a scheduled event. Only 1 event is permitted per date.</span>
+                                    <span>⚠️ Maximum 6 events already scheduled on this date. Please select another date.</span>
+                                </div>
+
+                                <div x-show="globalDate && !isFullyBooked(globalDate) && getCount(globalDate) > 0" x-cloak class="mt-1.5 p-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>ℹ️ <span class="font-bold" x-text="getCount(globalDate)"></span> event(s) on this date. You can add <span class="font-bold" x-text="6 - getCount(globalDate)"></span> more.</span>
                                 </div>
                             </div>
                             <div>
@@ -800,11 +1196,11 @@
                                 <input type="text" name="content_title" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs placeholder-gray-400 font-medium" placeholder="e.g. World Tourism Day">
                             </div>
                             
-                            <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-100">
-                                <button type="button" @click="showGlobalModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
+                            <div class="pt-5 sm:pt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-end gap-2.5 sm:gap-3 mt-5 sm:mt-6 border-t border-gray-100">
+                                <button type="button" @click="showGlobalModal = false" class="w-full sm:w-auto px-5 py-3 sm:py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
                                     Cancel
                                 </button>
-                                <button type="submit" :disabled="isBooked(globalDate)" :class="isBooked(globalDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-amber-600 hover:bg-amber-700 shadow-md shadow-amber-500/20 cursor-pointer'" class="px-6 py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                                <button type="submit" :disabled="isFullyBooked(globalDate)" :class="isFullyBooked(globalDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-amber-600 hover:bg-amber-700 shadow-md shadow-amber-500/20 cursor-pointer'" class="w-full sm:w-auto px-6 py-3 sm:py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
                                     Create Global Event
                                 </button>
                             </div>

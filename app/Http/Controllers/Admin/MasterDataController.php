@@ -110,7 +110,7 @@ class MasterDataController extends Controller
             });
         }
 
-        $events = $eventsQuery->paginate(15)->withQueryString();
+        $events = $eventsQuery->paginate(15)->withQueryString()->fragment('events-list');
 
         $stats = [
             'total_events' => CalendarEvent::count(),

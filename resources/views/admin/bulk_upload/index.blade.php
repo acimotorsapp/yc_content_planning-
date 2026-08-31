@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-2xl text-gray-900 leading-tight">
+        <h2 class="font-bold text-lg sm:text-2xl text-gray-900 leading-tight">
             {{ __('Bulk Data Upload') }}
         </h2>
     </x-slot>
@@ -14,10 +14,10 @@
             masterFileName: '',
             masterFileSize: '',
             isMasterDragging: false
-         }" class="max-w-7xl mx-auto pb-16 pt-4 px-4 sm:px-6 lg:px-8 space-y-8">
+         }" class="max-w-7xl mx-auto pb-16 pt-0 sm:pt-4 space-y-8">
 
         <!-- Top Hero Card -->
-        <div class="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 rounded-3xl bg-white border border-gray-200/80 shadow-sm overflow-hidden">
+        <div class="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-5 sm:gap-6 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-white border border-gray-200/80 shadow-sm overflow-hidden">
             <div class="absolute -top-32 -right-32 w-72 h-72 bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-teal-500/15 rounded-full blur-3xl pointer-events-none"></div>
             
             <div class="relative z-10 space-y-1">
@@ -31,14 +31,14 @@
                         Duplicate Protection Active
                     </div>
                 </div>
-                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Bulk Data Upload</h1>
+                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">Bulk Data Upload</h1>
                 <p class="text-gray-500 text-sm font-medium max-w-2xl">
                     Import multiple calendar events, content schedules, and master category items simultaneously from Excel (<span class="font-semibold text-gray-700">.xlsx, .xls</span>) or <span class="font-semibold text-gray-700">.csv</span> files. Existing database records are automatically protected from duplication.
                 </p>
             </div>
 
             <!-- Summary Badges -->
-            <div class="relative z-10 flex flex-wrap md:flex-col gap-2.5 shrink-0 bg-slate-50 p-4 rounded-2xl border border-gray-200">
+            <div class="relative z-10 w-full md:w-auto flex flex-col gap-2.5 shrink-0 bg-slate-50 p-4 rounded-2xl border border-gray-200">
                 <div class="text-xs font-semibold text-gray-500 flex items-center justify-between gap-4">
                     <span>Total Database Events:</span>
                     <span class="font-extrabold text-blue-600 bg-white px-2.5 py-0.5 rounded-lg border border-gray-200 shadow-2xs">{{ $totalEvents }}</span>
@@ -110,14 +110,14 @@
         @endif
 
         <!-- Quick Template Download Section -->
-        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-xl">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 <div>
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-2">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Download Starter Templates
                     </div>
-                    <h3 class="text-xl font-bold">Need sample files with formatted headers?</h3>
+                    <h3 class="text-lg sm:text-xl font-bold">Need sample files with formatted headers?</h3>
                     <p class="text-slate-300 text-sm mt-1 max-w-xl">
                         Download pre-formatted Excel or CSV templates matching the database structure. Fill them out and upload directly.
                     </p>
@@ -174,17 +174,17 @@
         </div>
 
         <!-- Main Navigation Tabs -->
-        <div class="flex space-x-3 border-b border-gray-200 pb-4">
+        <div class="flex gap-2 sm:gap-3 border-b border-gray-200 pb-4 overflow-x-auto nice-scroll">
             <button @click="activeTab = 'events'"
                 :class="activeTab === 'events' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 font-bold' : 'bg-white text-gray-600 hover:bg-gray-100 font-medium border border-gray-200'"
-                class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm transition-all duration-150">
+                class="inline-flex shrink-0 items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-[13px] sm:text-sm whitespace-nowrap transition-all duration-150">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 Upload Content Events
             </button>
 
             <button @click="activeTab = 'master'"
                 :class="activeTab === 'master' ? 'bg-teal-600 text-white shadow-md shadow-teal-500/20 font-bold' : 'bg-white text-gray-600 hover:bg-gray-100 font-medium border border-gray-200'"
-                class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm transition-all duration-150">
+                class="inline-flex shrink-0 items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-[13px] sm:text-sm whitespace-nowrap transition-all duration-150">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 Upload Master Categories
             </button>
@@ -192,12 +192,12 @@
 
         <!-- TAB 1: Bulk Upload Events Form -->
         <div x-show="activeTab === 'events'" class="space-y-8">
-            <div class="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 shadow-sm p-4 sm:p-8">
                 <form action="{{ route('admin.bulk_upload.events') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
                     <!-- Target Configuration Options -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 rounded-2xl bg-slate-50/80 border border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 p-4 sm:p-5 rounded-2xl bg-slate-50/80 border border-gray-200">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
                                 Team / Source Type
@@ -241,7 +241,7 @@
                                 }
                             "
                             :class="isDragging ? 'border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/20' : 'border-gray-300 bg-slate-50 hover:bg-slate-100/70'"
-                            class="relative flex flex-col items-center justify-center border-2 border-dashed rounded-3xl p-8 sm:p-12 text-center transition-all cursor-pointer group">
+                            class="relative flex flex-col items-center justify-center border-2 border-dashed rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center transition-all cursor-pointer group">
                             
                             <input 
                                 x-ref="eventFileInput"
@@ -292,7 +292,7 @@
 
                     <!-- Submit Button -->
                     <div class="flex items-center justify-end pt-4 border-t border-gray-100">
-                        <button type="submit" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold text-white rounded-xl bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/25 transform hover:-translate-y-0.5 cursor-pointer">
+                        <button type="submit" class="inline-flex items-center justify-center w-full sm:w-auto px-8 py-3.5 text-sm font-bold text-white rounded-xl bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/25 transform hover:-translate-y-0.5 cursor-pointer">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                             Start Bulk Upload
                         </button>
@@ -301,7 +301,7 @@
             </div>
 
             <!-- Supported Columns Guide -->
-            <div class="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -344,7 +344,7 @@
 
         <!-- TAB 2: Bulk Upload Master Data Form -->
         <div x-show="activeTab === 'master'" style="display: none;" class="space-y-8">
-            <div class="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 shadow-sm p-4 sm:p-8">
                 <form action="{{ route('admin.bulk_upload.master_data') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
@@ -369,7 +369,7 @@
                                 }
                             "
                             :class="isMasterDragging ? 'border-teal-500 bg-teal-50/50 ring-2 ring-teal-500/20' : 'border-gray-300 bg-slate-50 hover:bg-slate-100/70'"
-                            class="relative flex flex-col items-center justify-center border-2 border-dashed rounded-3xl p-8 sm:p-12 text-center transition-all cursor-pointer group">
+                            class="relative flex flex-col items-center justify-center border-2 border-dashed rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center transition-all cursor-pointer group">
                             
                             <input 
                                 x-ref="masterFileInput"
@@ -429,7 +429,7 @@
 
                     <!-- Submit Button -->
                     <div class="flex items-center justify-end pt-4 border-t border-gray-100">
-                        <button type="submit" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold text-white rounded-xl bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all shadow-md shadow-teal-500/25 transform hover:-translate-y-0.5 cursor-pointer">
+                        <button type="submit" class="inline-flex items-center justify-center w-full sm:w-auto px-8 py-3.5 text-sm font-bold text-white rounded-xl bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all shadow-md shadow-teal-500/25 transform hover:-translate-y-0.5 cursor-pointer">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                             Import Master Categories
                         </button>

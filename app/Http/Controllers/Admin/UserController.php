@@ -14,7 +14,7 @@ class UserController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::orderBy('name', 'asc')->paginate(15)->withQueryString();
         return view('admin.users.index', compact('users'));
     }
 

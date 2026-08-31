@@ -29,7 +29,7 @@
         </div>
 
         <!-- Remember Me & Forgot Password -->
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-3">
             <label for="remember_me" class="inline-flex items-center cursor-pointer group">
                 <input id="remember_me" type="checkbox" class="rounded bg-white border-gray-300 text-blue-600 shadow-xs focus:ring-blue-500" name="remember">
                 <span class="ms-2 text-sm text-gray-600 group-hover:text-gray-900 transition-colors font-medium">Remember me</span>
