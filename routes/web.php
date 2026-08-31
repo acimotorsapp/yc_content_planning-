@@ -8,9 +8,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $events = \App\Models\CalendarEvent::with('user')->where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
+    $events = \App\Models\CalendarEvent::with('user')->orderBy('event_date', 'asc')->get();
     $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-    return view('dashboard', compact('events', 'masterData'));
+    $bookedDates = \App\Models\CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
+    return view('dashboard', compact('events', 'masterData', 'bookedDates'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {

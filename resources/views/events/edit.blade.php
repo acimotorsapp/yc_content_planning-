@@ -11,9 +11,29 @@
         </div>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto pb-12 pt-4 px-4 sm:px-6 lg:px-8">
-        
+    @php
+        $bookedDates = $bookedDates ?? (\App\Models\CalendarEvent::where('id', '!=', $event->id)->pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all());
+    @endphp
 
+    <div x-data="{
+        eventDate: '{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}',
+        currentDate: '{{ $event->event_date ? $event->event_date->format('Y-m-d') : '' }}',
+        bookedDates: {{ json_encode($bookedDates) }},
+        isBooked(date) {
+            return date && date !== this.currentDate && this.bookedDates.includes(date);
+        }
+    }" class="max-w-4xl mx-auto pb-12 pt-4 px-4 sm:px-6 lg:px-8">
+        
+        @if($errors->any())
+            <div class="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-3 shadow-xs">
+                <svg class="w-5 h-5 text-rose-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <ul class="text-sm font-semibold space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
             <!-- Header Section -->
@@ -48,7 +68,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Publish Date*</label>
-                                <input type="date" name="event_date" value="{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                                <input type="date" name="event_date" x-model="eventDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(eventDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                                <div x-show="isBooked(eventDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>⚠️ Another event is already scheduled on this date. Only 1 event is permitted per date.</span>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Shoot Date</label>
@@ -141,7 +165,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Event Date*</label>
-                                <input type="date" name="event_date" value="{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
+                                <input type="date" name="event_date" x-model="eventDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(eventDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                                <div x-show="isBooked(eventDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>⚠️ Another event is already scheduled on this date. Only 1 event is permitted per date.</span>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Post No.</label>
@@ -213,7 +241,11 @@
                         <div class="space-y-6">
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Event Date*</label>
-                                <input type="date" name="event_date" value="{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium">
+                                <input type="date" name="event_date" x-model="eventDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(eventDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                                <div x-show="isBooked(eventDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>⚠️ Another event is already scheduled on this date. Only 1 event is permitted per date.</span>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Event Title*</label>
@@ -226,7 +258,7 @@
                         <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                             Cancel
                         </a>
-                        <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 border border-transparent rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <button type="submit" :disabled="isBooked(eventDate)" :class="isBooked(eventDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 cursor-pointer'" class="px-6 py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             Save Changes
                         </button>
                     </div>

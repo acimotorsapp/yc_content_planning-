@@ -5,7 +5,16 @@
         </h2>
     </x-slot>
 
-    <div x-data="{ showGlobalModal: false }" class="max-w-7xl mx-auto pb-12">
+    @php
+        $bookedDates = $bookedDates ?? (\App\Models\CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all());
+    @endphp
+
+    <div x-data="{ 
+        showGlobalModal: false, 
+        globalDate: '', 
+        bookedDates: {{ json_encode($bookedDates) }}, 
+        isBooked(d) { return d && this.bookedDates.includes(d); } 
+    }" class="max-w-7xl mx-auto pb-12">
 
         @if(isset($filter) && $filter === 'Global Events')
         <!-- Global Events Top Header & Action -->
@@ -114,8 +123,10 @@
         
         @php
             $formattedEvents = $events->map(function($event) {
-                $title = $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no;
-                $userName = $event->user ? $event->user->name : 'Unknown User';
+                $title = $event->team_type == 'digital_team' 
+                    ? ($event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Digital Event'))
+                    : ($event->content_title ?: 'Untitled Event');
+                $userName = $event->user ? $event->user->name : 'Global Event';
                 $shootDate = $event->shoot_date ? $event->shoot_date->format('M d, Y') : null;
                 
                 return [
@@ -154,22 +165,19 @@
                 function applyDayCellClass(el, dateStr) {
                     if (!dateStr || !dateTeamMap[dateStr]) return;
                     var teams = dateTeamMap[dateStr];
-                    if (teams.has('digital_team') && !teams.has('product_team')) {
+                    if (teams.has('digital_team')) {
                         el.classList.add('fc-has-digital-event-day');
-                    } else if (teams.has('product_team') && !teams.has('digital_team')) {
+                    } else if (teams.has('product_team')) {
                         el.classList.add('fc-has-product-event-day');
-                    } else if (teams.has('digital_team') && teams.has('product_team')) {
-                        el.classList.add('fc-has-mixed-event-day');
                     } else if (teams.has('global_team')) {
                         el.classList.add('fc-has-global-event-day');
-                    } else {
-                        el.classList.add('fc-has-product-event-day');
                     }
                 }
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
                     height: 'auto',
+                    dayMaxEvents: 1,
                     headerToolbar: {
                         left: 'prev,next today',
                         center: 'title',
@@ -198,11 +206,17 @@
                     eventContent: function(arg) {
                         var teamType = arg.event.extendedProps.teamType;
                         var teamClass = '';
+                        var teamBadge = '';
                         
                         if (teamType === 'digital_team') {
                             teamClass = 'bg-purple-50 text-purple-900 border-purple-200 shadow-xs';
+                            teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-200">Digital</span>';
                         } else if (teamType === 'product_team') {
                             teamClass = 'bg-amber-50 text-amber-900 border-amber-200 shadow-xs';
+                            teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">Product</span>';
+                        } else if (teamType === 'global_team') {
+                            teamClass = 'bg-rose-50 text-rose-900 border-rose-200 shadow-xs';
+                            teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200">Global</span>';
                         } else {
                             teamClass = 'bg-blue-50 text-blue-900 border-blue-200 shadow-xs';
                         }
@@ -240,6 +254,9 @@
 
                         var html = `
                             <div class="px-2.5 py-2 w-full border rounded-xl shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.4;">
+                                <div class="flex items-center justify-between gap-1 mb-0.5">
+                                    ${teamBadge}
+                                </div>
                                 <div class="font-extrabold text-[13px] leading-tight" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     ${arg.event.title}
                                 </div>
@@ -772,7 +789,11 @@
                             @csrf
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
-                                <input type="date" name="event_date" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium">
+                                <input type="date" name="event_date" x-model="globalDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(globalDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                                <div x-show="isBooked(globalDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>⚠️ This date already has a scheduled event. Only 1 event is permitted per date.</span>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Title*</label>
@@ -780,10 +801,10 @@
                             </div>
                             
                             <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-100">
-                                <button type="button" @click="showGlobalModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                                <button type="button" @click="showGlobalModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
                                     Cancel
                                 </button>
-                                <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-amber-600 border border-transparent rounded-xl hover:bg-amber-700 shadow-md shadow-amber-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                                <button type="submit" :disabled="isBooked(globalDate)" :class="isBooked(globalDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-amber-600 hover:bg-amber-700 shadow-md shadow-amber-500/20 cursor-pointer'" class="px-6 py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
                                     Create Global Event
                                 </button>
                             </div>

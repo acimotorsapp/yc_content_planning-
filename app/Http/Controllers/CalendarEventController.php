@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalendarEvent;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CalendarEventController extends Controller
 {
@@ -22,6 +23,8 @@ class CalendarEventController extends Controller
             'product' => 'nullable|string',
             'drive_link' => 'nullable|string',
             'remarks' => 'nullable|string',
+        ], [
+            'event_date.unique' => 'An event is already scheduled on this date (:input). Only 1 event is permitted per date across all teams.',
         ]);
 
         $validated['team_type'] = 'product_team';
@@ -43,6 +46,8 @@ class CalendarEventController extends Controller
             'drive_link' => 'nullable|string',
             'remarks' => 'nullable|string',
             'boosting_budget' => 'nullable|string',
+        ], [
+            'event_date.unique' => 'An event is already scheduled on this date (:input). Only 1 event is permitted per date across all teams.',
         ]);
 
         $validated['team_type'] = 'digital_team';
@@ -56,10 +61,12 @@ class CalendarEventController extends Controller
     {
         $events = $request->user()->events()->with('user')->orderBy('event_date', 'asc')->get();
         $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        $bookedDates = CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
         return view('dashboard', [
             'events' => $events,
             'filter' => 'My Events',
-            'masterData' => $masterData
+            'masterData' => $masterData,
+            'bookedDates' => $bookedDates,
         ]);
     }
 
@@ -67,9 +74,10 @@ class CalendarEventController extends Controller
     {
         // For Super Admin to switch between teams, they might need a filter like they have on dashboard.
         $filter = request()->query('filter');
-        $events = CalendarEvent::with('user')->where('team_type', '!=', 'global_team')->orderBy('event_date', 'asc')->get();
+        $events = CalendarEvent::with('user')->orderBy('event_date', 'asc')->get();
         $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-        return view('events.create', compact('filter', 'events', 'masterData'));
+        $bookedDates = CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
+        return view('events.create', compact('filter', 'events', 'masterData', 'bookedDates'));
     }
 
     public function show(CalendarEvent $event)
@@ -85,7 +93,8 @@ class CalendarEventController extends Controller
         }
 
         $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-        return view('events.edit', compact('event', 'masterData'));
+        $bookedDates = CalendarEvent::where('id', '!=', $event->id)->pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
+        return view('events.edit', compact('event', 'masterData', 'bookedDates'));
     }
 
     public function update(Request $request, CalendarEvent $event)
@@ -95,7 +104,11 @@ class CalendarEventController extends Controller
         }
 
         $validated = $request->validate([
-            'event_date' => 'required|date',
+            'event_date' => [
+                'required',
+                'date',
+                Rule::unique('calendar_events', 'event_date')->ignore($event->id),
+            ],
             'content_title' => 'nullable|string',
             'post_no' => 'nullable|string',
             'aipe_pillar' => 'nullable|string',
@@ -109,6 +122,8 @@ class CalendarEventController extends Controller
             'product_focus' => 'nullable|string',
             'drive_link' => 'nullable|string',
             'remarks' => 'nullable|string',
+        ], [
+            'event_date.unique' => 'Another event is already scheduled on this date (:input). Only 1 event is permitted per date across all teams.',
         ]);
 
         $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
@@ -136,6 +151,8 @@ class CalendarEventController extends Controller
         $validated = $request->validate([
             'event_date' => 'required|date|unique:calendar_events,event_date',
             'content_title' => 'required|string',
+        ], [
+            'event_date.unique' => 'An event is already scheduled on this date (:input). Only 1 event is permitted per date across all teams.',
         ]);
 
         CalendarEvent::create([
@@ -153,7 +170,8 @@ class CalendarEventController extends Controller
         if (auth()->user()->role !== 'super_admin') abort(403);
         $events = CalendarEvent::with('user')->where('team_type', 'product_team')->orderBy('event_date', 'asc')->get();
         $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-        return view('dashboard', ['events' => $events, 'filter' => 'Product Team Events', 'masterData' => $masterData]);
+        $bookedDates = CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
+        return view('dashboard', ['events' => $events, 'filter' => 'Product Team Events', 'masterData' => $masterData, 'bookedDates' => $bookedDates]);
     }
 
     public function adminDigital()
@@ -161,7 +179,8 @@ class CalendarEventController extends Controller
         if (auth()->user()->role !== 'super_admin') abort(403);
         $events = CalendarEvent::with('user')->where('team_type', 'digital_team')->orderBy('event_date', 'asc')->get();
         $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-        return view('dashboard', ['events' => $events, 'filter' => 'Digital Team Events', 'masterData' => $masterData]);
+        $bookedDates = CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
+        return view('dashboard', ['events' => $events, 'filter' => 'Digital Team Events', 'masterData' => $masterData, 'bookedDates' => $bookedDates]);
     }
 
     public function adminGlobal()
@@ -169,6 +188,7 @@ class CalendarEventController extends Controller
         if (auth()->user()->role !== 'super_admin') abort(403);
         $events = CalendarEvent::with('user')->where('team_type', 'global_team')->orderBy('event_date', 'asc')->get();
         $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-        return view('dashboard', ['events' => $events, 'filter' => 'Global Events', 'masterData' => $masterData]);
+        $bookedDates = CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all();
+        return view('dashboard', ['events' => $events, 'filter' => 'Global Events', 'masterData' => $masterData, 'bookedDates' => $bookedDates]);
     }
 }

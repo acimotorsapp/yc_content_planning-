@@ -1,3 +1,7 @@
+@php
+    $bookedDates = $bookedDates ?? (\App\Models\CalendarEvent::pluck('event_date')->map(fn($d) => $d->format('Y-m-d'))->values()->all());
+@endphp
+
 <!-- STYLISH & MODERN Add Event Modal Overlay (Light Theme) -->
 <div x-show="showCreateModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div x-show="showCreateModal"
@@ -20,7 +24,7 @@
              x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
              class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl border border-gray-200 ring-1 ring-black/5">
             
-            @if($errors->any())
+            @if(isset($errors) && $errors->any())
                 <div class="bg-red-50 border-b border-red-200 p-5" role="alert">
                     <div class="flex">
                         <svg class="w-6 h-6 text-red-500 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -33,7 +37,16 @@
                 </div>
             @endif
 
-            <div x-data="{ selectedTeam: 'product_team' }" class="w-full">
+            <div x-data="{ 
+                selectedTeam: 'product_team',
+                productDate: '',
+                digitalDate: '',
+                globalDate: '',
+                bookedDates: {{ json_encode($bookedDates) }},
+                isBooked(date) {
+                    return date && this.bookedDates.includes(date);
+                }
+            }" class="w-full">
                 <div class="bg-slate-50 px-8 py-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-5">
                         <div class="flex items-center space-x-4">
@@ -49,7 +62,7 @@
                             </div>
                             <div>
                                 <h3 class="text-xl font-bold text-gray-900 tracking-tight">Create New Event</h3>
-                                <p class="text-sm text-gray-500 font-medium mt-0.5">Select the type of event you want to schedule</p>
+                                <p class="text-sm text-gray-500 font-medium mt-0.5">Single event per date schedule</p>
                             </div>
                         </div>
                         <button @click="showCreateModal = false" type="button" class="text-gray-400 hover:text-gray-700 bg-white hover:bg-gray-100 p-2.5 rounded-full border border-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -86,7 +99,11 @@
                         <div class="grid grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Publish Date*</label>
-                                <input type="date" name="event_date" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                                <input type="date" name="event_date" x-model="productDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(productDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                                <div x-show="isBooked(productDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>⚠️ This date already has a scheduled event. Only 1 event is permitted per date.</span>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Shoot Date</label>
@@ -170,10 +187,10 @@
                         </div>
                         
                         <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200">
-                            <button type="button" @click="showCreateModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300">
+                            <button type="button" @click="showCreateModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer">
                                 Cancel
                             </button>
-                            <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 border border-transparent rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <button type="submit" :disabled="isBooked(productDate)" :class="isBooked(productDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 cursor-pointer'" class="px-6 py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                 Create Event
                             </button>
                         </div>
@@ -185,7 +202,11 @@
                         <div class="grid grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
-                                <input type="date" name="event_date" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
+                                <input type="date" name="event_date" x-model="digitalDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(digitalDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                                <div x-show="isBooked(digitalDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>⚠️ This date already has a scheduled event. Only 1 event is permitted per date.</span>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Post No.</label>
@@ -249,10 +270,10 @@
                         </div>
                         
                         <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200">
-                            <button type="button" @click="showCreateModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300">
+                            <button type="button" @click="showCreateModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer">
                                 Cancel
                             </button>
-                            <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-teal-600 border border-transparent rounded-xl hover:bg-teal-700 shadow-md shadow-teal-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            <button type="submit" :disabled="isBooked(digitalDate)" :class="isBooked(digitalDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-teal-600 hover:bg-teal-700 shadow-md shadow-teal-500/20 cursor-pointer'" class="px-6 py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                 Create Event
                             </button>
                         </div>
@@ -264,7 +285,11 @@
                         @csrf
                         <div>
                             <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Date*</label>
-                            <input type="date" name="event_date" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium">
+                            <input type="date" name="event_date" x-model="globalDate" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all shadow-xs font-medium" :class="isBooked(globalDate) ? '!border-rose-500 !bg-rose-50/40' : ''">
+                            <div x-show="isBooked(globalDate)" x-cloak class="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                <span>⚠️ This date already has a scheduled event. Only 1 event is permitted per date.</span>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Event Title*</label>
@@ -272,10 +297,10 @@
                         </div>
                         
                         <div class="pt-6 flex items-center justify-end gap-3 mt-6 border-t border-gray-200">
-                            <button type="button" @click="showCreateModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300">
+                            <button type="button" @click="showCreateModal = false" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer">
                                 Cancel
                             </button>
-                            <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-amber-600 border border-transparent rounded-xl hover:bg-amber-700 shadow-md shadow-amber-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                            <button type="submit" :disabled="isBooked(globalDate)" :class="isBooked(globalDate) ? 'opacity-40 cursor-not-allowed bg-gray-400' : 'bg-amber-600 hover:bg-amber-700 shadow-md shadow-amber-500/20 cursor-pointer'" class="px-6 py-2.5 text-sm font-bold text-white border border-transparent rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
                                 Create Global Event
                             </button>
                         </div>

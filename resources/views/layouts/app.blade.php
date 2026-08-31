@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
-      x-data="{ showCreateModal: {{ $errors->any() ? 'true' : 'false' }} }">
+      x-data="{ showCreateModal: {{ (isset($errors) && $errors->any()) ? 'true' : 'false' }} }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">

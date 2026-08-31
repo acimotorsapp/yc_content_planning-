@@ -457,15 +457,8 @@ class BulkUploadController extends Controller
                 $contentTitle = $product ? "Product: {$product}" : 'Product Content (' . $eventDate->format('d M') . ')';
             }
 
-            // Check if this event already exists in database (avoid duplication)
-            $existsQuery = CalendarEvent::where('team_type', 'product_team')
-                ->where('event_date', $eventDate->format('Y-m-d'))
-                ->where(function ($q) use ($contentTitle, $product) {
-                    $q->where('content_title', $contentTitle);
-                    if (!empty($product)) {
-                        $q->orWhere('product', $product);
-                    }
-                });
+            // Strictly enforce 1 event per date across the calendar
+            $existsQuery = CalendarEvent::where('event_date', $eventDate->format('Y-m-d'));
 
             if ($existsQuery->exists()) {
                 $duplicates++;
@@ -574,18 +567,8 @@ class BulkUploadController extends Controller
 
             $contentTitle = !empty($productFocus) ? "Post #{$postNo}: {$productFocus}" : ($postNo ? "Post #{$postNo}" : "Digital Content");
 
-            // Check if this digital event already exists in database
-            $existsQuery = CalendarEvent::where('team_type', 'digital_team')
-                ->where('event_date', $eventDate->format('Y-m-d'))
-                ->where(function ($q) use ($postNo, $contentTitle, $productFocus) {
-                    if (!empty($postNo)) {
-                        $q->where('post_no', $postNo);
-                    }
-                    $q->orWhere('content_title', $contentTitle);
-                    if (!empty($productFocus)) {
-                        $q->orWhere('product_focus', $productFocus);
-                    }
-                });
+            // Strictly enforce 1 event per date across the calendar
+            $existsQuery = CalendarEvent::where('event_date', $eventDate->format('Y-m-d'));
 
             if ($existsQuery->exists()) {
                 $duplicates++;
@@ -649,10 +632,8 @@ class BulkUploadController extends Controller
                 continue;
             }
 
-            $exists = CalendarEvent::where('team_type', 'global_team')
-                ->where('event_date', $eventDate->format('Y-m-d'))
-                ->where('content_title', $title)
-                ->exists();
+            // Strictly enforce 1 event per date across the calendar
+            $exists = CalendarEvent::where('event_date', $eventDate->format('Y-m-d'))->exists();
 
             if ($exists) {
                 $duplicates++;
