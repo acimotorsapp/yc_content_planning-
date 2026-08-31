@@ -120,7 +120,27 @@ class MasterDataController extends Controller
             'global_events' => CalendarEvent::where('team_type', 'global_team')->count(),
         ];
 
-        return view('admin.master_data.index', compact('masterData', 'categoryCounts', 'events', 'stats'));
+        // 4. Category items for the "Manage Categories" tab — the active category and
+        //    its page both live in the URL so every tab/page click is a normal request.
+        $categoryKeys = ['platform', 'format', 'aipe_pillar', 'product'];
+        $categoryTab = in_array($request->query('category'), $categoryKeys, true)
+            ? $request->query('category')
+            : 'platform';
+
+        $categoryItems = \App\Support\CollectionPaginator::make(
+            $masterData[$categoryTab] ?? collect(),
+            10,
+            'cat_page'
+        )->withQueryString()->fragment('categories');
+
+        return view('admin.master_data.index', compact(
+            'masterData',
+            'categoryCounts',
+            'events',
+            'stats',
+            'categoryTab',
+            'categoryItems'
+        ));
     }
 
     public function store(Request $request)

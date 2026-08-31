@@ -274,12 +274,12 @@
 
                         // List view — the default on phones: one readable, tappable row per event
                         if (viewType.indexOf('list') === 0) {
-                            var meta = ['<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ' + chipClass + '">' + teamLabel + '</span>'];
+                            var meta = ['<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700">' + teamLabel + '</span>'];
                             if (props.userName) {
-                                meta.push('<span class="text-[11px] font-semibold text-gray-500">' + esc(props.userName) + '</span>');
+                                meta.push('<span class="text-[11px] font-semibold opacity-80">' + esc(props.userName) + '</span>');
                             }
                             if (props.aipePillar && props.aipePillar !== 'N/A') {
-                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-gray-100 text-gray-700 border border-gray-200">' + esc(props.aipePillar) + '</span>');
+                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700">' + esc(props.aipePillar) + '</span>');
                             }
                             if (props.shootDate) {
                                 meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">Shoot: ' + esc(props.shootDate) + '</span>');
@@ -288,9 +288,9 @@
                                 meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">৳ ' + esc(props.boostingBudget || '0') + '</span>');
                             }
                             return { html:
-                                '<div class="py-1 min-w-0">' +
-                                    '<div class="font-extrabold text-[13px] text-gray-900 leading-snug" style="word-break: break-word;">' + esc(arg.event.title) + '</div>' +
-                                    '<div class="flex flex-wrap items-center gap-1.5 mt-1">' + meta.join('') + '</div>' +
+                                '<div class="py-2 px-3 min-w-0 rounded-xl shadow-xs border ' + chipClass + '" style="margin: -2px 0;">' +
+                                    '<div class="font-extrabold text-[14px] leading-snug" style="word-break: break-word;">' + esc(arg.event.title) + '</div>' +
+                                    '<div class="flex flex-wrap items-center gap-1.5 mt-1.5">' + meta.join('') + '</div>' +
                                 '</div>'
                             };
                         }
