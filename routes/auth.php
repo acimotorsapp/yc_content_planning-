@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
@@ -33,6 +34,13 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    // Change a password from the login screen using the current one — no reset email.
+    Route::get('change-password', [ChangePasswordController::class, 'create'])
+        ->name('password.change');
+
+    Route::post('change-password', [ChangePasswordController::class, 'store'])
+        ->name('password.change.store');
 });
 
 Route::middleware('auth')->group(function () {

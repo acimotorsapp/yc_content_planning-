@@ -42,6 +42,15 @@
             @endif
         </div>
 
+        <div class="pt-1">
+            <a href="{{ route('password.change') }}"
+               class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold text-gray-700 bg-slate-50 border border-gray-300 rounded-xl hover:bg-white hover:border-blue-400 hover:text-blue-700 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                Change password
+            </a>
+            <p class="text-[11px] text-gray-400 text-center mt-1.5">Know your current password? Change it without email.</p>
+        </div>
+
         <div class="pt-2">
             <button type="submit" class="w-full flex justify-center items-center px-6 py-3.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-md shadow-blue-500/20">
                 Sign In

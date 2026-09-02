@@ -117,58 +117,44 @@
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Download Starter Templates
                     </div>
-                    <h3 class="text-lg sm:text-xl font-bold">Need sample files with formatted headers?</h3>
+                    <h3 class="text-lg sm:text-xl font-bold">Templates matching the YAMAHA Content Plan workbook</h3>
                     <p class="text-slate-300 text-sm mt-1 max-w-xl">
-                        Download pre-formatted Excel or CSV templates matching the database structure. Fill them out and upload directly.
+                        The full workbook carries the same five sheets as your plan file. Upload it with
+                        <span class="font-semibold text-white">Auto-Detect</span> and every sheet is read in one pass —
+                        events, plan logic and staff.
                     </p>
                 </div>
 
                 <!-- Template Download Buttons -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 shrink-0">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 shrink-0">
                     <!-- Full Yamaha Plan -->
-                    <a href="{{ route('admin.bulk_upload.sample', ['type' => 'full-content-plan']) }}" class="flex items-center justify-between px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl transition-all duration-200 group">
+                    <a href="{{ route('admin.bulk_upload.sample', ['type' => 'full-content-plan']) }}" class="sm:col-span-2 xl:col-span-3 flex items-center justify-between px-4 py-3 bg-cyan-400/15 hover:bg-cyan-400/25 border border-cyan-300/30 rounded-2xl transition-all duration-200 group">
                         <div class="text-left">
                             <div class="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">Full Plan Workbook</div>
-                            <div class="text-[11px] text-slate-300">Multi-sheet XLSX</div>
+                            <div class="text-[11px] text-slate-300">All 5 sheets &middot; XLSX</div>
                         </div>
                         <svg class="w-5 h-5 text-cyan-400 group-hover:translate-y-0.5 transition-transform ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     </a>
 
-                    <!-- Product Team Template -->
-                    <div class="flex items-center bg-white/10 border border-white/15 rounded-2xl overflow-hidden">
-                        <div class="px-3.5 py-3 flex-1 text-left">
-                            <div class="text-xs font-bold text-white">Product Team</div>
-                            <div class="text-[11px] text-slate-300">Content schedule</div>
+                    @foreach([
+                        ['type' => 'content-calendar', 'title' => 'Final Content Calender', 'note' => 'Monthly calendar &rarr; Digital'],
+                        ['type' => 'product-events', 'title' => 'Product Team', 'note' => 'Content schedule'],
+                        ['type' => 'digital-events', 'title' => 'Digital team', 'note' => 'Posts &amp; Reels'],
+                        ['type' => 'plan-logic', 'title' => 'Month Logic', 'note' => 'Post allocation &amp; notes'],
+                        ['type' => 'staff', 'title' => 'Staff ID &amp; Designation', 'note' => 'Becomes app users'],
+                        ['type' => 'master-data', 'title' => 'Master Data', 'note' => 'Categories'],
+                    ] as $tpl)
+                        <div class="flex items-center bg-white/10 border border-white/15 rounded-2xl overflow-hidden">
+                            <div class="px-3.5 py-3 flex-1 text-left min-w-0">
+                                <div class="text-xs font-bold text-white truncate">{!! $tpl['title'] !!}</div>
+                                <div class="text-[11px] text-slate-300 truncate">{!! $tpl['note'] !!}</div>
+                            </div>
+                            <div class="flex flex-col border-l border-white/10 shrink-0">
+                                <a href="{{ route('admin.bulk_upload.sample', ['type' => $tpl['type'], 'format' => 'xlsx']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-cyan-300 transition-colors" title="Download Excel">.XLSX</a>
+                                <a href="{{ route('admin.bulk_upload.sample', ['type' => $tpl['type'], 'format' => 'csv']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-slate-300 border-t border-white/10 transition-colors" title="Download CSV">.CSV</a>
+                            </div>
                         </div>
-                        <div class="flex flex-col border-l border-white/10">
-                            <a href="{{ route('admin.bulk_upload.sample', ['type' => 'product-events', 'format' => 'xlsx']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-cyan-300 transition-colors" title="Download Excel">.XLSX</a>
-                            <a href="{{ route('admin.bulk_upload.sample', ['type' => 'product-events', 'format' => 'csv']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-slate-300 border-t border-white/10 transition-colors" title="Download CSV">.CSV</a>
-                        </div>
-                    </div>
-
-                    <!-- Digital Team Template -->
-                    <div class="flex items-center bg-white/10 border border-white/15 rounded-2xl overflow-hidden">
-                        <div class="px-3.5 py-3 flex-1 text-left">
-                            <div class="text-xs font-bold text-white">Digital Team</div>
-                            <div class="text-[11px] text-slate-300">Posts & Reels</div>
-                        </div>
-                        <div class="flex flex-col border-l border-white/10">
-                            <a href="{{ route('admin.bulk_upload.sample', ['type' => 'digital-events', 'format' => 'xlsx']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-cyan-300 transition-colors" title="Download Excel">.XLSX</a>
-                            <a href="{{ route('admin.bulk_upload.sample', ['type' => 'digital-events', 'format' => 'csv']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-slate-300 border-t border-white/10 transition-colors" title="Download CSV">.CSV</a>
-                        </div>
-                    </div>
-
-                    <!-- Master Data Template -->
-                    <div class="flex items-center bg-white/10 border border-white/15 rounded-2xl overflow-hidden">
-                        <div class="px-3.5 py-3 flex-1 text-left">
-                            <div class="text-xs font-bold text-white">Master Data</div>
-                            <div class="text-[11px] text-slate-300">Categories</div>
-                        </div>
-                        <div class="flex flex-col border-l border-white/10">
-                            <a href="{{ route('admin.bulk_upload.sample', ['type' => 'master-data', 'format' => 'xlsx']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-cyan-300 transition-colors" title="Download Excel">.XLSX</a>
-                            <a href="{{ route('admin.bulk_upload.sample', ['type' => 'master-data', 'format' => 'csv']) }}" class="px-3 py-1.5 hover:bg-white/20 text-[10px] font-bold text-slate-300 border-t border-white/10 transition-colors" title="Download CSV">.CSV</a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -203,13 +189,13 @@
                                 Team / Source Type
                             </label>
                             <select name="team_type" x-model="teamType" class="w-full bg-white border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-sm">
-                                <option value="auto">Auto-Detect / Multi-Sheet (e.g. Yamaha Full Plan)</option>
+                                <option value="auto">Auto-Detect / Multi-Sheet (YAMAHA Content Plan workbook)</option>
                                 <option value="product_team">Product Team Events</option>
                                 <option value="digital_team">Digital Team Events</option>
                                 <option value="global_team">Global Events</option>
                             </select>
                             <p class="text-[11px] text-gray-500 mt-1.5">
-                                Select "Auto-Detect" if uploading the entire Excel workbook containing multiple sheets.
+                                Keep "Auto-Detect" for the full YAMAHA Content Plan workbook — it reads the calendar, Product Team, Digital team, Month Logic and Staff sheets in one pass. Pick a team only when uploading a single-sheet file.
                             </p>
                         </div>
 
@@ -307,37 +293,76 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="text-base font-bold text-gray-900">Supported Spreadsheet Column Formats</h4>
-                        <p class="text-xs text-gray-500">Column names are case-insensitive and allow common aliases automatically.</p>
+                        <h4 class="text-base font-bold text-gray-900">Sheets read from the workbook</h4>
+                        <p class="text-xs text-gray-500">Sheets are matched by name, headers are case-insensitive and accept common aliases. Extra columns are ignored.</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                    <!-- Product Team Format -->
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-gray-200/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-indigo-900">Product Team Sheet Headers</span>
-                            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-md">12 Columns</span>
-                        </div>
-                        <div class="flex flex-wrap gap-1.5">
-                            @foreach(['Date / Publish Date', 'Content', 'A.I.P.E Pillar', 'Content Objective', 'Shoot Date', 'Color Concern', 'Format', 'Budget', 'Platform', 'Product', 'Asset/Drive Link', 'Remarks'] as $col)
-                                <span class="px-2.5 py-1 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 shadow-2xs">{{ $col }}</span>
-                            @endforeach
-                        </div>
-                    </div>
+                @php
+                    $sheetGuide = [
+                        [
+                            'name' => 'Final Content Calender (…)',
+                            'match' => 'name contains "calend"',
+                            'target' => 'Events — Digital Team',
+                            'accent' => 'sky',
+                            'note' => 'Header sits on row 3, under the month banner.',
+                            'cols' => ['Date', 'Day', 'Product / Focus', 'AIPE Pillar', 'Format', 'Content Type', 'RTM / Campaign Objective', 'Content Gist & Creative Direction', 'Content Link', 'Budget', 'Platform', 'Boosting Budget'],
+                        ],
+                        [
+                            'name' => 'Product Team',
+                            'match' => 'name contains "product"',
+                            'target' => 'Events — Product Team',
+                            'accent' => 'indigo',
+                            'note' => 'Publish Date is used as the event date when present.',
+                            'cols' => ['Date', 'Day', 'Content', 'A.I.P.E Pillar', 'Content Objective', 'Shoot Date', 'Publish Date', 'Color Concern', 'Format', 'Budget', 'Platform', 'Product', 'Drive Link', 'Remarks', 'Boosting Budget'],
+                        ],
+                        [
+                            'name' => 'Digital team',
+                            'match' => 'name contains "digital"',
+                            'target' => 'Events — Digital Team',
+                            'accent' => 'teal',
+                            'note' => 'Trailing "Planning Dependencies" / "Total Posts" blocks are ignored.',
+                            'cols' => ['Date', 'Day', 'Post No.', 'A.I.P.E Pillar', 'Product Focus', 'Content Objective', 'Format', 'Asset/Drive Link', 'Remarks', 'Boosting budget'],
+                        ],
+                        [
+                            'name' => '&lt;Month&gt; Logic',
+                            'match' => 'name contains "logic"',
+                            'target' => 'Content Plan Logic',
+                            'accent' => 'amber',
+                            'note' => 'Free-text notes under the table are stored too.',
+                            'cols' => ['Product', 'Units', 'Share', '12-Mo Share Shift', 'Retail', 'Forecast', 'Posts This Month', 'Pillar Split', 'Why This Allocation'],
+                        ],
+                        [
+                            'name' => 'Staff ID & Designation',
+                            'match' => 'name contains "staff"',
+                            'target' => 'Users',
+                            'accent' => 'rose',
+                            'note' => 'Creates sign-in accounts with the shared default password.',
+                            'cols' => ['Staff ID', 'Name', 'Designation', 'Email Address'],
+                        ],
+                    ];
+                @endphp
 
-                    <!-- Digital Team Format -->
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-gray-200/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-teal-900">Digital Team Sheet Headers</span>
-                            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 bg-teal-100 text-teal-700 rounded-md">10 Columns</span>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 text-sm">
+                    @foreach($sheetGuide as $s)
+                        <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-gray-200/80 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-{{ $s['accent'] }}-900">{!! $s['name'] !!}</span>
+                                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 bg-{{ $s['accent'] }}-100 text-{{ $s['accent'] }}-700 rounded-md">{{ count($s['cols']) }} Columns</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500 font-medium">
+                                <span class="px-2 py-0.5 bg-white border border-gray-200 rounded-md font-mono">{{ $s['match'] }}</span>
+                                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                <span class="font-bold text-gray-700">{{ $s['target'] }}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($s['cols'] as $col)
+                                    <span class="px-2.5 py-1 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 shadow-2xs">{{ $col }}</span>
+                                @endforeach
+                            </div>
+                            <p class="text-[11px] text-gray-500">{{ $s['note'] }}</p>
                         </div>
-                        <div class="flex flex-wrap gap-1.5">
-                            @foreach(['Date', 'Day', 'Post No.', 'A.I.P.E Pillar', 'Product Focus', 'Content Objective', 'Format', 'Asset/Drive Link', 'Remarks', 'Boosting budget'] as $col)
-                                <span class="px-2.5 py-1 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 shadow-2xs">{{ $col }}</span>
-                            @endforeach
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

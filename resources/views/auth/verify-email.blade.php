@@ -28,4 +28,13 @@
             </button>
         </form>
     </div>
+
+    {{-- Changing a password needs no verified email, so keep the route reachable from here. --}}
+    <div class="mt-6 pt-5 border-t border-gray-200 text-sm text-gray-600">
+        {{ __('Want to change your password first?') }}
+        <a href="{{ route('profile.edit') }}" class="font-semibold text-blue-600 hover:text-blue-700 underline">
+            {{ __('Change it here') }}
+        </a>
+        — {{ __('no verification needed.') }}
+    </div>
 </x-guest-layout>

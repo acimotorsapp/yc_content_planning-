@@ -136,7 +136,7 @@ class ContentPlanWorkbookImporter
 
             $gist = $this->cell($row, $gistCol);
             $rtm = $this->cell($row, $rtmCol);
-            $title = $this->headline($gist) ?: ($rtm ?: 'Content Calendar (' . $eventDate->format('d M') . ')');
+            $title = $this->cleanTitle($this->headline($gist) ?: ($rtm ?: 'Content Calendar (' . $eventDate->format('d M') . ')'));
             $postNo++;
 
             if ($this->dateIsFull($eventDate)) {
@@ -359,7 +359,7 @@ class ContentPlanWorkbookImporter
                 continue;
             }
 
-            $contentTitle = $this->cell($row, $colMap['content'] ?? $colMap['content_title'] ?? null);
+            $contentTitle = $this->cleanTitle($this->cell($row, $colMap['content'] ?? $colMap['content_title'] ?? null));
             $objective = $this->cell($row, $colMap['content_objective'] ?? null);
             $product = $this->cell($row, $colMap['product'] ?? null);
 
@@ -375,7 +375,7 @@ class ContentPlanWorkbookImporter
             }
 
             if ($contentTitle === '') {
-                $contentTitle = $product ? "Product: {$product}" : 'Product Content (' . $eventDate->format('d M') . ')';
+                $contentTitle = $this->cleanTitle($product ? "Product: {$product}" : 'Product Content (' . $eventDate->format('d M') . ')');
             }
 
             if ($this->dateIsFull($eventDate)) {
@@ -462,9 +462,9 @@ class ContentPlanWorkbookImporter
                 continue;
             }
 
-            $contentTitle = $productFocus !== ''
+            $contentTitle = $this->cleanTitle($productFocus !== ''
                 ? "Post #{$postNo}: {$productFocus}"
-                : ($postNo !== '' ? "Post #{$postNo}" : 'Digital Content');
+                : ($postNo !== '' ? "Post #{$postNo}" : 'Digital Content'));
 
             if ($this->dateIsFull($eventDate)) {
                 $result['capped']++;
@@ -521,7 +521,7 @@ class ContentPlanWorkbookImporter
             }
 
             $eventDate = $this->parseDateValue($row[$colMap['date'] ?? ''] ?? null, $targetYear);
-            $title = $this->cell($row, $colMap['content_title'] ?? $colMap['content'] ?? null);
+            $title = $this->cleanTitle($this->cell($row, $colMap['content_title'] ?? $colMap['content'] ?? null));
             $objective = $this->cell($row, $colMap['content_objective'] ?? null);
 
             if (!$eventDate || $title === '') {
@@ -581,12 +581,26 @@ class ContentPlanWorkbookImporter
         return CalendarEvent::whereDate('event_date', $date->format('Y-m-d'))->count() >= self::MAX_EVENTS_PER_DATE;
     }
 
+    /**
+     * Compare titles case-insensitively so "Life Style Review" and "life style
+     * review" cannot both be stored. SQLite compares strings case-sensitively, so
+     * the lowering has to happen in SQL rather than relying on the collation.
+     */
     private function eventExists(Carbon $date, string $teamType, string $title): bool
     {
         return CalendarEvent::whereDate('event_date', $date->format('Y-m-d'))
             ->where('team_type', $teamType)
-            ->where('content_title', $title)
+            ->whereRaw('LOWER(content_title) = ?', [Str::lower($this->cleanTitle($title))])
             ->exists();
+    }
+
+    /**
+     * Trim and collapse runs of whitespace, so stray spacing in the sheet neither
+     * reaches the database nor hides a duplicate.
+     */
+    private function cleanTitle(string $title): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $title));
     }
 
     private function fallbackUser(string $preferredRole): ?User
