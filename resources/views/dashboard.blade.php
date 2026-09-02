@@ -760,7 +760,7 @@
                                 <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider">{{ $event->event_date->format('D') }}</span>
                             </div>
                             <div class="text-sm font-bold text-gray-900 leading-snug break-words">
-                                {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
+                                {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
                             </div>
                             <div class="text-xs text-gray-500 mt-1 font-medium line-clamp-2">
                                 {{ $event->content_objective ?? 'No objective specified' }}
@@ -840,7 +840,7 @@
                             <!-- Title & Objective Column -->
                             <td class="px-8 py-5">
                                 <div class="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                    {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
+                                    {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
                                 </div>
                                 <div class="text-xs text-gray-500 mt-1 truncate max-w-md font-medium" title="{{ $event->content_objective }}">
                                     {{ $event->content_objective ?? 'No objective specified' }}
@@ -913,7 +913,7 @@
                                 <span class="text-[10px] font-medium text-gray-500">{{ $event->event_date->format('D') }}</span>
                             </div>
                             <div class="text-sm font-bold text-gray-900 leading-snug break-words">
-                                {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
+                                {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
                             </div>
                             <div class="text-xs text-gray-500 mt-1 font-medium line-clamp-2">
                                 {{ $event->content_objective ?? 'No objective specified' }}
@@ -1009,7 +1009,7 @@
                             <!-- Title & Objective Column -->
                             <td class="px-6 py-4">
                                 <div class="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                    {{ $event->team_type == 'product_team' ? $event->content_title : 'Post #'.$event->post_no }}
+                                    {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
                                 </div>
                                 <div class="text-[12px] text-gray-500 mt-1 truncate max-w-sm font-medium" title="{{ $event->content_objective }}">
                                     {{ $event->content_objective ?? 'No objective specified' }}

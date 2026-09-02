@@ -45,7 +45,7 @@
                         @endif
                     </div>
                     <h1 class="text-xl sm:text-3xl font-black text-gray-900 tracking-tight break-words">
-                        {{ $event->team_type == 'product_team' ? $event->content_title : ($event->team_type == 'global_team' ? $event->content_title : 'Post #'.$event->post_no) }}
+                        {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
                     </h1>
                 </div>
                 <div class="flex items-center text-[13px] sm:text-sm font-bold text-gray-700 bg-white px-3 sm:px-4 py-2.5 rounded-xl border border-gray-200 shadow-xs">
