@@ -22,11 +22,14 @@ class CronNotificationController extends Controller
             ], 401);
         }
 
-        $summary = $service->sendTodayNotifications();
+        $daysAhead = $request->has('days_ahead') ? (int) $request->query('days_ahead') : 5;
+        $specificDate = $request->query('date');
+
+        $summary = $service->sendNotifications($daysAhead, $specificDate);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Event notifications processed successfully.',
+            'message' => "Event reminder notifications processed for target date: {$summary['target_date']} ({$summary['days_ahead']} days ahead).",
             'data' => $summary,
         ]);
     }

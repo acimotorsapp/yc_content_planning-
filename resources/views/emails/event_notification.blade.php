@@ -64,11 +64,15 @@
                                 <tr>
                                     <td class="sub-banner-left" align="left" style="vertical-align: middle;">
                                         <span style="display: inline-block; background-color: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 9999px;">
-                                            Daily Event Notification
+                                            @if(($daysAhead ?? 0) > 0)
+                                                Upcoming Reminder ({{ $daysAhead }} Days Notice)
+                                            @else
+                                                Daily Event Notification
+                                            @endif
                                         </span>
                                     </td>
                                     <td class="sub-banner-right" align="right" style="vertical-align: middle; color: #64748b; font-size: 12px; font-weight: 600;">
-                                        📅 {{ now()->format('l, j F Y') }}
+                                        📅 Scheduled: {{ \Carbon\Carbon::parse($targetDate ?? now())->format('l, j F Y') }}
                                     </td>
                                 </tr>
                             </table>
@@ -81,9 +85,15 @@
                             <div style="font-size: 18px; font-weight: 700; color: #0f172a; line-height: 1.4; margin-bottom: 6px;">
                                 Hello {{ $user->name }}@if(!empty($user->designation)) <span style="display: inline-block; font-size: 14px; font-weight: 600; color: #64748b; margin-left: 2px;">({{ $user->designation }})</span>@endif,
                             </div>
+                            @if(($daysAhead ?? 0) > 0)
+                            <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                                This is an advance reminder that you have <strong style="color: #0f172a; font-weight: 700;">{{ $events->count() }}</strong> content event(s) scheduled for publication in <strong style="color: #d6001c;">{{ $daysAhead }} days</strong> on <strong style="color: #0f172a;">{{ \Carbon\Carbon::parse($targetDate ?? now())->format('l, j F Y') }}</strong>. Please review and prepare the content below:
+                            </p>
+                            @else
                             <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
                                 You have <strong style="color: #0f172a; font-weight: 700;">{{ $events->count() }}</strong> content event(s) scheduled for today. Please review the details below:
                             </p>
+                            @endif
                         </td>
                     </tr>
 
@@ -120,6 +130,15 @@
 
                                     <!-- Event Details Table -->
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 13px; line-height: 1.5; color: #475569; border-top: 1px dashed #e2e8f0; padding-top: 8px; margin-top: 6px;">
+                                        <tr>
+                                            <td width="95" style="vertical-align: top; color: #64748b; font-weight: 600; padding: 4px 0;">Publish Date:</td>
+                                            <td style="vertical-align: top; color: #0f172a; font-weight: 700; padding: 4px 0;">
+                                                {{ $event->event_date->format('l, F j, Y') }}
+                                                @if(($daysAhead ?? 0) > 0)
+                                                    <span style="display: inline-block; font-size: 11px; font-weight: 700; color: #d6001c; background-color: #fef2f2; border: 1px solid #fee2e2; padding: 1px 6px; border-radius: 4px; margin-left: 6px;">In {{ $daysAhead }} days</span>
+                                                @endif
+                                            </td>
+                                        </tr>
                                         @if($event->content_objective)
                                             <tr>
                                                 <td width="95" style="vertical-align: top; color: #64748b; font-weight: 600; padding: 4px 0;">Objective:</td>

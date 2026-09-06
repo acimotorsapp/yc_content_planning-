@@ -12,14 +12,18 @@ use Illuminate\Support\Facades\Mail;
 class EventNotificationService
 {
     /**
-     * Process and send daily event notifications to users who have events today.
+     * Process and send event notifications for events scheduled X days in advance (default 5 days).
      *
+     * @param int $daysAhead
+     * @param string|null $specificDate
      * @return array
      */
-    public function sendTodayNotifications(): array
+    public function sendNotifications(int $daysAhead = 5, ?string $specificDate = null): array
     {
-        $today = Carbon::today()->toDateString();
-        $events = CalendarEvent::whereDate('event_date', $today)->get();
+        $targetDate = $specificDate ? Carbon::parse($specificDate)->toDateString() : Carbon::today()->addDays($daysAhead)->toDateString();
+        $actualDaysAhead = Carbon::today()->diffInDays(Carbon::parse($targetDate), false);
+
+        $events = CalendarEvent::whereDate('event_date', $targetDate)->get();
         $eventsByUser = $events->groupBy('user_id');
 
         $results = [];
@@ -40,18 +44,24 @@ class EventNotificationService
                     'user' => $user->name,
                     'email' => $user->email,
                     'events_count' => $userEvents->count(),
+                    'target_date' => $targetDate,
+                    'days_ahead' => $actualDaysAhead,
                     'status' => 'skipped (dummy email)',
                 ];
                 continue;
             }
 
             try {
-                Mail::to($user->email)->send(new EventNotificationMail($user, $userEvents));
+                $mailable = new EventNotificationMail($user, $userEvents, $targetDate, $actualDaysAhead);
+                Mail::to($user->email)->send($mailable);
                 $sentCount++;
                 $results[] = [
                     'user' => $user->name,
                     'email' => $user->email,
+                    'cc' => array_map(fn($addr) => is_string($addr) ? $addr : $addr->address, $mailable->envelope()->cc),
                     'events_count' => $userEvents->count(),
+                    'target_date' => $targetDate,
+                    'days_ahead' => $actualDaysAhead,
                     'status' => 'sent',
                 ];
             } catch (\Throwable $e) {
@@ -61,6 +71,8 @@ class EventNotificationService
                     'user' => $user->name,
                     'email' => $user->email,
                     'events_count' => $userEvents->count(),
+                    'target_date' => $targetDate,
+                    'days_ahead' => $actualDaysAhead,
                     'status' => 'failed',
                     'error' => $e->getMessage(),
                 ];
@@ -68,7 +80,9 @@ class EventNotificationService
         }
 
         return [
-            'date' => $today,
+            'run_date' => Carbon::today()->toDateString(),
+            'target_date' => $targetDate,
+            'days_ahead' => $actualDaysAhead,
             'total_events' => $events->count(),
             'total_users' => count($eventsByUser),
             'sent_count' => $sentCount,
@@ -76,5 +90,15 @@ class EventNotificationService
             'failed_count' => $failedCount,
             'details' => $results,
         ];
+    }
+
+    /**
+     * Backward-compatible alias (defaults to 5 days advance reminder).
+     *
+     * @return array
+     */
+    public function sendTodayNotifications(): array
+    {
+        return $this->sendNotifications(5);
     }
 }

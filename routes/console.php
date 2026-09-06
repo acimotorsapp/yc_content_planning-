@@ -7,9 +7,14 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('events:notify', function (\App\Services\EventNotificationService $service) {
-    $summary = $service->sendTodayNotifications();
+Artisan::command('events:notify {--days=5 : Days ahead to send reminder for (default: 5)} {--date= : Specific event date to send reminder for}', function (\App\Services\EventNotificationService $service) {
+    $daysAhead = (int) ($this->option('days') ?? 5);
+    $targetDate = $this->option('date');
+
+    $summary = $service->sendNotifications($daysAhead, $targetDate);
     
+    $this->info("Processing reminders for target date: {$summary['target_date']} ({$summary['days_ahead']} days in advance).");
+
     foreach ($summary['details'] as $detail) {
         if ($detail['status'] === 'sent') {
             $this->info("Notification sent to {$detail['email']} for {$detail['events_count']} event(s).");
@@ -20,8 +25,8 @@ Artisan::command('events:notify', function (\App\Services\EventNotificationServi
         }
     }
     
-    $this->info('Event notifications processed.');
-})->purpose('Send notifications to users for their events scheduled for today');
+    $this->info('Event reminder notifications completed.');
+})->purpose('Send advance reminder notifications to users for their events scheduled 5 days in advance');
 
 use Illuminate\Support\Facades\Schedule;
 // Run the notification command daily at 12:00 AM (midnight)

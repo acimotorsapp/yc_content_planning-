@@ -51,48 +51,73 @@
             @php
                 $totalCount = clone $events;
                 $total = $totalCount->count();
+                $doneCount = $totalCount->where('status', 'done')->count();
+                $notDoneCount = $total - $doneCount;
                 $digital = $totalCount->where('team_type', 'digital_team')->count();
                 $product = $totalCount->where('team_type', 'product_team')->count();
             @endphp
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
                 <!-- Total Events -->
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
-                    <div class="absolute -right-12 -top-12 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 flex items-center justify-between gap-3">
+                <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest mb-0.5 sm:mb-1">Total Scheduled</p>
-                            <h3 class="text-3xl sm:text-4xl font-black text-gray-900">{{ $total }}</h3>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Total</p>
+                            <h3 class="text-2xl sm:text-3xl font-black text-gray-900">{{ $total }}</h3>
                         </div>
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-xs">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Done Events -->
+                <div class="bg-white rounded-2xl p-4 border border-emerald-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="min-w-0">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-0.5">Done</p>
+                            <h3 class="text-2xl sm:text-3xl font-black text-emerald-600">{{ $doneCount }}</h3>
+                        </div>
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-100 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Not Done Events -->
+                <div class="bg-white rounded-2xl p-4 border border-rose-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="min-w-0">
+                            <p class="text-[10px] font-bold text-rose-600 uppercase tracking-widest mb-0.5">Not Done</p>
+                            <h3 class="text-2xl sm:text-3xl font-black text-rose-600">{{ $notDoneCount }}</h3>
+                        </div>
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600 border border-rose-100 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                     </div>
                 </div>
 
                 <!-- Digital Team -->
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
-                    <div class="absolute -right-12 -top-12 w-40 h-40 bg-teal-500/10 rounded-full blur-3xl group-hover:bg-teal-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 flex items-center justify-between gap-3">
+                <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest mb-0.5 sm:mb-1">Digital Team</p>
-                            <h3 class="text-3xl sm:text-4xl font-black text-teal-600">{{ $digital }}</h3>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Digital</p>
+                            <h3 class="text-2xl sm:text-3xl font-black text-teal-600">{{ $digital }}</h3>
                         </div>
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 border border-teal-100 shadow-xs">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600 border border-teal-100 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product Team -->
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
-                    <div class="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 flex items-center justify-between gap-3">
+                <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest mb-0.5 sm:mb-1">Product Team</p>
-                            <h3 class="text-3xl sm:text-4xl font-black text-blue-600">{{ $product }}</h3>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Product</p>
+                            <h3 class="text-2xl sm:text-3xl font-black text-blue-600">{{ $product }}</h3>
                         </div>
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         </div>
                     </div>
                 </div>
@@ -151,7 +176,8 @@
                         'aipePillar' => $event->aipe_pillar ?? 'N/A',
                         'teamType' => $event->team_type,
                         'shootDate' => $shootDate,
-                        'boostingBudget' => $event->boosting_budget ?? '0'
+                        'boostingBudget' => $event->boosting_budget ?? '0',
+                        'status' => $event->status ?? 'not_done'
                     ]
                 ];
             })->values();
@@ -285,6 +311,11 @@
                                 meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">Shoot: ' + esc(props.shootDate) + '</span>');
                             }
                             if (teamType !== 'global_team') {
+                                if (props.status === 'done') {
+                                    meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">✓ Done</span>');
+                                } else {
+                                    meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300">✕ Not Done</span>');
+                                }
                                 meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">৳ ' + esc(props.boostingBudget || '0') + '</span>');
                             }
                             return { html:
@@ -321,6 +352,15 @@
                             teamClass = 'bg-blue-50 text-blue-900 border-blue-200 shadow-xs';
                         }
 
+                        var statusBadge = '';
+                        if (teamType !== 'global_team') {
+                            if (arg.event.extendedProps.status === 'done') {
+                                statusBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">✓ Done</span>';
+                            } else {
+                                statusBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300">✕ Not Done</span>';
+                            }
+                        }
+
                         var pillarHtml = '';
                         if (arg.event.extendedProps.aipePillar && arg.event.extendedProps.aipePillar !== 'N/A') {
                             var pillarBadge = teamType === 'digital_team' 
@@ -355,7 +395,7 @@
                         var html = `
                             <div class="px-2.5 py-2 w-full border rounded-xl shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col gap-0.5 ${teamClass}" style="white-space: normal; line-height: 1.4;">
                                 <div class="flex items-center justify-between gap-1 mb-0.5">
-                                    ${teamBadge}
+                                    <div class="flex items-center gap-1">${teamBadge} ${statusBadge}</div>
                                 </div>
                                 <div class="font-extrabold text-[13px] leading-tight" style="word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     ${arg.event.title}
@@ -798,6 +838,49 @@
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->format }}</span>
                         @endif
                     </div>
+
+                    <!-- Status row -->
+                    <div class="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-gray-100">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status:</span>
+                            @if(auth()->user()->role === 'super_admin')
+                                <div class="inline-flex items-center p-0.5 rounded-lg bg-gray-100 border border-gray-200/80">
+                                    <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="done">
+                                        <button type="submit" 
+                                                class="px-2.5 py-0.5 text-[9px] font-extrabold rounded transition-all {{ $event->status === 'done' ? 'bg-emerald-600 text-white shadow-2xs' : 'text-gray-500 hover:text-emerald-700' }}"
+                                                title="Mark as Done">
+                                            ✓ Done
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="not_done">
+                                        <button type="submit" 
+                                                class="px-2.5 py-0.5 text-[9px] font-extrabold rounded transition-all {{ $event->status !== 'done' ? 'bg-rose-600 text-white shadow-2xs' : 'text-gray-500 hover:text-rose-700' }}"
+                                                title="Mark as Not Done">
+                                            ✕ Not Done
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                @if($event->status === 'done')
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Done
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                        Not Done
+                                    </span>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
                 </div>
                 @endforeach
             </div>
@@ -811,6 +894,7 @@
                             <th class="px-8 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest w-32">Team</th>
                             <th class="px-8 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest">Title / Objective</th>
                             <th class="px-8 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest w-48">Tags</th>
+                            <th class="px-8 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest text-center w-36">Status</th>
                             <th class="px-8 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest text-right w-16">Action</th>
                         </tr>
                     </thead>
@@ -861,6 +945,46 @@
                                         </span>
                                     @endif
                                 </div>
+                            </td>
+
+                            <!-- Status Column -->
+                            <td class="px-8 py-5 whitespace-nowrap text-center">
+                                @if(auth()->user()->role === 'super_admin')
+                                    <div class="inline-flex items-center p-0.5 rounded-xl bg-gray-100 border border-gray-200/80 shadow-2xs">
+                                        <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="done">
+                                            <button type="submit" 
+                                                    class="px-2.5 py-1 text-[10px] font-extrabold rounded-lg transition-all {{ $event->status === 'done' ? 'bg-emerald-600 text-white shadow-xs' : 'text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 cursor-pointer' }}"
+                                                    title="Mark as Done">
+                                                ✓ Done
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="not_done">
+                                            <button type="submit" 
+                                                    class="px-2.5 py-1 text-[10px] font-extrabold rounded-lg transition-all {{ $event->status !== 'done' ? 'bg-rose-600 text-white shadow-xs' : 'text-gray-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer' }}"
+                                                    title="Mark as Not Done">
+                                                ✕ Not Done
+                                            </button>
+                                        </form>
+                                    </div>
+                                @else
+                                    @if($event->status === 'done')
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                            Done
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                            Not Done
+                                        </span>
+                                    @endif
+                                @endif
                             </td>
 
                             <!-- Action Column -->
@@ -959,6 +1083,49 @@
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{{ $event->platform }}</span>
                         @endif
                     </div>
+
+                    <!-- Status row -->
+                    <div class="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-gray-100">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status:</span>
+                            @if(auth()->user()->role === 'super_admin')
+                                <div class="inline-flex items-center p-0.5 rounded-lg bg-gray-100 border border-gray-200/80">
+                                    <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="done">
+                                        <button type="submit" 
+                                                class="px-2.5 py-0.5 text-[9px] font-extrabold rounded transition-all {{ $event->status === 'done' ? 'bg-emerald-600 text-white shadow-2xs' : 'text-gray-500 hover:text-emerald-700' }}"
+                                                title="Mark as Done">
+                                            ✓ Done
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="not_done">
+                                        <button type="submit" 
+                                                class="px-2.5 py-0.5 text-[9px] font-extrabold rounded transition-all {{ $event->status !== 'done' ? 'bg-rose-600 text-white shadow-2xs' : 'text-gray-500 hover:text-rose-700' }}"
+                                                title="Mark as Not Done">
+                                            ✕ Not Done
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                @if($event->status === 'done')
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Done
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                        Not Done
+                                    </span>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
                 </div>
                 @empty
                 <div class="px-5 py-12 text-center">
@@ -980,6 +1147,7 @@
                             <th class="px-6 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest w-32">Team</th>
                             <th class="px-6 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest">Title / Objective</th>
                             <th class="px-6 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest w-48">Tags</th>
+                            <th class="px-6 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest text-center w-36">Status</th>
                             <th class="px-6 py-4 text-[10px] font-extrabold text-gray-500 uppercase tracking-widest text-right w-16">Link</th>
                         </tr>
                     </thead>
@@ -1035,6 +1203,46 @@
                                         </span>
                                     @endif
                                 </div>
+                            </td>
+
+                            <!-- Status Column -->
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                @if(auth()->user()->role === 'super_admin')
+                                    <div class="inline-flex items-center p-0.5 rounded-xl bg-gray-100 border border-gray-200/80 shadow-2xs">
+                                        <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="done">
+                                            <button type="submit" 
+                                                    class="px-2.5 py-1 text-[10px] font-extrabold rounded-lg transition-all {{ $event->status === 'done' ? 'bg-emerald-600 text-white shadow-xs' : 'text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 cursor-pointer' }}"
+                                                    title="Mark as Done">
+                                                ✓ Done
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="not_done">
+                                            <button type="submit" 
+                                                    class="px-2.5 py-1 text-[10px] font-extrabold rounded-lg transition-all {{ $event->status !== 'done' ? 'bg-rose-600 text-white shadow-xs' : 'text-gray-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer' }}"
+                                                    title="Mark as Not Done">
+                                                ✕ Not Done
+                                            </button>
+                                        </form>
+                                    </div>
+                                @else
+                                    @if($event->status === 'done')
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                            Done
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                            Not Done
+                                        </span>
+                                    @endif
+                                @endif
                             </td>
 
                             <!-- Action Column -->

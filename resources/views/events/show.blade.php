@@ -12,28 +12,59 @@
     </x-slot>
 
     <div class="max-w-4xl mx-auto pb-12">
-        @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
         <!-- Action toolbar -->
-        <div class="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
-            <a href="{{ route('events.edit', $event) }}" class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-xs transition-all">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                Edit Event
-            </a>
-            <form action="{{ route('events.destroy', $event) }}" method="POST" class="flex-1 sm:flex-none delete-form" data-confirm="Are you sure you want to delete this event?">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-bold rounded-xl border border-red-200 transition-all" title="Delete Event">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    Delete
-                </button>
-            </form>
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4 sm:mb-6">
+            <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap flex-1 sm:flex-none">
+                @if(auth()->id() === $event->user_id || auth()->user()->role === 'super_admin')
+                <a href="{{ route('events.edit', $event) }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-xs transition-all">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Edit Event
+                </a>
+                <form action="{{ route('events.destroy', $event) }}" method="POST" class="delete-form inline" data-confirm="Are you sure you want to delete this event?">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="inline-flex items-center justify-center px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-bold rounded-xl border border-red-200 transition-all" title="Delete Event">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Delete
+                    </button>
+                </form>
+                @endif
+            </div>
+
+            @if(auth()->user()->role === 'super_admin')
+            <!-- Super Admin Status Toggle -->
+            <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-2xl border border-gray-200 shadow-xs">
+                <span class="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider">Status:</span>
+                <div class="inline-flex items-center p-0.5 rounded-xl bg-gray-100 border border-gray-200/80">
+                    <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="status" value="done">
+                        <button type="submit" 
+                                class="px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all {{ $event->status === 'done' ? 'bg-emerald-600 text-white shadow-xs' : 'text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 cursor-pointer' }}"
+                                title="Mark as Done">
+                            ✓ Done
+                        </button>
+                    </form>
+                    <form action="{{ route('events.update_status', $event) }}" method="POST" class="inline">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="status" value="not_done">
+                        <button type="submit" 
+                                class="px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all {{ $event->status !== 'done' ? 'bg-rose-600 text-white shadow-xs' : 'text-gray-600 hover:text-rose-700 hover:bg-rose-50 cursor-pointer' }}"
+                                title="Mark as Not Done">
+                            ✕ Not Done
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endif
         </div>
-        @endif
         <div class="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 shadow-sm overflow-hidden mt-0 sm:mt-2">
             <!-- Header Section -->
             <div class="p-5 sm:p-8 border-b border-gray-100 bg-slate-50/70 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <div class="flex items-center gap-3 mb-2">
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                         <span class="inline-flex items-center px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wider border
                             {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : ($event->team_type == 'digital_team' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
                             {{ str_replace('_', ' ', $event->team_type) }}
@@ -41,6 +72,17 @@
                         @if($event->aipe_pillar)
                             <span class="inline-flex items-center px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
                                 {{ $event->aipe_pillar }}
+                            </span>
+                        @endif
+                        @if($event->status === 'done')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                Done
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Not Done
                             </span>
                         @endif
                     </div>

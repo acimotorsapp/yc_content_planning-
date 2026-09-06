@@ -159,6 +159,31 @@ class CalendarEventController extends Controller
         return back()->with('success', 'Event deleted successfully!');
     }
 
+    public function updateStatus(Request $request, CalendarEvent $event)
+    {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized action. Only Super Admin can update event status.');
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:done,not_done',
+        ]);
+
+        $event->update([
+            'status' => $validated['status'],
+        ]);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'status' => $event->status,
+                'message' => 'Event marked as ' . ($event->status === 'done' ? 'Done' : 'Not Done') . ' successfully!',
+            ]);
+        }
+
+        return back()->with('success', 'Event marked as ' . ($event->status === 'done' ? 'Done' : 'Not Done') . ' successfully!');
+    }
+
     public function storeGlobal(Request $request)
     {
         if (auth()->user()->role !== 'super_admin') {

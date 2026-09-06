@@ -23,6 +23,7 @@ class CalendarEvent extends Model
         'product',
         'post_no',
         'product_focus',
+        'status',
     ];
 
     protected $attributes = [

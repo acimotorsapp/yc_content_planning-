@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
 class EventNotificationMail extends Mailable
@@ -17,14 +18,41 @@ class EventNotificationMail extends Mailable
 
     public $user;
     public $events;
+    public $targetDate;
+    public $daysAhead;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, Collection $events)
+    public function __construct(User $user, Collection $events, ?string $targetDate = null, ?int $daysAhead = null)
     {
         $this->user = $user;
         $this->events = $events;
+        $this->targetDate = $targetDate ?? ($events->first()?->event_date?->toDateString() ?? Carbon::today()->toDateString());
+        $this->daysAhead = $daysAhead !== null ? $daysAhead : Carbon::today()->diffInDays(Carbon::parse($this->targetDate), false);
+    }
+
+    /**
+     * Default CC recipients for event notifications.
+     */
+    public static function getDefaultCcRecipients(): array
+    {
+        return [
+            'option@aci-bd.com',
+            'mirajul@aci-bd.com',
+            'richard@aci-bd.com',
+            'adhikary@aci-bd.com',
+            'efaz@aci-bd.com',
+            'Sourav.Bikash@aci-bd.com',
+            'Sultana.Nishi@aci-bd.com',
+            'Swagata@aci-bd.com',
+            'arnob@aci-bd.com',
+            'Nabil.Sarker@aci-bd.com',
+            'Abu.siddik@aci-bd.com',
+            'priasa@aci-bd.com',
+            'azmyen@aci-bd.com',
+            'Ashif.Ahmed@aci-bd.com',
+        ];
     }
 
     /**
@@ -32,14 +60,26 @@ class EventNotificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        // Add CC recipients while filtering out recipient to prevent duplicates
+        $recipientEmail = strtolower(trim($this->user->email ?? ''));
+
+        // Add CC recipients while filtering out the recipient to prevent duplicate delivery
         $ccRecipients = array_values(array_filter(
-            ['option@aci-bd.com', 'sultana.nishi@aci-bd.com'],
-            fn($email) => strtolower(trim($email)) !== strtolower(trim($this->user->email ?? ''))
+            self::getDefaultCcRecipients(),
+            fn($email) => strtolower(trim($email)) !== $recipientEmail
         ));
 
+        $formattedDate = Carbon::parse($this->targetDate)->format('D, M j, Y');
+
+        if ($this->daysAhead > 0) {
+            $subject = "Upcoming Content Reminder: Scheduled for {$formattedDate} (in {$this->daysAhead} days) - YC Content Planning";
+        } elseif ($this->daysAhead === 0) {
+            $subject = "Your Scheduled Events for Today ({$formattedDate}) - YC Content Planning";
+        } else {
+            $subject = "Scheduled Content Notice for {$formattedDate} - YC Content Planning";
+        }
+
         return new Envelope(
-            subject: 'Your Scheduled Events for Today - YC Content Planning',
+            subject: $subject,
             cc: $ccRecipients,
         );
     }
@@ -55,6 +95,8 @@ class EventNotificationMail extends Mailable
             view: 'emails.event_notification',
             with: [
                 'baseUrl' => $baseUrl,
+                'targetDate' => $this->targetDate,
+                'daysAhead' => $this->daysAhead,
             ],
         );
     }
