@@ -42,9 +42,41 @@ class EventNotificationMail extends Mailable
      */
     public function content(): Content
     {
+        $baseUrl = $this->resolveBaseUrl();
+
         return new Content(
             view: 'emails.event_notification',
+            with: [
+                'baseUrl' => $baseUrl,
+            ],
         );
+    }
+
+    /**
+     * Resolve base URL dynamically based on current request or cached live domain.
+     */
+    protected function resolveBaseUrl(): string
+    {
+        // 1. If currently inside a web request with Host header
+        if (!app()->runningInConsole() && request()->hasHeader('Host')) {
+            $scheme = request()->isSecure() ? 'https' : 'http';
+            return $scheme . '://' . request()->getHttpHost();
+        }
+
+        // 2. Check if cached live domain exists (from user visits)
+        try {
+            if ($cached = \Illuminate\Support\Facades\Cache::get('app_live_url')) {
+                return rtrim($cached, '/');
+            }
+        } catch (\Throwable $e) {}
+
+        // 3. Check APP_URL from configuration
+        $configUrl = config('app.url');
+        if (!empty($configUrl) && !str_contains($configUrl, 'localhost')) {
+            return rtrim($configUrl, '/');
+        }
+
+        return rtrim(url('/'), '/');
     }
 
     /**

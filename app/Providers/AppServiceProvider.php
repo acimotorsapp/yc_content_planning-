@@ -19,6 +19,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Dynamically detect current domain when accessed via browser
+        if (!app()->runningInConsole() && request()->hasHeader('Host')) {
+            try {
+                $scheme = request()->isSecure() ? 'https' : 'http';
+                $currentHost = $scheme . '://' . request()->getHttpHost();
+                \Illuminate\Support\Facades\Cache::forever('app_live_url', $currentHost);
+            } catch (\Throwable $e) {}
+        } elseif (app()->runningInConsole()) {
+            try {
+                $cachedUrl = \Illuminate\Support\Facades\Cache::get('app_live_url');
+                if ($cachedUrl) {
+                    \Illuminate\Support\Facades\URL::forceRootUrl($cachedUrl);
+                }
+            } catch (\Throwable $e) {}
+        }
+
         \Illuminate\Support\Facades\View::composer(['layouts.navigation', 'layouts.app', 'events.partials.create-modal', 'events.create', 'events.edit', 'dashboard'], function ($view) {
             if (\Illuminate\Support\Facades\Schema::hasTable('master_data')) {
                 $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
