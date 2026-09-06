@@ -32,8 +32,15 @@ class EventNotificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        // Add CC recipients while filtering out recipient to prevent duplicates
+        $ccRecipients = array_values(array_filter(
+            ['option@aci-bd.com', 'sultana.nishi@aci-bd.com'],
+            fn($email) => strtolower(trim($email)) !== strtolower(trim($this->user->email ?? ''))
+        ));
+
         return new Envelope(
             subject: 'Your Scheduled Events for Today - YC Content Planning',
+            cc: $ccRecipients,
         );
     }
 

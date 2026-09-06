@@ -60,3 +60,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Public Cron Notification Endpoint (Allows triggering daily mail via Web URL / cPanel curl / external cron)
+Route::match(['get', 'post'], '/cron/events-notify', [\App\Http\Controllers\CronNotificationController::class, 'notify'])->name('cron.events.notify');
+Route::match(['get', 'post'], '/api/cron/events-notify', [\App\Http\Controllers\CronNotificationController::class, 'notify'])->name('api.cron.events.notify');
+

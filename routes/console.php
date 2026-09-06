@@ -7,20 +7,16 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('events:notify', function () {
-    $today = \Carbon\Carbon::today()->toDateString();
+Artisan::command('events:notify', function (\App\Services\EventNotificationService $service) {
+    $summary = $service->sendTodayNotifications();
     
-    // Find events scheduled for today
-    $events = \App\Models\CalendarEvent::whereDate('event_date', $today)->get();
-    
-    // Group by user
-    $eventsByUser = $events->groupBy('user_id');
-    
-    foreach ($eventsByUser as $userId => $userEvents) {
-        $user = \App\Models\User::find($userId);
-        if ($user) {
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\EventNotificationMail($user, $userEvents));
-            $this->info("Notification sent to {$user->email} for " . $userEvents->count() . " event(s).");
+    foreach ($summary['details'] as $detail) {
+        if ($detail['status'] === 'sent') {
+            $this->info("Notification sent to {$detail['email']} for {$detail['events_count']} event(s).");
+        } elseif (str_starts_with($detail['status'], 'skipped')) {
+            $this->warn("Skipped dummy test email: {$detail['email']} ({$detail['events_count']} event(s))");
+        } else {
+            $this->error("Failed to send to {$detail['email']}: " . ($detail['error'] ?? 'Unknown error'));
         }
     }
     
