@@ -191,17 +191,23 @@
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                             <div>
+                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Financial Budget</label>
+                                <input type="text" name="financial_budget" value="0" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
+                            <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Boosting Budget</label>
                                 <input type="text" name="boosting_budget" value="0" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                             </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Drive Link</label>
                                 <input type="text" name="drive_link" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs placeholder-gray-400 font-medium" placeholder="https://drive.google.com/...">
                             </div>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Remarks</label>
-                            <input type="text" name="remarks" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Remarks</label>
+                                <input type="text" name="remarks" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
                         </div>
                         
                         <div class="pt-5 sm:pt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-end gap-2.5 sm:gap-3 mt-5 sm:mt-6 border-t border-gray-200">
@@ -289,13 +295,17 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                             <div>
+                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Financial Budget</label>
+                                <input type="text" name="financial_budget" value="0" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
+                            <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Boosting Budget</label>
                                 <input type="text" name="boosting_budget" value="0" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
                             </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Remarks</label>
-                                <input type="text" name="remarks" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
-                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Remarks</label>
+                            <input type="text" name="remarks" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
                         </div>
                         
                         <div class="pt-5 sm:pt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-end gap-2.5 sm:gap-3 mt-5 sm:mt-6 border-t border-gray-200">

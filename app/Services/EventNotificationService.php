@@ -43,6 +43,7 @@ class EventNotificationService
                 $results[] = [
                     'user' => $user->name,
                     'email' => $user->email,
+                    'cc' => EventNotificationMail::getDefaultCcRecipients(),
                     'events_count' => $userEvents->count(),
                     'target_date' => $targetDate,
                     'days_ahead' => $actualDaysAhead,
@@ -83,6 +84,8 @@ class EventNotificationService
             'run_date' => Carbon::today()->toDateString(),
             'target_date' => $targetDate,
             'days_ahead' => $actualDaysAhead,
+            'cc_recipients_count' => count(EventNotificationMail::getDefaultCcRecipients()),
+            'cc_recipients' => EventNotificationMail::getDefaultCcRecipients(),
             'total_events' => $events->count(),
             'total_users' => count($eventsByUser),
             'sent_count' => $sentCount,

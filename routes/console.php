@@ -17,7 +17,8 @@ Artisan::command('events:notify {--days=5 : Days ahead to send reminder for (def
 
     foreach ($summary['details'] as $detail) {
         if ($detail['status'] === 'sent') {
-            $this->info("Notification sent to {$detail['email']} for {$detail['events_count']} event(s).");
+            $ccCount = isset($detail['cc']) ? count($detail['cc']) : 0;
+            $this->info("Notification sent to {$detail['email']} (CC: {$ccCount} recipients) for {$detail['events_count']} event(s).");
         } elseif (str_starts_with($detail['status'], 'skipped')) {
             $this->warn("Skipped dummy test email: {$detail['email']} ({$detail['events_count']} event(s))");
         } else {

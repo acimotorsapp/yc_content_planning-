@@ -161,18 +161,24 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Financial Budget</label>
+                                <input type="text" name="financial_budget" value="{{ old('financial_budget', $event->financial_budget ?? '0') }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Boosting Budget</label>
                                 <input type="text" name="boosting_budget" value="{{ old('boosting_budget', $event->boosting_budget ?? '0') }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                             </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Drive Link</label>
                                 <input type="text" name="drive_link" value="{{ old('drive_link', $event->drive_link) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium" placeholder="https://drive.google.com/...">
                             </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Remarks</label>
-                            <input type="text" name="remarks" value="{{ old('remarks', $event->remarks) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Remarks</label>
+                                <input type="text" name="remarks" value="{{ old('remarks', $event->remarks) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
                         </div>
 
                     @elseif($event->team_type === 'digital_team')
@@ -248,13 +254,18 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Financial Budget</label>
+                                <input type="text" name="financial_budget" value="{{ old('financial_budget', $event->financial_budget ?? '0') }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Boosting Budget</label>
                                 <input type="text" name="boosting_budget" value="{{ old('boosting_budget', $event->boosting_budget ?? '0') }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
                             </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Remarks</label>
-                                <input type="text" name="remarks" value="{{ old('remarks', $event->remarks) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
-                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Remarks</label>
+                            <input type="text" name="remarks" value="{{ old('remarks', $event->remarks) }}" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs font-medium">
                         </div>
 
                     @else

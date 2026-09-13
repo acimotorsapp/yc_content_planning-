@@ -28,10 +28,6 @@ class MultiEventCapacityTest extends TestCase
             'content_title' => 'Product Event 1',
             'boosting_budget' => '1000'
         ]);
-        if (session('errors')) {
-            dump(session('errors')->all());
-        }
-        dump('Events in DB: ' . CalendarEvent::count());
         $response1->assertSessionHasNoErrors();
         $this->assertEquals(1, CalendarEvent::whereDate('event_date', $testDate)->count());
 
@@ -43,7 +39,7 @@ class MultiEventCapacityTest extends TestCase
             'boosting_budget' => '2000'
         ]);
         $response2->assertSessionHasNoErrors();
-        $this->assertEquals(2, CalendarEvent::where('event_date', $testDate)->count());
+        $this->assertEquals(2, CalendarEvent::whereDate('event_date', $testDate)->count());
 
         // 3. Post Global event on SAME testDate
         $response3 = $this->post(route('events.global.store'), [
@@ -51,7 +47,7 @@ class MultiEventCapacityTest extends TestCase
             'content_title' => 'Global Event 3'
         ]);
         $response3->assertSessionHasNoErrors();
-        $this->assertEquals(3, CalendarEvent::where('event_date', $testDate)->count());
+        $this->assertEquals(3, CalendarEvent::whereDate('event_date', $testDate)->count());
 
         // 4. Post 3 more events on SAME testDate to reach 6
         for ($i = 4; $i <= 6; $i++) {
@@ -65,7 +61,7 @@ class MultiEventCapacityTest extends TestCase
             $res->assertSessionHasNoErrors();
         }
 
-        $this->assertEquals(6, CalendarEvent::where('event_date', $testDate)->count());
+        $this->assertEquals(6, CalendarEvent::whereDate('event_date', $testDate)->count());
 
         // 5. Attempt to add 7th event on SAME testDate (Should be REJECTED)
         $response7 = $this->post(route('events.product.store'), [
@@ -74,7 +70,7 @@ class MultiEventCapacityTest extends TestCase
             'boosting_budget' => '1000'
         ]);
         $response7->assertSessionHasErrors('event_date');
-        $this->assertEquals(6, CalendarEvent::where('event_date', $testDate)->count());
+        $this->assertEquals(6, CalendarEvent::whereDate('event_date', $testDate)->count());
 
         // 6. Test Dashboard page loads and shares dateCounts
         $dashRes = $this->get(route('dashboard'));
@@ -87,7 +83,7 @@ class MultiEventCapacityTest extends TestCase
         });
 
         // 7. Test Updating an existing event on the full date does NOT trigger false limit
-        $existingEvent = CalendarEvent::where('event_date', $testDate)->first();
+        $existingEvent = CalendarEvent::whereDate('event_date', $testDate)->first();
         $updateRes = $this->put(route('events.update', $existingEvent), [
             'event_date' => $testDate,
             'content_title' => 'Updated Event Title'

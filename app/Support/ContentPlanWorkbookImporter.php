@@ -165,7 +165,8 @@ class ContentPlanWorkbookImporter
                 'color_concern' => $rtm,
                 'platform' => $this->cell($row, $colMap['platform'] ?? null),
                 'drive_link' => $this->cell($row, $linkCol),
-                'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null) ?: $this->cell($row, $colMap['budget'] ?? null),
+                'financial_budget' => $this->cell($row, $colMap['financial_budget'] ?? $colMap['budget'] ?? null),
+                'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null),
                 'remarks' => $contentType ? "Content Type: {$contentType}" : null,
             ]);
 
@@ -401,7 +402,8 @@ class ContentPlanWorkbookImporter
                 'shoot_date' => $shootDate?->format('Y-m-d'),
                 'color_concern' => $this->cell($row, $colMap['color_concern'] ?? null),
                 'format' => $this->cell($row, $colMap['format'] ?? null),
-                'boosting_budget' => $this->cell($row, $colMap['budget'] ?? $colMap['boosting_budget'] ?? null),
+                'financial_budget' => $this->cell($row, $colMap['financial_budget'] ?? $colMap['budget'] ?? null),
+                'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null),
                 'platform' => $this->cell($row, $colMap['platform'] ?? null),
                 'product' => $product,
                 'drive_link' => $this->cell($row, $colMap['drive_link'] ?? $colMap['asset_link'] ?? null),
@@ -489,7 +491,8 @@ class ContentPlanWorkbookImporter
                 'format' => $this->cell($row, $colMap['format'] ?? null),
                 'drive_link' => $this->cell($row, $colMap['drive_link'] ?? $colMap['asset_link'] ?? null),
                 'remarks' => $this->cell($row, $colMap['remarks'] ?? null),
-                'boosting_budget' => $this->cell($row, $colMap['budget'] ?? $colMap['boosting_budget'] ?? null),
+                'financial_budget' => $this->cell($row, $colMap['financial_budget'] ?? $colMap['budget'] ?? null),
+                'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null),
             ]);
 
             $result['imported']++;
@@ -765,7 +768,8 @@ class ContentPlanWorkbookImporter
             if (in_array($normalized, ['format', 'content_format', 'type'])) {
                 $map['format'] = $colLetter;
             }
-            if (in_array($normalized, ['budget'])) {
+            if (in_array($normalized, ['budget', 'financial_budget', 'finance_budget', 'fin_budget'])) {
+                $map['financial_budget'] = $colLetter;
                 $map['budget'] = $colLetter;
             }
             if (in_array($normalized, ['boosting_budget', 'boost_budget'])) {

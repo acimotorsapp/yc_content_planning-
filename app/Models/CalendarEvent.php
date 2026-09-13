@@ -16,6 +16,7 @@ class CalendarEvent extends Model
         'format',
         'remarks',
         'boosting_budget',
+        'financial_budget',
         'drive_link',
         'shoot_date',
         'color_concern',
@@ -28,6 +29,7 @@ class CalendarEvent extends Model
 
     protected $attributes = [
         'boosting_budget' => '0',
+        'financial_budget' => '0',
     ];
 
     protected $casts = [
@@ -41,6 +43,16 @@ class CalendarEvent extends Model
     }
 
     public function getBoostingBudgetAttribute($value)
+    {
+        return (is_null($value) || trim((string)$value) === '') ? '0' : $value;
+    }
+
+    public function setFinancialBudgetAttribute($value)
+    {
+        $this->attributes['financial_budget'] = (is_null($value) || trim((string)$value) === '') ? '0' : trim((string)$value);
+    }
+
+    public function getFinancialBudgetAttribute($value)
     {
         return (is_null($value) || trim((string)$value) === '') ? '0' : $value;
     }

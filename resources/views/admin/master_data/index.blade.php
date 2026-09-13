@@ -277,7 +277,12 @@
                             @if($event->aipe_pillar)
                                 <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-100">{{ $event->aipe_pillar }}</span>
                             @endif
-                            <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">৳ {{ $event->boosting_budget ?? '0' }}</span>
+                            @if($event->team_type !== 'global_team')
+                                @if($event->financial_budget && $event->financial_budget !== '0')
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200" title="Financial Budget">Fin: ৳ {{ $event->financial_budget }}</span>
+                                @endif
+                                <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200" title="Boosting Budget">Boost: ৳ {{ $event->boosting_budget ?? '0' }}</span>
+                            @endif
                         </div>
                     </div>
                     @empty
@@ -306,7 +311,7 @@
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Team</th>
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Product / Focus</th>
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Category Details</th>
-                                <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Boosting Budget</th>
+                                <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider">Budget Details</th>
                                 <th class="px-6 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                             </tr>
                         </thead>
@@ -371,11 +376,22 @@
                                         </div>
                                     </td>
 
-                                    <!-- Boosting Budget -->
+                                    <!-- Budget Details -->
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                            ৳ {{ $event->boosting_budget ?? '0' }}
-                                        </span>
+                                        @if($event->team_type !== 'global_team')
+                                            <div class="flex flex-col gap-1 items-start">
+                                                @if($event->financial_budget && $event->financial_budget !== '0')
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200">
+                                                        <span class="text-[9px] font-bold text-blue-500 uppercase">Fin:</span> ৳ {{ $event->financial_budget }}
+                                                    </span>
+                                                @endif
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                                    <span class="text-[9px] font-bold text-emerald-500 uppercase">Boost:</span> ৳ {{ $event->boosting_budget ?? '0' }}
+                                                </span>
+                                            </div>
+                                        @else
+                                            <span class="text-xs text-gray-400 font-medium">-</span>
+                                        @endif
                                     </td>
 
                                     <!-- Actions -->

@@ -15,7 +15,7 @@ class CalendarEventController extends Controller
                 'required',
                 'date',
                 function ($attribute, $value, $fail) {
-                    $count = CalendarEvent::where('event_date', $value)->count();
+                    $count = CalendarEvent::whereDate('event_date', $value)->count();
                     if ($count >= 6) {
                         $fail("A maximum of 6 events can be scheduled on the same date ({$value}). This date is fully booked.");
                     }
@@ -28,6 +28,7 @@ class CalendarEventController extends Controller
             'color_concern' => 'nullable|string',
             'format' => 'nullable|string',
             'boosting_budget' => 'nullable|string',
+            'financial_budget' => 'nullable|string',
             'platform' => 'nullable|string',
             'product' => 'nullable|string',
             'drive_link' => 'nullable|string',
@@ -36,6 +37,7 @@ class CalendarEventController extends Controller
 
         $validated['team_type'] = 'product_team';
         $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
+        $validated['financial_budget'] = !empty($validated['financial_budget']) ? $validated['financial_budget'] : '0';
         $request->user()->events()->create($validated);
 
         return redirect()->route('dashboard')->with('success', 'Product Team Event added successfully!');
@@ -48,7 +50,7 @@ class CalendarEventController extends Controller
                 'required',
                 'date',
                 function ($attribute, $value, $fail) {
-                    $count = CalendarEvent::where('event_date', $value)->count();
+                    $count = CalendarEvent::whereDate('event_date', $value)->count();
                     if ($count >= 6) {
                         $fail("A maximum of 6 events can be scheduled on the same date ({$value}). This date is fully booked.");
                     }
@@ -62,10 +64,12 @@ class CalendarEventController extends Controller
             'drive_link' => 'nullable|string',
             'remarks' => 'nullable|string',
             'boosting_budget' => 'nullable|string',
+            'financial_budget' => 'nullable|string',
         ]);
 
         $validated['team_type'] = 'digital_team';
         $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
+        $validated['financial_budget'] = !empty($validated['financial_budget']) ? $validated['financial_budget'] : '0';
         $request->user()->events()->create($validated);
 
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
@@ -120,7 +124,7 @@ class CalendarEventController extends Controller
                 'required',
                 'date',
                 function ($attribute, $value, $fail) use ($event) {
-                    $count = CalendarEvent::where('event_date', $value)
+                    $count = CalendarEvent::whereDate('event_date', $value)
                         ->where('id', '!=', $event->id)
                         ->count();
                     if ($count >= 6) {
@@ -136,6 +140,7 @@ class CalendarEventController extends Controller
             'color_concern' => 'nullable|string',
             'format' => 'nullable|string',
             'boosting_budget' => 'nullable|string',
+            'financial_budget' => 'nullable|string',
             'platform' => 'nullable|string',
             'product' => 'nullable|string',
             'product_focus' => 'nullable|string',
@@ -144,6 +149,7 @@ class CalendarEventController extends Controller
         ]);
 
         $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
+        $validated['financial_budget'] = !empty($validated['financial_budget']) ? $validated['financial_budget'] : '0';
         $event->update($validated);
 
         return redirect()->route('dashboard')->with('success', 'Event updated successfully!');
@@ -195,7 +201,7 @@ class CalendarEventController extends Controller
                 'required',
                 'date',
                 function ($attribute, $value, $fail) {
-                    $count = CalendarEvent::where('event_date', $value)->count();
+                    $count = CalendarEvent::whereDate('event_date', $value)->count();
                     if ($count >= 6) {
                         $fail("A maximum of 6 events can be scheduled on the same date ({$value}). This date is fully booked.");
                     }

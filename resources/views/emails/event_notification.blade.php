@@ -157,10 +157,16 @@
                                                 <td style="vertical-align: top; color: #1e293b; padding: 4px 0;">{{ \Carbon\Carbon::parse($event->shoot_date)->format('M d, Y') }}</td>
                                             </tr>
                                         @endif
-                                        @if($event->boosting_budget && $event->boosting_budget > 0)
+                                        @if($event->financial_budget && $event->financial_budget !== '0')
                                             <tr>
-                                                <td width="95" style="vertical-align: top; color: #64748b; font-weight: 600; padding: 4px 0;">Budget:</td>
-                                                <td style="vertical-align: top; color: #1e293b; padding: 4px 0;">${{ $event->boosting_budget }}</td>
+                                                <td width="95" style="vertical-align: top; color: #64748b; font-weight: 600; padding: 4px 0;">Fin Budget:</td>
+                                                <td style="vertical-align: top; color: #1e293b; padding: 4px 0;">৳{{ $event->financial_budget }}</td>
+                                            </tr>
+                                        @endif
+                                        @if($event->boosting_budget && $event->boosting_budget !== '0')
+                                            <tr>
+                                                <td width="95" style="vertical-align: top; color: #64748b; font-weight: 600; padding: 4px 0;">Boost Budget:</td>
+                                                <td style="vertical-align: top; color: #1e293b; padding: 4px 0;">৳{{ $event->boosting_budget }}</td>
                                             </tr>
                                         @endif
                                     </table>
