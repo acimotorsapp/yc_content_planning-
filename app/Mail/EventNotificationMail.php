@@ -12,7 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
-class EventNotificationMail extends Mailable
+class EventNotificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -37,14 +37,22 @@ class EventNotificationMail extends Mailable
      */
     public static function getDefaultCcRecipients(): array
     {
-        return [
-            'option@aci-bd.com',
+        $ccSetting = \App\Models\Setting::where('key', 'MAIL_CC_ADDRESS')->value('value');
+        if (!empty($ccSetting)) {
+            $emails = array_filter(array_map('trim', explode(',', $ccSetting)));
+            $emails = array_filter($emails, fn($email) => filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+            if (!empty($emails)) {
+                return array_values($emails);
+            }
+        }
+
+        $defaults = [
             'mirajul@aci-bd.com',
             'richard@aci-bd.com',
             'adhikary@aci-bd.com',
             'efaz@aci-bd.com',
             'Sourav.Bikash@aci-bd.com',
-            'Sultana.Nishi@aci-bd.com',
+            'acijubairislamdaief@gmail.com',
             'Swagata@aci-bd.com',
             'arnob@aci-bd.com',
             'Nabil.Sarker@aci-bd.com',
@@ -53,6 +61,8 @@ class EventNotificationMail extends Mailable
             'azmyen@aci-bd.com',
             'Ashif.Ahmed@aci-bd.com',
         ];
+
+        return array_values(array_filter($defaults, fn($email) => filter_var($email, FILTER_VALIDATE_EMAIL) !== false));
     }
 
     /**
@@ -62,11 +72,8 @@ class EventNotificationMail extends Mailable
     {
         $recipientEmail = strtolower(trim($this->user->email ?? ''));
 
-        // Add CC recipients while filtering out the recipient to prevent duplicate delivery
-        $ccRecipients = array_values(array_filter(
-            self::getDefaultCcRecipients(),
-            fn($email) => strtolower(trim($email)) !== $recipientEmail
-        ));
+        // Add CC recipients without filtering to ensure no CC is automatically deleted
+        $ccRecipients = self::getDefaultCcRecipients();
 
         $formattedDate = Carbon::parse($this->targetDate)->format('D, M j, Y');
 

@@ -19,6 +19,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            $settings = \App\Models\Setting::all()->pluck('value', 'key');
+            if ($settings->has('MAIL_MAILER')) {
+                config([
+                    'mail.default' => $settings->get('MAIL_MAILER', 'smtp'),
+                    'mail.mailers.smtp.host' => $settings->get('MAIL_HOST', ''),
+                    'mail.mailers.smtp.port' => $settings->get('MAIL_PORT', 587),
+                    'mail.mailers.smtp.username' => $settings->get('MAIL_USERNAME', ''),
+                    'mail.mailers.smtp.password' => $settings->get('MAIL_PASSWORD', ''),
+                    'mail.from.address' => $settings->get('MAIL_FROM_ADDRESS', ''),
+                    'mail.from.name' => env('MAIL_FROM_NAME', 'YC Content Planning'),
+                ]);
+            }
+        }
         // Dynamically detect current domain when accessed via browser
         if (!app()->runningInConsole() && request()->hasHeader('Host')) {
             try {

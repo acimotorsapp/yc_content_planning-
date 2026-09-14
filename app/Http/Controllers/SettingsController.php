@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use App\Models\Setting;
 
 class SettingsController extends Controller
 {
@@ -12,8 +12,10 @@ class SettingsController extends Controller
         if (auth()->user()->role !== 'super_admin') {
             abort(403);
         }
+        
+        $settings = Setting::all()->pluck('value', 'key');
 
-        return view('settings');
+        return view('settings', compact('settings'));
     }
 
     public function updateMailSettings(Request $request)
@@ -28,38 +30,30 @@ class SettingsController extends Controller
             'MAIL_PORT' => 'required|numeric',
             'MAIL_USERNAME' => 'required|string',
             'MAIL_PASSWORD' => 'required|string',
+            'MAIL_FROM_ADDRESS' => 'required|string',
+            'MAIL_CC_ADDRESS' => 'nullable|string',
         ]);
 
-        $envPath = base_path('.env');
-        
-        if (File::exists($envPath)) {
-            $envContent = File::get($envPath);
+        $keys = [
+            'MAIL_MAILER',
+            'MAIL_HOST',
+            'MAIL_PORT',
+            'MAIL_USERNAME',
+            'MAIL_PASSWORD',
+            'MAIL_FROM_ADDRESS',
+            'MAIL_CC_ADDRESS',
+        ];
 
-            $keys = [
-                'MAIL_MAILER',
-                'MAIL_HOST',
-                'MAIL_PORT',
-                'MAIL_USERNAME',
-                'MAIL_PASSWORD',
-            ];
-
-            foreach ($keys as $key) {
-                $value = $request->input($key);
-                // Ensure value is properly quoted if it contains spaces (optional for basic strings but good practice)
-                $escapedValue = preg_quote($value, '/');
-
-                // If key exists, replace its value
-                if (preg_match("/^{$key}=.*/m", $envContent)) {
-                    $envContent = preg_replace("/^{$key}=.*/m", "{$key}={$value}", $envContent);
-                } else {
-                    // If key does not exist, append it
-                    $envContent .= "\n{$key}={$value}\n";
-                }
-            }
-
-            File::put($envPath, $envContent);
+        foreach ($keys as $key) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $request->input($key)]
+            );
         }
 
-        return back()->with('success', 'Mail settings updated successfully!');
+        // Clear config cache to apply changes immediately
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+
+        return back()->with('success', 'Email configuration updated successfully!');
     }
 }

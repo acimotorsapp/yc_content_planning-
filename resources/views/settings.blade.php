@@ -11,7 +11,7 @@
         <!-- Dashboard Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">System Settings</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Email Configuration</h1>
                 <p class="text-gray-500 text-sm mt-1 font-medium">Configure global application settings and integrations.</p>
             </div>
         </div>
@@ -35,28 +35,78 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Mailer</label>
-                            <input type="text" name="MAIL_MAILER" value="{{ env('MAIL_MAILER', 'smtp') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            <input type="text" name="MAIL_MAILER" value="{{ $settings['MAIL_MAILER'] ?? env('MAIL_MAILER', 'smtp') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Host</label>
-                            <input type="text" name="MAIL_HOST" value="{{ env('MAIL_HOST', 'sandbox.smtp.mailtrap.io') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            <input type="text" name="MAIL_HOST" value="{{ $settings['MAIL_HOST'] ?? env('MAIL_HOST', 'sandbox.smtp.mailtrap.io') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                         </div>
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Port</label>
-                            <input type="number" name="MAIL_PORT" value="{{ env('MAIL_PORT', '2525') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            <input type="number" name="MAIL_PORT" value="{{ $settings['MAIL_PORT'] ?? env('MAIL_PORT', '2525') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Username</label>
-                            <input type="text" name="MAIL_USERNAME" value="{{ env('MAIL_USERNAME') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                            <input type="text" name="MAIL_USERNAME" value="{{ $settings['MAIL_USERNAME'] ?? env('MAIL_USERNAME') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
                         </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Password</label>
-                        <input type="password" name="MAIL_PASSWORD" value="{{ env('MAIL_PASSWORD') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Password</label>
+                            <input type="password" name="MAIL_PASSWORD" value="{{ $settings['MAIL_PASSWORD'] ?? env('MAIL_PASSWORD') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail From Address</label>
+                            <input type="email" name="MAIL_FROM_ADDRESS" value="{{ $settings['MAIL_FROM_ADDRESS'] ?? env('MAIL_FROM_ADDRESS', env('MAIL_USERNAME')) }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                        </div>
+                    </div>
+
+                    @php
+                        $defaultCcList = "mirajul@aci-bd.com,richard@aci-bd.com,adhikary@aci-bd.com,efaz@aci-bd.com,Sourav.Bikash@aci-bd.com,Sultana.Nishi@aci-bd.com,Swagata@aci-bd.com,arnob@aci-bd.com,Nabil.Sarker@aci-bd.com,Abu.siddik@aci-bd.com,priasa@aci-bd.com,azmyen@aci-bd.com,Ashif.Ahmed@aci-bd.com";
+                        $ccString = $settings['MAIL_CC_ADDRESS'] ?? $defaultCcList;
+                    @endphp
+
+                    <div class="grid grid-cols-1 gap-6" x-data="{ 
+                        emails: '{{ $ccString }}'.split(',').map(e => e.trim()).filter(e => e),
+                        newEmail: '',
+                        addEmail() {
+                            if (this.newEmail && !this.emails.includes(this.newEmail.trim())) {
+                                this.emails.push(this.newEmail.trim());
+                                this.newEmail = '';
+                            }
+                        },
+                        removeEmail(index) {
+                            this.emails.splice(index, 1);
+                        }
+                    }">
+                        <div>
+                            <input type="hidden" name="MAIL_CC_ADDRESS" :value="emails.join(',')">
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-3">Mail CC Address</label>
+                            
+                            <div class="space-y-3">
+                                <template x-for="(email, index) in emails" :key="index">
+                                    <div class="flex items-center gap-2">
+                                        <input type="email" x-model="emails[index]" required class="flex-1 bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                                        <button type="button" @click="removeEmail(index)" class="p-2.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors shrink-0" title="Remove Email">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        </button>
+                                    </div>
+                                </template>
+                                
+                                <div class="flex items-center gap-2 pt-1">
+                                    <input type="email" x-model="newEmail" @keydown.enter.prevent="addEmail" placeholder="Add new email address..." class="flex-1 bg-white border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
+                                    <button type="button" @click="addEmail" class="shrink-0 inline-flex items-center justify-center px-5 py-2.5 font-bold text-white bg-slate-800 border border-transparent rounded-xl hover:bg-slate-700 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                        Add CC
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">Edit an email directly, or add a new one. Click the trash icon to remove.</p>
+                        </div>
                     </div>
                     
                     <div class="pt-5 sm:pt-6 border-t border-gray-100 flex items-center justify-end">

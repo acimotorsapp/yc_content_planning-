@@ -49,78 +49,95 @@
 
         @if(auth()->user()->role === 'super_admin' && !isset($filter))
             @php
-                $totalCount = clone $events;
-                $total = $totalCount->count();
-                $doneCount = $totalCount->where('status', 'done')->count();
+                $currentMonthEvents = $events->filter(function($e) {
+                    return $e->event_date && $e->event_date->isCurrentMonth() && $e->event_date->isCurrentYear();
+                });
+                $total = $currentMonthEvents->count();
+                $doneCount = $currentMonthEvents->where('status', 'done')->count();
                 $notDoneCount = $total - $doneCount;
-                $digital = $totalCount->where('team_type', 'digital_team')->count();
-                $product = $totalCount->where('team_type', 'product_team')->count();
+                $digital = $currentMonthEvents->where('team_type', 'digital_team')->count();
+                $product = $currentMonthEvents->where('team_type', 'product_team')->count();
             @endphp
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
                 <!-- Total Events -->
-                <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                <a href="{{ route('dashboard') }}" class="block bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Total</p>
-                            <h3 class="text-2xl sm:text-3xl font-black text-gray-900">{{ $total }}</h3>
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total</p>
+                                <span class="stat-month-badge text-[9px] font-bold text-indigo-500">({{ now()->format('M') }})</span>
+                            </div>
+                            <h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-gray-900 transition-all duration-300">{{ $total }}</h3>
                         </div>
                         <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Done Events -->
-                <div class="bg-white rounded-2xl p-4 border border-emerald-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                <a href="{{ route('admin.events.done') }}" class="block bg-white rounded-2xl p-4 border border-emerald-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-0.5">Done</p>
-                            <h3 class="text-2xl sm:text-3xl font-black text-emerald-600">{{ $doneCount }}</h3>
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Done</p>
+                                <span class="stat-month-badge text-[9px] font-bold text-emerald-500">({{ now()->format('M') }})</span>
+                            </div>
+                            <h3 id="stat-done" class="text-2xl sm:text-3xl font-black text-emerald-600 transition-all duration-300">{{ $doneCount }}</h3>
                         </div>
                         <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-100 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Not Done Events -->
-                <div class="bg-white rounded-2xl p-4 border border-rose-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                <a href="{{ route('admin.events.not_done') }}" class="block bg-white rounded-2xl p-4 border border-rose-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-bold text-rose-600 uppercase tracking-widest mb-0.5">Not Done</p>
-                            <h3 class="text-2xl sm:text-3xl font-black text-rose-600">{{ $notDoneCount }}</h3>
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <p class="text-[10px] font-bold text-rose-600 uppercase tracking-widest">Not Done</p>
+                                <span class="stat-month-badge text-[9px] font-bold text-rose-500">({{ now()->format('M') }})</span>
+                            </div>
+                            <h3 id="stat-not-done" class="text-2xl sm:text-3xl font-black text-rose-600 transition-all duration-300">{{ $notDoneCount }}</h3>
                         </div>
                         <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600 border border-rose-100 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Digital Team -->
-                <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                <a href="{{ route('admin.events.digital') }}" class="block bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Digital</p>
-                            <h3 class="text-2xl sm:text-3xl font-black text-teal-600">{{ $digital }}</h3>
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Digital</p>
+                                <span class="stat-month-badge text-[9px] font-bold text-teal-500">({{ now()->format('M') }})</span>
+                            </div>
+                            <h3 id="stat-digital" class="text-2xl sm:text-3xl font-black text-teal-600 transition-all duration-300">{{ $digital }}</h3>
                         </div>
                         <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600 border border-teal-100 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Product Team -->
-                <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                <a href="{{ route('admin.events.product') }}" class="block bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Product</p>
-                            <h3 class="text-2xl sm:text-3xl font-black text-blue-600">{{ $product }}</h3>
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Product</p>
+                                <span class="stat-month-badge text-[9px] font-bold text-blue-500">({{ now()->format('M') }})</span>
+                            </div>
+                            <h3 id="stat-product" class="text-2xl sm:text-3xl font-black text-blue-600 transition-all duration-300">{{ $product }}</h3>
                         </div>
                         <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         @endif
 
@@ -230,6 +247,51 @@
 
                 var startedSmall = isSmall();
 
+                function updateMonthStats(currentDate) {
+                    if (!currentDate) return;
+                    var year = currentDate.getFullYear();
+                    var month = currentDate.getMonth(); // 0 to 11
+
+                    var monthEvents = eventsData.filter(function(ev) {
+                        if (!ev.start) return false;
+                        var parts = ev.start.split('-');
+                        if (parts.length < 2) return false;
+                        var evY = parseInt(parts[0], 10);
+                        var evM = parseInt(parts[1], 10) - 1;
+                        return evY === year && evM === month;
+                    });
+
+                    var total = monthEvents.length;
+                    var done = monthEvents.filter(function(ev) {
+                        return ev.extendedProps && ev.extendedProps.status === 'done';
+                    }).length;
+                    var notDone = total - done;
+                    var digital = monthEvents.filter(function(ev) {
+                        return ev.extendedProps && ev.extendedProps.teamType === 'digital_team';
+                    }).length;
+                    var product = monthEvents.filter(function(ev) {
+                        return ev.extendedProps && ev.extendedProps.teamType === 'product_team';
+                    }).length;
+
+                    var elTotal = document.getElementById('stat-total');
+                    var elDone = document.getElementById('stat-done');
+                    var elNotDone = document.getElementById('stat-not-done');
+                    var elDigital = document.getElementById('stat-digital');
+                    var elProduct = document.getElementById('stat-product');
+
+                    if (elTotal) elTotal.textContent = total;
+                    if (elDone) elDone.textContent = done;
+                    if (elNotDone) elNotDone.textContent = notDone;
+                    if (elDigital) elDigital.textContent = digital;
+                    if (elProduct) elProduct.textContent = product;
+
+                    var monthName = currentDate.toLocaleString('default', { month: 'short' });
+                    var monthBadges = document.querySelectorAll('.stat-month-badge');
+                    monthBadges.forEach(function(badge) {
+                        badge.textContent = '(' + monthName + ')';
+                    });
+                }
+
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: startedSmall ? 'listMonth' : 'dayGridMonth',
                     height: 'auto',
@@ -254,6 +316,10 @@
                     },
                     noEventsContent: 'No events scheduled this month',
                     events: eventsData,
+                    datesSet: function(dateInfo) {
+                        var targetDate = dateInfo.view.currentStart || calendar.getDate();
+                        updateMonthStats(targetDate);
+                    },
                     dayCellDidMount: function(arg) {
                         var dateStr = arg.el.getAttribute('data-date');
                         if (!dateStr && arg.date) {

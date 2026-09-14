@@ -258,4 +258,32 @@ class CalendarEventController extends Controller
             'masterData' => $masterData,
         ]);
     }
+
+    public function adminDone()
+    {
+        if (auth()->user()->role !== 'super_admin') abort(403);
+        $events = CalendarEvent::with('user')->where('status', 'done')->orderBy('event_date', 'asc')->get();
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', [
+            'events' => $events,
+            'tableEvents' => CollectionPaginator::make($events, 10)->fragment('schedule'),
+            'filter' => 'Done Events',
+            'masterData' => $masterData,
+        ]);
+    }
+
+    public function adminNotDone()
+    {
+        if (auth()->user()->role !== 'super_admin') abort(403);
+        $events = CalendarEvent::with('user')->where(function($query) {
+            $query->where('status', '!=', 'done')->orWhereNull('status');
+        })->orderBy('event_date', 'asc')->get();
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', [
+            'events' => $events,
+            'tableEvents' => CollectionPaginator::make($events, 10)->fragment('schedule'),
+            'filter' => 'Not Done Events',
+            'masterData' => $masterData,
+        ]);
+    }
 }

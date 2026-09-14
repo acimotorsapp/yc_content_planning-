@@ -20,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/events/product', [\App\Http\Controllers\CalendarEventController::class, 'adminProduct'])->name('admin.events.product');
     Route::get('/admin/events/digital', [\App\Http\Controllers\CalendarEventController::class, 'adminDigital'])->name('admin.events.digital');
     Route::get('/admin/events/global', [\App\Http\Controllers\CalendarEventController::class, 'adminGlobal'])->name('admin.events.global');
+    Route::get('/admin/events/done', [\App\Http\Controllers\CalendarEventController::class, 'adminDone'])->name('admin.events.done');
+    Route::get('/admin/events/not-done', [\App\Http\Controllers\CalendarEventController::class, 'adminNotDone'])->name('admin.events.not_done');
     
     // Settings Route
     Route::get('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'mailSettings'])->name('admin.settings');
