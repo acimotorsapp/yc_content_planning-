@@ -6,6 +6,7 @@ use App\Models\CalendarEvent;
 use App\Models\User;
 use App\Mail\EventNotificationMail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,12 +17,35 @@ class EventNotificationService
      *
      * @param int $daysAhead
      * @param string|null $specificDate
+     * @param bool $force Bypass the duplicate protection and resend
      * @return array
      */
-    public function sendNotifications(int $daysAhead = 5, ?string $specificDate = null): array
+    public function sendNotifications(int $daysAhead = 5, ?string $specificDate = null, bool $force = false): array
     {
         $targetDate = $specificDate ? Carbon::parse($specificDate)->toDateString() : Carbon::today()->addDays($daysAhead)->toDateString();
         $actualDaysAhead = Carbon::today()->diffInDays(Carbon::parse($targetDate), false);
+
+        // Duplicate protection: one successful notification run per target date,
+        // so repeated endpoint hits (or cron + manual hit) don't email users twice.
+        $sentMarkerKey = 'events_notify_sent_' . $targetDate;
+        if (!$force && Cache::has($sentMarkerKey)) {
+            return [
+                'run_date' => Carbon::today()->toDateString(),
+                'target_date' => $targetDate,
+                'days_ahead' => $actualDaysAhead,
+                'already_sent' => true,
+                'sent_at' => Cache::get($sentMarkerKey),
+                'cc_recipients_count' => count(EventNotificationMail::getDefaultCcRecipients()),
+                'cc_recipients' => EventNotificationMail::getDefaultCcRecipients(),
+                'total_events' => 0,
+                'total_users' => 0,
+                'sent_count' => 0,
+                'skipped_count' => 0,
+                'failed_count' => 0,
+                'details' => [],
+                'message' => 'Notifications for this target date were already sent. Duplicate sending prevented (use ?force=1 to resend).',
+            ];
+        }
 
         $events = CalendarEvent::whereDate('event_date', $targetDate)->get();
         $eventsByUser = $events->groupBy('user_id');
@@ -78,6 +102,12 @@ class EventNotificationService
                     'error' => $e->getMessage(),
                 ];
             }
+        }
+
+        // Only mark as sent when at least one email went out and nothing failed,
+        // so a retry (next hit) is still possible after partial failures.
+        if ($sentCount > 0 && $failedCount === 0) {
+            Cache::forever($sentMarkerKey, Carbon::now()->toDateTimeString());
         }
 
         return [

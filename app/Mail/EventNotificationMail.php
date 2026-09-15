@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -12,7 +11,11 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
-class EventNotificationMail extends Mailable implements ShouldQueue
+/**
+ * Sent synchronously (not queued) so notification emails go out immediately
+ * from the /cron/events-notify HTTP endpoint without a queue worker.
+ */
+class EventNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 

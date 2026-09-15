@@ -22,14 +22,21 @@ class AppServiceProvider extends ServiceProvider
         if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
             $settings = \App\Models\Setting::all()->pluck('value', 'key');
             if ($settings->has('MAIL_MAILER')) {
+                // Port 465 uses implicit TLS (smtps); 587/25 rely on STARTTLS
+                $scheme = $settings->get('MAIL_SCHEME')
+                    ?? ((int) $settings->get('MAIL_PORT', 587) === 465 ? 'smtps' : null);
                 config([
                     'mail.default' => $settings->get('MAIL_MAILER', 'smtp'),
                     'mail.mailers.smtp.host' => $settings->get('MAIL_HOST', ''),
                     'mail.mailers.smtp.port' => $settings->get('MAIL_PORT', 587),
+                    'mail.mailers.smtp.scheme' => $scheme,
+                    'mail.mailers.smtp.url' => $settings->get('MAIL_URL'),
                     'mail.mailers.smtp.username' => $settings->get('MAIL_USERNAME', ''),
                     'mail.mailers.smtp.password' => $settings->get('MAIL_PASSWORD', ''),
+                    'mail.mailers.smtp.timeout' => $settings->get('MAIL_TIMEOUT'),
+                    'mail.mailers.smtp.local_domain' => $settings->get('MAIL_EHLO_DOMAIN', 'yrc-bd.com'),
                     'mail.from.address' => $settings->get('MAIL_FROM_ADDRESS', ''),
-                    'mail.from.name' => env('MAIL_FROM_NAME', 'YC Content Planning'),
+                    'mail.from.name' => $settings->get('MAIL_FROM_NAME', 'YC Content Planning'),
                 ]);
             }
         }

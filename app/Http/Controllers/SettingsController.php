@@ -12,7 +12,7 @@ class SettingsController extends Controller
         if (auth()->user()->role !== 'super_admin') {
             abort(403);
         }
-        
+
         $settings = Setting::all()->pluck('value', 'key');
 
         return view('settings', compact('settings'));
