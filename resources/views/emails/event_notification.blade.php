@@ -65,7 +65,7 @@
                                     <td class="sub-banner-left" align="left" style="vertical-align: middle;">
                                         <span style="display: inline-block; background-color: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 9999px;">
                                             @if(($daysAhead ?? 0) > 0)
-                                                Upcoming Reminder ({{ $daysAhead }} Days Notice)
+                                                Schedule Reminder
                                             @else
                                                 Daily Event Notification
                                             @endif

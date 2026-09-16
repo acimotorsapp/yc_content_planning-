@@ -81,11 +81,11 @@ class EventNotificationMail extends Mailable
         $formattedDate = Carbon::parse($this->targetDate)->format('D, M j, Y');
 
         if ($this->daysAhead > 0) {
-            $subject = "Upcoming Content Reminder: Scheduled for {$formattedDate} (in {$this->daysAhead} days) - YC Content Planning";
+            $subject = "Content Schedule Reminder - {$formattedDate}";
         } elseif ($this->daysAhead === 0) {
-            $subject = "Your Scheduled Events for Today ({$formattedDate}) - YC Content Planning";
+            $subject = "Content Schedule for Today ({$formattedDate})";
         } else {
-            $subject = "Scheduled Content Notice for {$formattedDate} - YC Content Planning";
+            $subject = "Content Schedule Notice - {$formattedDate}";
         }
 
         return new Envelope(
