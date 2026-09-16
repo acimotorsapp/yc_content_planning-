@@ -24,7 +24,7 @@ class PaginationTest extends TestCase
             CalendarEvent::create([
                 'user_id' => $user->id,
                 'team_type' => 'product_team',
-                'event_date' => now()->addDays($i)->toDateString(),
+                'event_date' => now()->startOfMonth()->addDays(($i - 1) % 28)->toDateString(),
                 'content_title' => "Event {$i}",
             ]);
         }

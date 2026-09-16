@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'google_sheets' => [
+        'spreadsheet_id' => env('GOOGLE_SHEETS_SPREADSHEET_ID', '1NEVkzCm7CUIGyrVUPi7EoTFQU4sMBpwoRrxJgKIcoHg'),
+        'api_key' => env('GOOGLE_SHEETS_API_KEY'),
+        'year' => (int) env('GOOGLE_SHEETS_YEAR', 2026),
+    ],
+
 ];

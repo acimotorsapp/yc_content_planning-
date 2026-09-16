@@ -248,6 +248,10 @@
                                 <input type="text" name="post_no" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs placeholder-gray-400 font-medium" placeholder="e.g. 1">
                             </div>
                         </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Content Title</label>
+                            <input type="text" name="content_title" class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-lg px-4 py-2.5 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all shadow-xs placeholder-gray-400 font-medium" placeholder="e.g. Month-opening offer announcement">
+                        </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Product Focus</label>

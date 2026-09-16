@@ -67,7 +67,7 @@
                                             @if(($daysAhead ?? 0) > 0)
                                                 Schedule Reminder
                                             @else
-                                                Daily Event Notification
+                                                Content Submission Reminder
                                             @endif
                                         </span>
                                     </td>
@@ -91,7 +91,7 @@
                             </p>
                             @else
                             <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
-                                You have <strong style="color: #0f172a; font-weight: 700;">{{ $events->count() }}</strong> content event(s) scheduled for today. Please review the details below:
+                                This is your 11:00 AM content submission reminder. You have <strong style="color: #0f172a; font-weight: 700;">{{ $events->count() }}</strong> content event(s) assigned to you for today. Please review and submit the work below:
                             </p>
                             @endif
                         </td>

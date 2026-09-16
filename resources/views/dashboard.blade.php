@@ -36,8 +36,25 @@
         @endif
 
         @if(!isset($filter))
-        <!-- Top Actions -->
-        <div class="flex justify-stretch sm:justify-end mb-4 sm:mb-6 animate-fade-in-up">
+        <!-- Month filter (Super Admin) + Add Event -->
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6 animate-fade-in-up">
+            @if(auth()->user()->role === 'super_admin')
+            @php $monthKey = $month ?? now()->format('Y-m'); @endphp
+            <form method="GET" action="{{ route('dashboard') }}" class="w-full sm:w-auto flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3 bg-white border border-gray-200 rounded-2xl p-3 sm:p-3.5 shadow-sm">
+                <div class="min-w-0 flex-1 sm:flex-none">
+                    <label for="month-filter" class="block text-[10px] font-extrabold text-gray-500 uppercase tracking-widest mb-1.5">Month filter</label>
+                    <input id="month-filter"
+                           type="month"
+                           name="month"
+                           value="{{ $monthKey }}"
+                           class="w-full sm:w-52 rounded-xl border-gray-200 text-sm font-bold text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                           onchange="this.form.submit()">
+                </div>
+                <button type="submit" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-bold text-white rounded-xl bg-gray-900 hover:bg-gray-800 transition-colors">
+                    Apply
+                </button>
+            </form>
+            @endif
             <a href="{{ route('events.create', ['action' => 'create']) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-5 sm:px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-md shadow-blue-500/20 hover:shadow-lg sm:transform sm:hover:-translate-y-0.5 group">
                 <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add New Event
@@ -49,7 +66,9 @@
 
         @if(auth()->user()->role === 'super_admin' && !isset($filter))
             @php
-                $currentMonthEvents = $events->filter(function($e) {
+                $monthKey = $month ?? now()->format('Y-m');
+                $monthLabel = \Carbon\Carbon::createFromFormat('Y-m', $monthKey)->format('M');
+                $currentMonthEvents = $monthEvents ?? $events->filter(function($e) {
                     return $e->event_date && $e->event_date->isCurrentMonth() && $e->event_date->isCurrentYear();
                 });
                 $total = $currentMonthEvents->count();
@@ -60,12 +79,12 @@
             @endphp
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
                 <!-- Total Events -->
-                <a href="{{ route('dashboard') }}" class="block bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
+                <a href="{{ route('dashboard', ['month' => $monthKey]) }}" class="block bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden group sm:hover:-translate-y-0.5 transition-all duration-300">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 mb-0.5">
                                 <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total</p>
-                                <span class="stat-month-badge text-[9px] font-bold text-indigo-500">({{ now()->format('M') }})</span>
+                                <span class="stat-month-badge text-[9px] font-bold text-indigo-500">({{ $monthLabel }})</span>
                             </div>
                             <h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-gray-900 transition-all duration-300">{{ $total }}</h3>
                         </div>
@@ -81,7 +100,7 @@
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 mb-0.5">
                                 <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Done</p>
-                                <span class="stat-month-badge text-[9px] font-bold text-emerald-500">({{ now()->format('M') }})</span>
+                                <span class="stat-month-badge text-[9px] font-bold text-emerald-500">({{ $monthLabel }})</span>
                             </div>
                             <h3 id="stat-done" class="text-2xl sm:text-3xl font-black text-emerald-600 transition-all duration-300">{{ $doneCount }}</h3>
                         </div>
@@ -97,7 +116,7 @@
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 mb-0.5">
                                 <p class="text-[10px] font-bold text-rose-600 uppercase tracking-widest">Not Done</p>
-                                <span class="stat-month-badge text-[9px] font-bold text-rose-500">({{ now()->format('M') }})</span>
+                                <span class="stat-month-badge text-[9px] font-bold text-rose-500">({{ $monthLabel }})</span>
                             </div>
                             <h3 id="stat-not-done" class="text-2xl sm:text-3xl font-black text-rose-600 transition-all duration-300">{{ $notDoneCount }}</h3>
                         </div>
@@ -113,7 +132,7 @@
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 mb-0.5">
                                 <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Digital</p>
-                                <span class="stat-month-badge text-[9px] font-bold text-teal-500">({{ now()->format('M') }})</span>
+                                <span class="stat-month-badge text-[9px] font-bold text-teal-500">({{ $monthLabel }})</span>
                             </div>
                             <h3 id="stat-digital" class="text-2xl sm:text-3xl font-black text-teal-600 transition-all duration-300">{{ $digital }}</h3>
                         </div>
@@ -129,7 +148,7 @@
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 mb-0.5">
                                 <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Product</p>
-                                <span class="stat-month-badge text-[9px] font-bold text-blue-500">({{ now()->format('M') }})</span>
+                                <span class="stat-month-badge text-[9px] font-bold text-blue-500">({{ $monthLabel }})</span>
                             </div>
                             <h3 id="stat-product" class="text-2xl sm:text-3xl font-black text-blue-600 transition-all duration-300">{{ $product }}</h3>
                         </div>
@@ -177,9 +196,7 @@
         
         @php
             $formattedEvents = $events->map(function($event) {
-                $title = $event->team_type == 'digital_team' 
-                    ? ($event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Digital Event'))
-                    : ($event->content_title ?: 'Untitled Event');
+                $title = $event->displayTitle();
                 $userName = $event->user ? $event->user->name : 'Global Event';
                 $shootDate = $event->shoot_date ? $event->shoot_date->format('M d, Y') : null;
                 
@@ -294,6 +311,9 @@
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: startedSmall ? 'listMonth' : 'dayGridMonth',
+                    @if(!isset($filter) && !empty($month))
+                    initialDate: '{{ $month }}-01',
+                    @endif
                     height: 'auto',
                     expandRows: true,
                     handleWindowResize: true,
@@ -317,8 +337,21 @@
                     noEventsContent: 'No events scheduled this month',
                     events: eventsData,
                     datesSet: function(dateInfo) {
-                        var targetDate = dateInfo.view.currentStart || calendar.getDate();
-                        updateMonthStats(targetDate);
+                        var mid = new Date((dateInfo.start.getTime() + dateInfo.end.getTime()) / 2);
+                        var viewType = dateInfo.view.type || '';
+                        @if(!isset($filter) && !empty($month))
+                        if (viewType === 'dayGridMonth' || viewType === 'listMonth') {
+                            var key = mid.getFullYear() + '-' + String(mid.getMonth() + 1).padStart(2, '0');
+                            if (key !== '{{ $month }}') {
+                                var url = new URL(window.location.href);
+                                url.searchParams.set('month', key);
+                                url.searchParams.delete('page');
+                                window.location.href = url.toString();
+                                return;
+                            }
+                        }
+                        @endif
+                        updateMonthStats(mid);
                     },
                     dayCellDidMount: function(arg) {
                         var dateStr = arg.el.getAttribute('data-date');
@@ -845,7 +878,7 @@
         </style>
 
         @php
-            $totalEvents = $events->count();
+            $totalEvents = (isset($monthEvents) && !isset($filter)) ? $monthEvents->count() : $events->count();
             $upcomingEvents = $events->where('event_date', '>=', now()->startOfDay())->take(5);
         @endphp
 
@@ -877,7 +910,7 @@
                                 <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider">{{ $event->event_date->format('D') }}</span>
                             </div>
                             <div class="text-sm font-bold text-gray-900 leading-snug break-words">
-                                {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
+                                <x-editable-title :event="$event" />
                             </div>
                             <div class="text-xs text-gray-500 mt-1 font-medium line-clamp-2">
                                 {{ $event->content_objective ?? 'No objective specified' }}
@@ -1001,7 +1034,7 @@
                             <!-- Title & Objective Column -->
                             <td class="px-8 py-5">
                                 <div class="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                    {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
+                                    <x-editable-title :event="$event" />
                                 </div>
                                 <div class="text-xs text-gray-500 mt-1 truncate max-w-md font-medium" title="{{ $event->content_objective }}">
                                     {{ $event->content_objective ?? 'No objective specified' }}
@@ -1095,8 +1128,8 @@
         <!-- Clean Linear-style Data Table -->
         <div id="schedule" class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden mb-6 sm:mb-12 animate-fade-in-up scroll-mt-24" style="animation-delay: 0.5s;">
             <div class="px-4 sm:px-8 py-4 sm:py-5 border-b border-gray-100 flex flex-wrap justify-between items-center gap-2 bg-slate-50/50">
-                <h3 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight">Content Schedule</h3>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-[10px] sm:text-xs font-bold shrink-0">{{ $totalEvents }} Events</span>
+                <h3 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight">Content Schedule{{ !empty($month) && !isset($filter) ? ' · '.\Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') : '' }}</h3>
+                <span id="schedule-count" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-[10px] sm:text-xs font-bold shrink-0">{{ $totalEvents }} Events</span>
             </div>
 
             <!-- Mobile: stacked cards -->
@@ -1114,7 +1147,7 @@
                                 <span class="text-[10px] font-medium text-gray-500">{{ $event->event_date->format('D') }}</span>
                             </div>
                             <div class="text-sm font-bold text-gray-900 leading-snug break-words">
-                                {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
+                                <x-editable-title :event="$event" />
                             </div>
                             <div class="text-xs text-gray-500 mt-1 font-medium line-clamp-2">
                                 {{ $event->content_objective ?? 'No objective specified' }}
@@ -1254,7 +1287,7 @@
                             <!-- Title & Objective Column -->
                             <td class="px-6 py-4">
                                 <div class="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                    {{ $event->content_title ?: ($event->post_no ? 'Post #'.$event->post_no : 'Untitled Event') }}
+                                    <x-editable-title :event="$event" />
                                 </div>
                                 <div class="text-[12px] text-gray-500 mt-1 truncate max-w-sm font-medium" title="{{ $event->content_objective }}">
                                     {{ $event->content_objective ?? 'No objective specified' }}

@@ -59,6 +59,7 @@ class CalendarEventController extends Controller
             'post_no' => 'nullable|string',
             'aipe_pillar' => 'nullable|string',
             'product_focus' => 'nullable|string',
+            'content_title' => 'nullable|string',
             'content_objective' => 'nullable|string',
             'format' => 'nullable|string',
             'drive_link' => 'nullable|string',
@@ -70,9 +71,77 @@ class CalendarEventController extends Controller
         $validated['team_type'] = 'digital_team';
         $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
         $validated['financial_budget'] = !empty($validated['financial_budget']) ? $validated['financial_budget'] : '0';
+        if (empty($validated['content_title']) && !empty($validated['product_focus'])) {
+            $postNo = $validated['post_no'] ?? '';
+            $validated['content_title'] = trim(($postNo !== '' ? "Post #{$postNo}: " : '') . $validated['product_focus']);
+        }
         $request->user()->events()->create($validated);
 
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
+    }
+
+    public function dashboard(Request $request)
+    {
+        $events = CalendarEvent::with('user')->orderBy('event_date', 'asc')->get();
+        $month = $this->resolveMonth($request->query('month'));
+        [$year, $monthNum] = array_map('intval', explode('-', $month));
+
+        $monthEvents = $events->filter(function ($event) use ($year, $monthNum) {
+            return $event->event_date
+                && (int) $event->event_date->year === $year
+                && (int) $event->event_date->month === $monthNum;
+        })->values();
+
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        $tableEvents = CollectionPaginator::make($monthEvents, 10)->fragment('schedule');
+
+        return view('dashboard', compact('events', 'masterData', 'tableEvents', 'month', 'monthEvents'));
+    }
+
+    public function budgetProvision(Request $request)
+    {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $sort = $request->query('sort', 'high');
+        if (!in_array($sort, ['high', 'low'], true)) {
+            $sort = 'high';
+        }
+
+        $events = CalendarEvent::with('user')
+            ->orderBy('event_date', 'asc')
+            ->get()
+            ->sortBy(function (CalendarEvent $event) use ($sort) {
+                $amount = $event->budgetAmount();
+                return $sort === 'low' ? $amount : -$amount;
+            }, SORT_NUMERIC)
+            ->values();
+
+        return view('admin.budget.index', compact('events', 'sort'));
+    }
+
+    public function updateTitle(Request $request, CalendarEvent $event)
+    {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized action. Only Super Admin can edit content titles.');
+        }
+
+        $validated = $request->validate([
+            'content_title' => 'required|string|max:255',
+        ]);
+
+        $event->update(['content_title' => $validated['content_title']]);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'content_title' => $event->content_title,
+                'message' => 'Content title updated.',
+            ]);
+        }
+
+        return back()->with('success', 'Content title updated.');
     }
 
     public function myEvents(Request $request)
@@ -155,14 +224,30 @@ class CalendarEventController extends Controller
         return redirect()->route('dashboard')->with('success', 'Event updated successfully!');
     }
 
-    public function destroy(CalendarEvent $event)
+    public function destroy(Request $request, CalendarEvent $event)
     {
         if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
             abort(403, 'Unauthorized action.');
         }
 
+        $eventId = $event->id;
+        $previous = url()->previous();
         $event->delete();
-        return back()->with('success', 'Event deleted successfully!');
+
+        $fallback = route('dashboard');
+        $isEventPage = str_contains($previous, '/events/'.$eventId);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Event deleted successfully!',
+                'redirect' => $isEventPage ? $fallback : ($previous ?: $fallback),
+            ]);
+        }
+
+        return redirect()
+            ->to($isEventPage ? $fallback : ($previous ?: $fallback))
+            ->with('success', 'Event deleted successfully!');
     }
 
     public function updateStatus(Request $request, CalendarEvent $event)
@@ -285,5 +370,14 @@ class CalendarEventController extends Controller
             'filter' => 'Not Done Events',
             'masterData' => $masterData,
         ]);
+    }
+
+    private function resolveMonth(?string $month): string
+    {
+        if (is_string($month) && preg_match('/^\d{4}-\d{2}$/', $month)) {
+            return $month;
+        }
+
+        return now()->format('Y-m');
     }
 }

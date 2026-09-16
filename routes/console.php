@@ -30,5 +30,7 @@ Artisan::command('events:notify {--days=5 : Days ahead to send reminder for (def
 })->purpose('Send advance reminder notifications to users for their events scheduled 5 days in advance');
 
 use Illuminate\Support\Facades\Schedule;
-// Run the notification command daily at 12:00 AM (midnight)
-Schedule::command('events:notify')->dailyAt('00:00');
+// Content submission reminders go to each assignee at 11:00 AM Bangladesh time.
+Schedule::command('events:notify --days=0')->dailyAt('11:00')->timezone('Asia/Dhaka');
+Schedule::command('events:notify --days=5')->dailyAt('11:00')->timezone('Asia/Dhaka');
+Schedule::command('sheets:sync')->everyFiveMinutes()->timezone('Asia/Dhaka');

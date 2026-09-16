@@ -25,6 +25,8 @@ class CalendarEvent extends Model
         'post_no',
         'product_focus',
         'status',
+        'source_key',
+        'source_sheet',
     ];
 
     protected $attributes = [
@@ -60,5 +62,47 @@ class CalendarEvent extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function displayTitle(): string
+    {
+        return $this->content_title
+            ?: ($this->post_no ? 'Post #'.$this->post_no : 'Untitled Event');
+    }
+
+    /**
+     * Numeric budget used for sorting. Parses values like "$400.00", "15,000",
+     * or "15000 each Total 200,000" and returns the largest amount found.
+     */
+    public function budgetAmount(?string $field = 'total'): float
+    {
+        return match ($field) {
+            'financial' => self::parseMoney($this->financial_budget),
+            'boosting' => self::parseMoney($this->boosting_budget),
+            default => self::parseMoney($this->financial_budget) + self::parseMoney($this->boosting_budget),
+        };
+    }
+
+    public static function parseMoney($value): float
+    {
+        if ($value === null) {
+            return 0.0;
+        }
+
+        $raw = trim((string) $value);
+        if ($raw === '' || $raw === '0') {
+            return 0.0;
+        }
+
+        if (!preg_match_all('/\d[\d,]*(?:\.\d+)?/', $raw, $matches)) {
+            return 0.0;
+        }
+
+        $amounts = array_map(
+            fn ($n) => (float) str_replace(',', '', $n),
+            $matches[0]
+        );
+
+        return $amounts ? max($amounts) : 0.0;
     }
 }

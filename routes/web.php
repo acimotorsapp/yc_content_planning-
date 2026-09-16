@@ -7,13 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    $events = \App\Models\CalendarEvent::with('user')->orderBy('event_date', 'asc')->get();
-    $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
-    // $events feeds the calendar (needs every event); the table pages through the same collection.
-    $tableEvents = \App\Support\CollectionPaginator::make($events, 10)->fragment('schedule');
-    return view('dashboard', compact('events', 'masterData', 'tableEvents'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\CalendarEventController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Admin filtering routes
@@ -22,6 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/events/global', [\App\Http\Controllers\CalendarEventController::class, 'adminGlobal'])->name('admin.events.global');
     Route::get('/admin/events/done', [\App\Http\Controllers\CalendarEventController::class, 'adminDone'])->name('admin.events.done');
     Route::get('/admin/events/not-done', [\App\Http\Controllers\CalendarEventController::class, 'adminNotDone'])->name('admin.events.not_done');
+    Route::get('/admin/budget', [\App\Http\Controllers\CalendarEventController::class, 'budgetProvision'])->name('admin.budget.index');
+    Route::get('/admin/sheets/status', [\App\Http\Controllers\GoogleSheetsSyncController::class, 'status'])->name('admin.sheets.status');
     
     // Settings Route
     Route::get('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'mailSettings'])->name('admin.settings');
@@ -54,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'show'])->name('events.show');
     Route::get('/events/{event}/edit', [\App\Http\Controllers\CalendarEventController::class, 'edit'])->name('events.edit');
     Route::put('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'update'])->name('events.update');
+    Route::patch('/events/{event}/title', [\App\Http\Controllers\CalendarEventController::class, 'updateTitle'])->name('events.update_title');
     Route::delete('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'destroy'])->name('events.destroy');
     Route::patch('/events/{event}/status', [\App\Http\Controllers\CalendarEventController::class, 'updateStatus'])->name('events.update_status');
 
@@ -67,4 +66,6 @@ require __DIR__.'/auth.php';
 // Public Cron Notification Endpoint (Allows triggering daily mail via Web URL / cPanel curl / external cron)
 Route::match(['get', 'post'], '/cron/events-notify', [\App\Http\Controllers\CronNotificationController::class, 'notify'])->name('cron.events.notify');
 Route::match(['get', 'post'], '/api/cron/events-notify', [\App\Http\Controllers\CronNotificationController::class, 'notify'])->name('api.cron.events.notify');
+Route::match(['get', 'post'], '/cron/sheets-sync', [\App\Http\Controllers\GoogleSheetsSyncController::class, 'sync'])->name('cron.sheets.sync');
+Route::match(['get', 'post'], '/api/cron/sheets-sync', [\App\Http\Controllers\GoogleSheetsSyncController::class, 'sync'])->name('api.cron.sheets.sync');
 

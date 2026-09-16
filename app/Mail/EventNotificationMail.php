@@ -83,7 +83,7 @@ class EventNotificationMail extends Mailable
         if ($this->daysAhead > 0) {
             $subject = "Content Schedule Reminder - {$formattedDate}";
         } elseif ($this->daysAhead === 0) {
-            $subject = "Content Schedule for Today ({$formattedDate})";
+            $subject = "Content Submission Reminder for Today ({$formattedDate}) - YC Content Planning";
         } else {
             $subject = "Content Schedule Notice - {$formattedDate}";
         }

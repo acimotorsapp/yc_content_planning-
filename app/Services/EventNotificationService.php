@@ -47,7 +47,13 @@ class EventNotificationService
             ];
         }
 
-        $events = CalendarEvent::whereDate('event_date', $targetDate)->get();
+        $events = CalendarEvent::whereDate('event_date', $targetDate)
+            ->when($actualDaysAhead === 0, function ($query) {
+                $query->where(function ($inner) {
+                    $inner->where('status', '!=', 'done')->orWhereNull('status');
+                });
+            })
+            ->get();
         $eventsByUser = $events->groupBy('user_id');
 
         $results = [];
