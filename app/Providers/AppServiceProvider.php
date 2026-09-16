@@ -35,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
                     'mail.mailers.smtp.password' => $settings->get('MAIL_PASSWORD', ''),
                     'mail.mailers.smtp.timeout' => $settings->get('MAIL_TIMEOUT'),
                     'mail.mailers.smtp.local_domain' => $settings->get('MAIL_EHLO_DOMAIN', 'yrc-bd.com'),
+                    'mail.mailers.postmark.token' => $settings->get('POSTMARK_TOKEN'),
+                    'mail.mailers.mailgun.domain' => $settings->get('MAILGUN_DOMAIN'),
+                    'mail.mailers.mailgun.secret' => $settings->get('MAILGUN_SECRET'),
+                    'mail.mailers.mailgun.endpoint' => $settings->get('MAILGUN_ENDPOINT', 'api.mailgun.net'),
                     'mail.from.address' => $settings->get('MAIL_FROM_ADDRESS', ''),
                     'mail.from.name' => $settings->get('MAIL_FROM_NAME', 'YC Content Planning'),
                 ]);

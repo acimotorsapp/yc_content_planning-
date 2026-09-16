@@ -1,0 +1,4790 @@
+{
+  "items": [
+    {
+      "timestamp": 1789556660.0380206,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 4.13,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 2.62,
+        "tls": true,
+        "message": "2.6.0 <349df6c2f488b75838284dd86eb2e87c@mg.yrc-bd.com> [InternalId=68006512166524, Hostname=KL1PR06MB6845.apcprd06.prod.outlook.com] 13719 bytes in 0.307, 43.538 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.124.117",
+        "utf8": true
+      },
+      "id": "UirzjR0fSPebOOJ89_Bu6g",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAABAQUDqtSQNulPfthHQZjr6SvjnQOFZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAQUDqtSQNulPfthHQZjr6SvjnQOFZQ"
+      },
+      "message": {
+        "size": 606,
+        "attachments": [],
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "349df6c2f488b75838284dd86eb2e87c@mg.yrc-bd.com",
+          "subject": "Plain Text Test Email - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "Daief@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "delivery-status": {
+        "attempt-no": 1,
+        "code": 250,
+        "mx-host-ip": "52.101.137.2",
+        "certificate-verified": true,
+        "enhanced-code": "2.6.0",
+        "description": "",
+        "tls": true,
+        "session-seconds": 4.886,
+        "utf8": true,
+        "message": "2.6.0 <22314b8323a3ff134a15170f8eebe5c1@mg.yrc-bd.com> [InternalId=74242804680652, Hostname=TYZPR06MB7062.apcprd06.prod.outlook.com] 13707 bytes in 0.301, 44.353 KB/sec Queued mail for delivery",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "first-delivery-attempt-seconds": 2.251
+      },
+      "user-variables": {},
+      "campaigns": [],
+      "timestamp": 1789556660.0041802,
+      "id": "Wf7FOz5hRcOFuDZZTz3fvg",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "22314b8323a3ff134a15170f8eebe5c1@mg.yrc-bd.com",
+          "subject": "Plain Text Test Email - YC Content Planning",
+          "to": "Sakirul@aci-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 608,
+        "attachments": []
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "log-level": "info",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Sakirul@aci-bd.com",
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp"
+      },
+      "recipient-provider": "Outlook 365",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Sakirul@aci-bd.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "Sakirul@aci-bd.com",
+      "storage": {
+        "key": "BAABAQVqS7vg2-v6h1pHl6sKZMfPG5JPZQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAQVqS7vg2-v6h1pHl6sKZMfPG5JPZQ"
+      }
+    },
+    {
+      "method": "HTTP",
+      "user-variables": {},
+      "timestamp": 1789556653.6516902,
+      "id": "B8iH8as6T2mBeD_kTsMNSw",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "349df6c2f488b75838284dd86eb2e87c@mg.yrc-bd.com",
+          "subject": "Plain Text Test Email - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 606,
+        "attachments": []
+      },
+      "event": "accepted",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "storage": {
+        "key": "BAABAQUDqtSQNulPfthHQZjr6SvjnQOFZQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAQUDqtSQNulPfthHQZjr6SvjnQOFZQ"
+      }
+    },
+    {
+      "tags": [],
+      "id": "etoTNC8FT96VOn5oScqKcw",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAABAQVqS7vg2-v6h1pHl6sKZMfPG5JPZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAQVqS7vg2-v6h1pHl6sKZMfPG5JPZQ"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789556653.100799,
+      "message": {
+        "size": 608,
+        "attachments": [],
+        "headers": {
+          "subject": "Plain Text Test Email - YC Content Planning",
+          "to": "Sakirul@aci-bd.com",
+          "message-id": "22314b8323a3ff134a15170f8eebe5c1@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "Sakirul@aci-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "targets": "Sakirul@aci-bd.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "Sakirul@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "timestamp": 1789556517.4503193,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 4.556,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.519,
+        "tls": true,
+        "message": "2.6.0 <a5543692ba88fa17b3a5cfd11c411b70@mg.yrc-bd.com> [InternalId=68861210657620, Hostname=KL1PR06MB6135.apcprd06.prod.outlook.com] 13693 bytes in 0.359, 37.212 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.124.117",
+        "utf8": true
+      },
+      "id": "7igVeLucR3yngj3QWZcuoA",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAABAQXoTtfLSD58jfhHj5FjN4ciQcIoZw",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAQXoTtfLSD58jfhHj5FjN4ciQcIoZw"
+      },
+      "message": {
+        "size": 612,
+        "attachments": [],
+        "headers": {
+          "to": "oshin@aci-bd.com",
+          "message-id": "a5543692ba88fa17b3a5cfd11c411b70@mg.yrc-bd.com",
+          "subject": "Plain Text Test Email - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.58",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "oshin@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "Y5K-tBzJQjOURPebmnrbVg",
+      "storage": {
+        "env": "production",
+        "key": "BAABAQXoTtfLSD58jfhHj5FjN4ciQcIoZw",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAQXoTtfLSD58jfhHj5FjN4ciQcIoZw"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 612,
+        "headers": {
+          "message-id": "a5543692ba88fa17b3a5cfd11c411b70@mg.yrc-bd.com",
+          "to": "oshin@aci-bd.com",
+          "subject": "Plain Text Test Email - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": []
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789556512.5697827,
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "log-level": "info",
+      "tags": [],
+      "id": "38Uu308cS-iNk7uvZkxxxQ",
+      "campaigns": [],
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "tls": true,
+        "first-delivery-attempt-seconds": 0.325,
+        "description": "",
+        "certificate-verified": true,
+        "session-seconds": 5.419,
+        "code": 250,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "attempt-no": 1,
+        "mx-host-ip": "52.101.157.80",
+        "message": "2.6.0 <2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com> [InternalId=85160611566368, Hostname=SEZPR06MB7139.apcprd06.prod.outlook.com] 152508 bytes in 0.238, 624.092 KB/sec Queued mail for delivery",
+        "utf8": true
+      },
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "message": {
+        "size": 140093,
+        "headers": {
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "to": "daiefsikder445@gmail.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered",
+      "recipient-provider": "Outlook 365",
+      "timestamp": 1789555796.551593,
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "user-variables": {}
+    },
+    {
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "mx-host-ip": "52.101.137.2",
+        "description": "",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "session-seconds": 5.886,
+        "attempt-no": 1,
+        "utf8": true,
+        "message": "2.6.0 <1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com> [InternalId=105286828312913, Hostname=SEYPR06MB5350.apcprd06.prod.outlook.com] 152652 bytes in 1.413, 105.449 KB/sec Queued mail for delivery",
+        "code": 250,
+        "tls": true,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.075
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.58",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "aci-bd.com",
+      "timestamp": 1789555796.508157,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "delivered",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "id": "bm9Op_DgRzmv8TyuIHqb3g",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "user-variables": {},
+      "recipient-provider": "Outlook 365",
+      "campaigns": []
+    },
+    {
+      "log-level": "info",
+      "tags": [],
+      "id": "j92l0dFtT2OCUzeA4HDckw",
+      "campaigns": [],
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "tls": true,
+        "first-delivery-attempt-seconds": 0.172,
+        "description": "",
+        "certificate-verified": true,
+        "session-seconds": 4.5809999999999995,
+        "code": 250,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "attempt-no": 1,
+        "mx-host-ip": "52.101.137.0",
+        "message": "2.6.0 <be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com> [InternalId=134097468935598, Hostname=SEZPR06MB6120.apcprd06.prod.outlook.com] 152618 bytes in 0.406, 367.090 KB/sec Queued mail for delivery",
+        "utf8": true
+      },
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "message": {
+        "size": 140078,
+        "headers": {
+          "message-id": "be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com",
+          "to": "oshin@aci-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered",
+      "recipient-provider": "Outlook 365",
+      "timestamp": 1789555796.1876972,
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "user-variables": {}
+    },
+    {
+      "tags": [],
+      "id": "nCUmo02QQy-_rmPlvV_f4A",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      },
+      "recipient-provider": "Outlook 365",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789555796.0324678,
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "campaigns": [],
+      "recipient": "oshin@aci-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "delivery-status": {
+        "attempt-no": 1,
+        "certificate-verified": true,
+        "session-seconds": 4.9,
+        "description": "",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "tls": true,
+        "utf8": true,
+        "first-delivery-attempt-seconds": 0.121,
+        "mx-host-ip": "52.101.137.0",
+        "enhanced-code": "2.6.0",
+        "message": "2.6.0 <2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com> [InternalId=47781511193430, Hostname=SEZPR06MB7138.apcprd06.prod.outlook.com] 152576 bytes in 0.581, 256.067 KB/sec Queued mail for delivery",
+        "code": 250
+      },
+      "envelope": {
+        "targets": "oshin@aci-bd.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "user-variables": {},
+      "recipient_pat": "oshin@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered"
+    },
+    {
+      "storage": {
+        "env": "production",
+        "region": "us-west1",
+        "key": "BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg"
+      },
+      "user-variables": {},
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "id": "mHDppa94RJ6_ZXG1qNI0kg",
+      "recipient-provider": "Outlook 365",
+      "timestamp": 1789555795.5144675,
+      "tags": [],
+      "message": {
+        "size": 140078,
+        "attachments": [
+          {
+            "size": 123948,
+            "content-type": "image/png",
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "oshin@aci-bd.com",
+          "message-id": "be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "campaigns": [],
+      "log-level": "info",
+      "recipient-domain": "aci-bd.com",
+      "event": "delivered",
+      "api-key-id": "44ec4598-bf411f2f",
+      "recipient": "Daief@aci-bd.com",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "Daief@aci-bd.com",
+        "sending-ip": "159.135.228.62"
+      },
+      "delivery-status": {
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.108,
+        "enhanced-code": "2.6.0",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "session-seconds": 3.908,
+        "utf8": true,
+        "mx-host-ip": "52.101.124.117",
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com> [InternalId=126405182508923, Hostname=KL1PR06MB6711.apcprd06.prod.outlook.com] 152635 bytes in 0.231, 643.995 KB/sec Queued mail for delivery",
+        "tls": true,
+        "attempt-no": 1
+      },
+      "recipient_pat": "Daief@aci-bd.com"
+    },
+    {
+      "recipient-provider": "Outlook 365",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789555795.1222856,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 151038,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "Daief@aci-bd.com",
+          "message-id": "e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg"
+      },
+      "recipient-domain": "aci-bd.com",
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "mx-host-ip": "52.101.137.2",
+        "session-seconds": 5.173,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.133,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com> [InternalId=26066156538717, Hostname=TY0PR06MB5308.apcprd06.prod.outlook.com] 163586 bytes in 0.710, 224.817 KB/sec Queued mail for delivery"
+      },
+      "id": "rtqBvu9tQ1ihmlbJMA4bRg",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.58",
+        "targets": "oshin@aci-bd.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "timestamp": 1789555794.804759,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 4.182,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.089,
+        "tls": true,
+        "message": "2.6.0 <1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com> [InternalId=68547678066588, Hostname=SG2PR06MB5105.apcprd06.prod.outlook.com] 152514 bytes in 0.250, 594.947 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.137.2",
+        "utf8": true
+      },
+      "id": "sWae5P-ZQbKaPRMnB9ITrg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ"
+      },
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "Daief@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "recipient-provider": "Outlook 365",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789555794.7779539,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 151038,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "Daief@aci-bd.com",
+          "message-id": "e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg"
+      },
+      "recipient-domain": "aci-bd.com",
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "mx-host-ip": "52.101.137.0",
+        "session-seconds": 4.828,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.132,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com> [InternalId=6352256659361, Hostname=SE1PPF997DECE08.apcprd06.prod.outlook.com] 163467 bytes in 0.427, 373.505 KB/sec Queued mail for delivery"
+      },
+      "id": "OHpvIZQ1S9ajLURDX-yE5A",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.62",
+        "targets": "Daief@aci-bd.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "recipient-provider": "Gmail",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789555792.5076091,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 140078,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "oshin@aci-bd.com",
+          "message-id": "be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg"
+      },
+      "recipient-domain": "gmail.com",
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "192.179.24.26",
+        "session-seconds": 0.901,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.123,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.0.0 OK  1789555792 d75a77b69052e-5326a778353si23472411cf.398 - gsmtp"
+      },
+      "id": "591Azp4ZR1SIFM_kZcELGQ",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.58",
+        "targets": "acijubairislamdaief@gmail.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "recipient-provider": "Gmail",
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "Xe_n_up8RByqar4UJNyQkA",
+      "tags": [],
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      },
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "log-level": "info",
+      "delivery-status": {
+        "code": 250,
+        "session-seconds": 0.914,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "tls": true,
+        "description": "",
+        "certificate-verified": true,
+        "mx-host-ip": "192.179.24.26",
+        "enhanced-code": "2.0.0",
+        "message": "2.0.0 OK  1789555792 af79cd13be357-93b81dbd1c7si154801885a.442 - gsmtp",
+        "utf8": true,
+        "attempt-no": 1,
+        "first-delivery-attempt-seconds": 0.173
+      },
+      "event": "delivered",
+      "timestamp": 1789555792.1351182,
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.58"
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "campaigns": []
+    },
+    {
+      "tags": [],
+      "id": "8MvOzIiwToueGamKEqsMGg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      },
+      "recipient-provider": "Gmail",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789555792.019852,
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "campaigns": [],
+      "recipient": "daiefsikder445@gmail.com",
+      "recipient-domain": "gmail.com",
+      "delivery-status": {
+        "attempt-no": 1,
+        "certificate-verified": true,
+        "session-seconds": 0.888,
+        "description": "",
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "tls": true,
+        "utf8": true,
+        "first-delivery-attempt-seconds": 0.101,
+        "mx-host-ip": "172.253.115.27",
+        "enhanced-code": "2.0.0",
+        "message": "2.0.0 OK  1789555791 6a1803df08f44-9123bfb9616si28871276d6.570 - gsmtp",
+        "code": 250
+      },
+      "envelope": {
+        "targets": "daiefsikder445@gmail.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "user-variables": {},
+      "recipient_pat": "daiefsikder445@gmail.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered"
+    },
+    {
+      "tags": [],
+      "id": "035lTFlGSQimxkM4TFgRRA",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789555791.606236,
+      "message": {
+        "size": 140078,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "oshin@aci-bd.com",
+          "message-id": "be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "oshin@aci-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "targets": "oshin@aci-bd.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "oshin@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "b74WCFWnS2a8e4FNJdACqA",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 140078,
+        "headers": {
+          "message-id": "be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com",
+          "to": "oshin@aci-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789555791.606236,
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "storage": {
+        "env": "production",
+        "region": "us-west1",
+        "key": "BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVPmQ655g1iPQlHdZZS7n4WbKXjZg"
+      },
+      "user-variables": {},
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "id": "WlSr_5VCSiCIta7GkMKFow",
+      "timestamp": 1789555791.606236,
+      "tags": [],
+      "message": {
+        "size": 140078,
+        "attachments": [
+          {
+            "size": 123948,
+            "content-type": "image/png",
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "oshin@aci-bd.com",
+          "message-id": "be62b55d4695d2a502d5bc8f2aa745c8@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "log-level": "info",
+      "recipient-domain": "gmail.com",
+      "method": "HTTP",
+      "event": "accepted",
+      "api-key-id": "44ec4598-bf411f2f",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "acijubairislamdaief@gmail.com"
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com"
+    },
+    {
+      "delivery-status": {
+        "attempt-no": 1,
+        "code": 250,
+        "mx-host-ip": "192.179.24.26",
+        "certificate-verified": true,
+        "enhanced-code": "2.0.0",
+        "description": "",
+        "tls": true,
+        "session-seconds": 0.865,
+        "utf8": true,
+        "message": "2.0.0 OK  1789555791 d75a77b69052e-5326a778353si23472411cf.398 - gsmtp",
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "first-delivery-attempt-seconds": 0.077
+      },
+      "user-variables": {},
+      "campaigns": [],
+      "timestamp": 1789555791.4874957,
+      "id": "BvWaO9fwSlGwWXwo1fIDdQ",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "acijubairislamdaief@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "log-level": "info",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "sending-ip": "159.135.228.58",
+        "transport": "smtp"
+      },
+      "recipient-provider": "Gmail",
+      "recipient-domain": "gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "storage": {
+        "key": "BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ"
+      }
+    },
+    {
+      "tags": [],
+      "id": "6A6QjFo7Tb6cK9nqkKztGQ",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg"
+      },
+      "recipient-provider": "Gmail",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789555791.279311,
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "message-id": "e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "campaigns": [],
+      "recipient": "acijubairislamdaief@gmail.com",
+      "recipient-domain": "gmail.com",
+      "delivery-status": {
+        "attempt-no": 1,
+        "certificate-verified": true,
+        "session-seconds": 1.142,
+        "description": "",
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "tls": true,
+        "utf8": true,
+        "first-delivery-attempt-seconds": 0.334,
+        "mx-host-ip": "172.253.115.27",
+        "enhanced-code": "2.0.0",
+        "message": "2.0.0 OK  1789555791 6a1803df08f44-9123bf5e891si30020026d6.276 - gsmtp",
+        "code": 250
+      },
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "user-variables": {},
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered"
+    },
+    {
+      "method": "HTTP",
+      "user-variables": {},
+      "timestamp": 1789555791.131575,
+      "id": "2-KdekcHQkyeQ4gzb81-_g",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "event": "accepted",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "daiefsikder445@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "gmail.com",
+      "recipient": "daiefsikder445@gmail.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "daiefsikder445@gmail.com",
+      "storage": {
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      }
+    },
+    {
+      "method": "HTTP",
+      "user-variables": {},
+      "timestamp": 1789555791.131575,
+      "id": "Vo29dleWTZWEHWJ7G6GRHA",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "event": "accepted",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "storage": {
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      }
+    },
+    {
+      "tags": [],
+      "id": "0yCaqRx4QgSWDzjE4rqRbA",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789555791.131575,
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "acijubairislamdaief@gmail.com",
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "WIYcvdbgTFuadC0pYeHd5A",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXCwvCEJnGP_sNAubj763m43MBoZw",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXCwvCEJnGP_sNAubj763m43MBoZw"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "2a346a5e9f8fd03fce6200dabdd0b085@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789555791.131575,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "eYao9eG1RD2xaMUtuxOL1w",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140105,
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789555790.621911,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "a8EjWVfwRRWXOhlrF9Nz9A",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 140105,
+        "headers": {
+          "message-id": "1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789555790.621911,
+      "method": "HTTP",
+      "recipient-domain": "gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com"
+    },
+    {
+      "storage": {
+        "env": "production",
+        "region": "us-west1",
+        "key": "BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQW2TuJ9rUfq0JxNLLknG3enTZ23aQ"
+      },
+      "user-variables": {},
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "id": "yZuSNMMETZGsjXy5BJPQsA",
+      "timestamp": 1789555790.621911,
+      "tags": [],
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "size": 123948,
+            "content-type": "image/png",
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "1e72469738dc4c01730439d144b3ae40@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "log-level": "info",
+      "recipient-domain": "aci-bd.com",
+      "method": "HTTP",
+      "event": "accepted",
+      "api-key-id": "44ec4598-bf411f2f",
+      "recipient": "oshin@aci-bd.com",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "oshin@aci-bd.com"
+      },
+      "recipient_pat": "oshin@aci-bd.com"
+    },
+    {
+      "timestamp": 1789555789.9483771,
+      "tags": [],
+      "event": "accepted",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "id": "6AeTMmsVQr2FO7CMEBb3Og",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg"
+      },
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com"
+      },
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "tags": [],
+      "id": "PmmOOi7XQyCMJ404QIScZg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789555789.9483771,
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "message-id": "e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "acijubairislamdaief@gmail.com",
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "qlkzeOWETfe18LmbqFCwTA",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXTmM6sVDckd6xDr5bfiRf6jEC8Yg"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 151038,
+        "headers": {
+          "message-id": "e37dc8cc9a1c44b1834cde8365f834b5@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789555789.9483771,
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "timestamp": 1789555370.2312627,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 6.622,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.283,
+        "tls": true,
+        "message": "2.6.0 <f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com> [InternalId=68650757275926, Hostname=SEZPR06MB5272.apcprd06.prod.outlook.com] 152545 bytes in 1.906, 78.152 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.157.80",
+        "utf8": true
+      },
+      "id": "X_l5JQeuROuNJs8dyyvf2w",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ"
+      },
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "Daief@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "recipient-provider": "Outlook 365",
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "eczQDt2LQBejDw6F6_mLRg",
+      "tags": [],
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA"
+      },
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 151038,
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "log-level": "info",
+      "delivery-status": {
+        "code": 250,
+        "session-seconds": 6.3629999999999995,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "tls": true,
+        "description": "",
+        "certificate-verified": true,
+        "mx-host-ip": "52.101.124.117",
+        "enhanced-code": "2.6.0",
+        "message": "2.6.0 <ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com> [InternalId=51827370379486, Hostname=KUZPR06MB7988.apcprd06.prod.outlook.com] 163424 bytes in 0.504, 316.286 KB/sec Queued mail for delivery",
+        "utf8": true,
+        "attempt-no": 1,
+        "first-delivery-attempt-seconds": 0.221
+      },
+      "event": "delivered",
+      "timestamp": 1789555369.391546,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "campaigns": []
+    },
+    {
+      "timestamp": 1789555368.5089843,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 4.356,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.08,
+        "tls": true,
+        "message": "2.6.0 <5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com> [InternalId=47644072232372, Hostname=TYZPR06MB4977.apcprd06.prod.outlook.com] 152503 bytes in 0.359, 414.374 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.137.2",
+        "utf8": true
+      },
+      "id": "1aGjMTR7QCaK11bA3s_iFg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "Daief@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "delivery-status": {
+        "attempt-no": 1,
+        "code": 250,
+        "mx-host-ip": "52.101.137.0",
+        "certificate-verified": true,
+        "enhanced-code": "2.6.0",
+        "description": "",
+        "tls": true,
+        "session-seconds": 4.702,
+        "utf8": true,
+        "message": "2.6.0 <f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com> [InternalId=75930726844781, Hostname=TYZPR06MB6745.apcprd06.prod.outlook.com] 152492 bytes in 0.422, 352.198 KB/sec Queued mail for delivery",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "first-delivery-attempt-seconds": 0.22
+      },
+      "user-variables": {},
+      "campaigns": [],
+      "timestamp": 1789555368.3112159,
+      "id": "IDQTmI5jQbGvMNnNyDG_kg",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "acijubairislamdaief@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "log-level": "info",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp"
+      },
+      "recipient-provider": "Outlook 365",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "storage": {
+        "key": "BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ"
+      }
+    },
+    {
+      "storage": {
+        "env": "production",
+        "region": "us-west1",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "user-variables": {},
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "id": "eTdhm_cUQW-pPEamf0Ontg",
+      "recipient-provider": "Outlook 365",
+      "timestamp": 1789555367.1899772,
+      "tags": [],
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "size": 123948,
+            "content-type": "image/png",
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "campaigns": [],
+      "log-level": "info",
+      "recipient-domain": "aci-bd.com",
+      "event": "delivered",
+      "api-key-id": "44ec4598-bf411f2f",
+      "recipient": "oshin@aci-bd.com",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "oshin@aci-bd.com",
+        "sending-ip": "159.135.228.62"
+      },
+      "delivery-status": {
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.378,
+        "enhanced-code": "2.6.0",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "session-seconds": 2.727,
+        "utf8": true,
+        "mx-host-ip": "52.101.157.80",
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com> [InternalId=21526376105461, Hostname=OSNPR06MB8345.apcprd06.prod.outlook.com] 152553 bytes in 0.115, 1288.677 KB/sec Queued mail for delivery",
+        "tls": true,
+        "attempt-no": 1
+      },
+      "recipient_pat": "oshin@aci-bd.com"
+    },
+    {
+      "log-level": "info",
+      "tags": [],
+      "id": "UeCMHUjCQ460mWCS5p-vzw",
+      "campaigns": [],
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "tls": true,
+        "first-delivery-attempt-seconds": 0.283,
+        "description": "",
+        "certificate-verified": true,
+        "session-seconds": 4.001,
+        "code": 250,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "attempt-no": 1,
+        "mx-host-ip": "52.101.124.117",
+        "message": "2.6.0 <ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com> [InternalId=61942018360196, Hostname=SEYPR06MB5014.apcprd06.prod.outlook.com] 163588 bytes in 0.228, 700.318 KB/sec Queued mail for delivery",
+        "utf8": true
+      },
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "message": {
+        "size": 151038,
+        "headers": {
+          "message-id": "ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered",
+      "recipient-provider": "Outlook 365",
+      "timestamp": 1789555367.0290928,
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "user-variables": {}
+    },
+    {
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "192.178.155.26",
+        "description": "",
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "session-seconds": 2.226,
+        "attempt-no": 1,
+        "utf8": true,
+        "message": "2.0.0 OK  1789555365 6a1803df08f44-9123bf0f632si29718566d6.186 - gsmtp",
+        "code": 250,
+        "tls": true,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.085
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.58",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "gmail.com",
+      "timestamp": 1789555365.8350964,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "delivered",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "id": "wTD1YwkTRia20zWRkKczEg",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "user-variables": {},
+      "recipient-provider": "Gmail",
+      "campaigns": []
+    },
+    {
+      "timestamp": 1789555365.1896992,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "description": "",
+        "session-seconds": 0.726,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.0.0",
+        "first-delivery-attempt-seconds": 0.38,
+        "tls": true,
+        "message": "2.0.0 OK  1789555365 6a1803df08f44-9123bfb4740si28199326d6.541 - gsmtp",
+        "mx-host-ip": "192.178.155.26",
+        "utf8": true
+      },
+      "id": "uEHzv6QnQsmxdPdXW8DTmQ",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.58",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "gmail.com",
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "campaigns": [],
+      "recipient-provider": "Gmail",
+      "recipient": "acijubairislamdaief@gmail.com"
+    },
+    {
+      "recipient-provider": "Gmail",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789555365.1244588,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 140093,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "daiefsikder445@gmail.com",
+      "recipient": "daiefsikder445@gmail.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "recipient-domain": "gmail.com",
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "172.253.62.26",
+        "session-seconds": 0.971,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.074,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.0.0 OK  1789555365 6a1803df08f44-9123bde8d1bsi28682996d6.47 - gsmtp"
+      },
+      "id": "I76_bTshRGm5X95em4Earw",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.62",
+        "targets": "daiefsikder445@gmail.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "method": "HTTP",
+      "user-variables": {},
+      "timestamp": 1789555364.1519868,
+      "id": "3W74FV87SCuyHjnYpOiBow",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "event": "accepted",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "storage": {
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      }
+    },
+    {
+      "timestamp": 1789555364.1519868,
+      "tags": [],
+      "event": "accepted",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "id": "LVBmw0VEQAy5InRCJ4nnjg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com"
+      },
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "xMQ3hFHNTqSRPpzZ4dMrNw",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789555364.1519868,
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "daiefsikder445@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "daiefsikder445@gmail.com",
+      "recipient": "daiefsikder445@gmail.com"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "leLtCJSVT6StnoSugYyzqQ",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWGXiCkbQbntTpCRJLCjHMTklhlZQ"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "5b1f0f4748b5bd99c911383267990720@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789555364.1519868,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "192.178.155.26",
+        "description": "",
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "session-seconds": 0.669,
+        "attempt-no": 1,
+        "utf8": true,
+        "message": "2.0.0 OK  1789555363 6a1803df08f44-9123bfb4740si28199326d6.541 - gsmtp",
+        "code": 250,
+        "tls": true,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.083
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.58",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "gmail.com",
+      "timestamp": 1789555363.6975048,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "delivered",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com"
+        },
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "id": "Wmos6ebUToKhUfcFwszGoA",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "user-variables": {},
+      "recipient-provider": "Gmail",
+      "campaigns": []
+    },
+    {
+      "envelope": {
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com"
+      },
+      "recipient-domain": "aci-bd.com",
+      "timestamp": 1789555363.6088252,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "accepted",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "id": "4DISWwiTTx6rEmLg4b2_1Q",
+      "originating-ip": "116.68.205.66",
+      "recipient": "Daief@aci-bd.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "method": "HTTP",
+      "user-variables": {}
+    },
+    {
+      "method": "HTTP",
+      "user-variables": {},
+      "timestamp": 1789555363.6088252,
+      "id": "G8unN5cBSDyJHQ71NnYLfw",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "acijubairislamdaief@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "event": "accepted",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "storage": {
+        "key": "BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ"
+      }
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "7JxaiDOCQqeurj04OXAvaQ",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVj8E9WPtqNWVBHTICQwmn7gMWbYQ"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 140105,
+        "headers": {
+          "message-id": "f4e926ee25404b71c51f583020b96e8d@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789555363.6088252,
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "timestamp": 1789555363.0250611,
+      "tags": [],
+      "event": "accepted",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "id": "31UrIX0ZQ9WMK_nDBdqF_w",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA"
+      },
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com"
+      },
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "envelope": {
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com"
+      },
+      "recipient-domain": "aci-bd.com",
+      "timestamp": 1789555363.0250611,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "accepted",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com"
+        },
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "id": "-exGhIf2RNGLZOGjwxY6bw",
+      "originating-ip": "116.68.205.66",
+      "recipient": "Daief@aci-bd.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "method": "HTTP",
+      "user-variables": {}
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "io6x70BzTomBIP4jd1-Agw",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUALs64tDUXXSpBEK1ZGNg-iby4aA"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 151038,
+        "headers": {
+          "message-id": "ce070c6edb82be0e36bfed85453cfc1b@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789555363.0250611,
+      "method": "HTTP",
+      "recipient-domain": "gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com"
+    },
+    {
+      "timestamp": 1789554778.0025196,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 4.406,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.256,
+        "tls": true,
+        "message": "2.6.0 <c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com> [InternalId=261993020076, Hostname=KU2PPF3DF13290E.apcprd06.prod.outlook.com] 152536 bytes in 0.263, 566.210 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.157.80",
+        "utf8": true
+      },
+      "id": "jJcuO0nVRhierNFrK3t5Ug",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "message": {
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "oshin@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "recipient-provider": "Outlook 365",
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "kloWGjtpRT2eIgdGk04xhA",
+      "tags": [],
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "log-level": "info",
+      "delivery-status": {
+        "code": 250,
+        "session-seconds": 4.316,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "tls": true,
+        "description": "",
+        "certificate-verified": true,
+        "mx-host-ip": "52.101.157.80",
+        "enhanced-code": "2.6.0",
+        "message": "2.6.0 <c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com> [InternalId=21457656624137, Hostname=OSNPR06MB8372.apcprd06.prod.outlook.com] 152672 bytes in 0.438, 339.844 KB/sec Queued mail for delivery",
+        "utf8": true,
+        "attempt-no": 1,
+        "first-delivery-attempt-seconds": 0.13
+      },
+      "event": "delivered",
+      "timestamp": 1789554777.9124105,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "campaigns": []
+    },
+    {
+      "storage": {
+        "env": "production",
+        "region": "us-west1",
+        "key": "BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ"
+      },
+      "user-variables": {},
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "id": "augfQiPfR5aJAzhGcN-Axw",
+      "recipient-provider": "Outlook 365",
+      "timestamp": 1789554776.7491386,
+      "tags": [],
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "size": 123948,
+            "content-type": "image/png",
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "campaigns": [],
+      "log-level": "info",
+      "recipient-domain": "aci-bd.com",
+      "event": "delivered",
+      "api-key-id": "44ec4598-bf411f2f",
+      "recipient": "Daief@aci-bd.com",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "Daief@aci-bd.com",
+        "sending-ip": "159.135.228.58"
+      },
+      "delivery-status": {
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.173,
+        "enhanced-code": "2.6.0",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "session-seconds": 3.7560000000000002,
+        "utf8": true,
+        "mx-host-ip": "52.101.137.0",
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com> [InternalId=14912126469312, Hostname=KUYPR06MB8771.apcprd06.prod.outlook.com] 152740 bytes in 1.122, 132.932 KB/sec Queued mail for delivery",
+        "tls": true,
+        "attempt-no": 1
+      },
+      "recipient_pat": "Daief@aci-bd.com"
+    },
+    {
+      "recipient-provider": "Gmail",
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "HKZ2_BXiSs2izSlfVI6pOA",
+      "tags": [],
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "log-level": "info",
+      "delivery-status": {
+        "code": 250,
+        "session-seconds": 1.6949999999999998,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "tls": true,
+        "description": "",
+        "certificate-verified": true,
+        "mx-host-ip": "172.253.62.26",
+        "enhanced-code": "2.0.0",
+        "message": "2.0.0 OK  1789554775 af79cd13be357-93b81df6367si157294585a.529 - gsmtp",
+        "utf8": true,
+        "attempt-no": 1,
+        "first-delivery-attempt-seconds": 0.257
+      },
+      "event": "delivered",
+      "timestamp": 1789554775.36898,
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "campaigns": []
+    },
+    {
+      "recipient-provider": "Gmail",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789554775.3323586,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 140093,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "daiefsikder445@gmail.com",
+      "recipient": "daiefsikder445@gmail.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "recipient-domain": "gmail.com",
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "172.253.62.26",
+        "session-seconds": 1.736,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.083,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.0.0 OK  1789554775 af79cd13be357-93b81e14377si155498085a.569 - gsmtp"
+      },
+      "id": "2zOyPG_QRPCzlj2p0pX8UQ",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.62",
+        "targets": "daiefsikder445@gmail.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "timestamp": 1789554775.081089,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 2.088,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.103,
+        "tls": true,
+        "message": "2.6.0 <729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com> [InternalId=68208375640563, Hostname=SEZPR06MB5900.apcprd06.prod.outlook.com] 152621 bytes in 0.189, 787.080 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.137.2",
+        "utf8": true
+      },
+      "id": "ZyzwXTSxRRCWCoZRIhVhyg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ"
+      },
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "oshin@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "mx-host-ip": "52.101.157.80",
+        "description": "",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "session-seconds": 2.661,
+        "attempt-no": 1,
+        "utf8": true,
+        "message": "2.6.0 <afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com> [InternalId=19228568599381, Hostname=KUYPR06MB8676.apcprd06.prod.outlook.com] 163595 bytes in 0.440, 362.972 KB/sec Queued mail for delivery",
+        "code": 250,
+        "tls": true,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.112
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "aci-bd.com",
+      "timestamp": 1789554774.9974484,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "delivered",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com"
+        },
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "id": "82pZQRniQ5uG-xNahhtM9Q",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "user-variables": {},
+      "recipient-provider": "Outlook 365",
+      "campaigns": []
+    },
+    {
+      "recipient-provider": "Outlook 365",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789554774.7211967,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 151038,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "Daief@aci-bd.com",
+          "message-id": "afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ"
+      },
+      "recipient-domain": "aci-bd.com",
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "mx-host-ip": "52.101.137.0",
+        "session-seconds": 2.385,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.283,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com> [InternalId=91452738646917, Hostname=SEYPR06MB6777.apcprd06.prod.outlook.com] 163563 bytes in 0.196, 814.911 KB/sec Queued mail for delivery"
+      },
+      "id": "TTg3THyZT0qkyZ6UfNLUqw",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.62",
+        "targets": "Daief@aci-bd.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "recipient-provider": "Gmail",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789554773.9888177,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 140105,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ"
+      },
+      "recipient-domain": "gmail.com",
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "192.179.24.26",
+        "session-seconds": 0.996,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.173,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.0.0 OK  1789554773 6a1803df08f44-9123bfb1b9bsi29356126d6.522 - gsmtp"
+      },
+      "id": "YqT18tGSSlSIhRg-YBp7zw",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.58",
+        "targets": "acijubairislamdaief@gmail.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "delivery-status": {
+        "enhanced-code": "2.0.0",
+        "mx-host-ip": "172.253.62.26",
+        "description": "",
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "session-seconds": 1.6480000000000001,
+        "attempt-no": 1,
+        "utf8": true,
+        "message": "2.0.0 OK  1789554773 6a1803df08f44-9123bfb84e2si34215466d6.573 - gsmtp",
+        "code": 250,
+        "tls": true,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.084
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "gmail.com",
+      "timestamp": 1789554773.9848373,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "delivered",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com"
+        },
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "id": "Uc25eN1jQmu9CJ8GqvRn7w",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "user-variables": {},
+      "recipient-provider": "Gmail",
+      "campaigns": []
+    },
+    {
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com"
+      },
+      "recipient-domain": "gmail.com",
+      "timestamp": 1789554773.5958507,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "accepted",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "to": "daiefsikder445@gmail.com"
+        },
+        "size": 140093,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "id": "lAGSgOzyRlC7ulGU3D9VUw",
+      "originating-ip": "116.68.205.66",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "method": "HTTP",
+      "user-variables": {}
+    },
+    {
+      "method": "HTTP",
+      "user-variables": {},
+      "timestamp": 1789554773.5958507,
+      "id": "t1nXNvUpTjKqd6bDxChCeQ",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "daiefsikder445@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140093,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "event": "accepted",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "storage": {
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      }
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "hq2PuvF9R0SpURpQ0305tQ",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 140093,
+        "headers": {
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "to": "daiefsikder445@gmail.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789554773.5958507,
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "fczXWacETSaMtOEm3PUGWw",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUvB0tEjITcvfRETLRdjtVDmxsdZg"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140093,
+        "headers": {
+          "to": "daiefsikder445@gmail.com",
+          "message-id": "c18cfa5f93e2cfa88a74711208b48177@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789554773.5958507,
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "daiefsikder445@gmail.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "daiefsikder445@gmail.com",
+      "recipient": "daiefsikder445@gmail.com"
+    },
+    {
+      "timestamp": 1789554772.992062,
+      "tags": [],
+      "event": "accepted",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "id": "O94A9ifCQPix4z1_-fDfpw",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ"
+      },
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "originating-ip": "116.68.205.66",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com"
+      },
+      "method": "HTTP",
+      "recipient-domain": "gmail.com",
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com"
+    },
+    {
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "log-level": "info",
+      "tags": [],
+      "id": "L4FQTop_R3-Obivci55WYQ",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ"
+      },
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "message": {
+        "size": 140105,
+        "headers": {
+          "message-id": "729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "filename": "logo.png",
+            "size": 123948
+          }
+        ]
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true,
+        "is-routed": false
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "accepted",
+      "timestamp": 1789554772.992062,
+      "method": "HTTP",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "dwPfHv6TRhWe6T6dpJnVHQ",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQWicl0KQ4JYsyBF1ZRhfVGBSldEZQ"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140105,
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "729336734dcc6888fc2c8cb4fd977f2d@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789554772.992062,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com"
+      },
+      "recipient-domain": "gmail.com",
+      "timestamp": 1789554772.3362417,
+      "flags": {
+        "is-routed": false,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-authenticated": true
+      },
+      "event": "accepted",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ"
+      },
+      "message": {
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "message-id": "afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com",
+          "to": "Daief@aci-bd.com"
+        },
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "id": "UYkMMU_oQfalIO7A0vQxrw",
+      "originating-ip": "116.68.205.66",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "method": "HTTP",
+      "user-variables": {}
+    },
+    {
+      "tags": [],
+      "id": "W7mdjt3_REqldPwOdHSZKg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789554772.3362417,
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "message-id": "afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "Daief@aci-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "targets": "Daief@aci-bd.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "Daief@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "AaPlmOy9Ts2iOfyONtbQuA",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQXKtTj8Ab93SbNCuIH7CS5Zg_mFYQ"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 151038,
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "afe0c2b232b2caea7ff08eb6e9ad8201@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789554772.3362417,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "recipient-provider": "Outlook 365",
+      "campaigns": [],
+      "user-variables": {},
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "timestamp": 1789554641.877063,
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 140105,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ"
+      },
+      "recipient-domain": "aci-bd.com",
+      "delivery-status": {
+        "enhanced-code": "2.6.0",
+        "mx-host-ip": "52.101.137.0",
+        "session-seconds": 4.773,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.343,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "utf8": true,
+        "tls": true,
+        "attempt-no": 1,
+        "code": 250,
+        "description": "",
+        "message": "2.6.0 <63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com> [InternalId=12743167984485, Hostname=TYNPR06MB8598.apcprd06.prod.outlook.com] 152503 bytes in 0.378, 393.087 KB/sec Queued mail for delivery"
+      },
+      "id": "NLNhoz2ARCe0zmZgwyTCFg",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "sending-ip": "159.135.228.58",
+        "targets": "oshin@aci-bd.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "tags": [],
+      "id": "KgxfM4LZR5uPz4x6igwFzw",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA"
+      },
+      "recipient-provider": "Outlook 365",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789554641.392354,
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "message-id": "0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "campaigns": [],
+      "recipient": "Daief@aci-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "delivery-status": {
+        "attempt-no": 1,
+        "certificate-verified": true,
+        "session-seconds": 4.921,
+        "description": "",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "tls": true,
+        "utf8": true,
+        "first-delivery-attempt-seconds": 0.63,
+        "mx-host-ip": "52.101.137.2",
+        "enhanced-code": "2.6.0",
+        "message": "2.6.0 <0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com> [InternalId=68650757273540, Hostname=TYZPR06MB5100.apcprd06.prod.outlook.com] 163570 bytes in 0.268, 595.809 KB/sec Queued mail for delivery",
+        "code": 250
+      },
+      "envelope": {
+        "targets": "Daief@aci-bd.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "user-variables": {},
+      "recipient_pat": "Daief@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "event": "delivered"
+    },
+    {
+      "timestamp": 1789554641.1112325,
+      "tags": [],
+      "event": "delivered",
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false
+      },
+      "user-variables": {},
+      "log-level": "info",
+      "api-key-id": "44ec4598-bf411f2f",
+      "delivery-status": {
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "description": "",
+        "session-seconds": 4.64,
+        "certificate-verified": true,
+        "attempt-no": 1,
+        "code": 250,
+        "enhanced-code": "2.6.0",
+        "first-delivery-attempt-seconds": 0.453,
+        "tls": true,
+        "message": "2.6.0 <0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com> [InternalId=19232863565827, Hostname=SI3PR06MB8657.apcprd06.prod.outlook.com] 163456 bytes in 0.191, 834.958 KB/sec Queued mail for delivery",
+        "mx-host-ip": "52.101.137.0",
+        "utf8": true
+      },
+      "id": "axBL51B6R4GESD6HgH2NdA",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA"
+      },
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "recipient_pat": "oshin@aci-bd.com",
+      "campaigns": [],
+      "recipient-provider": "Outlook 365",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "delivery-status": {
+        "attempt-no": 1,
+        "code": 250,
+        "mx-host-ip": "52.101.157.80",
+        "certificate-verified": true,
+        "enhanced-code": "2.6.0",
+        "description": "",
+        "tls": true,
+        "session-seconds": 3.778,
+        "utf8": true,
+        "message": "2.6.0 <63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com> [InternalId=54447300427178, Hostname=TY0PR06MB5755.apcprd06.prod.outlook.com] 152421 bytes in 0.692, 215.053 KB/sec Queued mail for delivery",
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "first-delivery-attempt-seconds": 0.341
+      },
+      "user-variables": {},
+      "campaigns": [],
+      "timestamp": 1789554640.881715,
+      "id": "rlDrA7k2SXarWLn7EEnBcg",
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "headers": {
+          "message-id": "63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "acijubairislamdaief@gmail.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 140105,
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ]
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "event": "delivered",
+      "log-level": "info",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "sending-ip": "159.135.228.62",
+        "transport": "smtp"
+      },
+      "recipient-provider": "Outlook 365",
+      "recipient-domain": "aci-bd.com",
+      "recipient": "Daief@aci-bd.com",
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-test-mode": false,
+        "is-system-test": false
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "storage": {
+        "key": "BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ",
+        "region": "us-west1",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ"
+      }
+    },
+    {
+      "recipient-provider": "Gmail",
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "A6n-lDupSDK_fgYYdeif5Q",
+      "tags": [],
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ"
+      },
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140105,
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "log-level": "info",
+      "delivery-status": {
+        "code": 250,
+        "session-seconds": 1.185,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "tls": true,
+        "description": "",
+        "certificate-verified": true,
+        "mx-host-ip": "64.233.180.26",
+        "enhanced-code": "2.0.0",
+        "message": "2.0.0 OK  1789554638 6a1803df08f44-9124246d550si5670676d6.40 - gsmtp",
+        "utf8": true,
+        "attempt-no": 1,
+        "first-delivery-attempt-seconds": 0.323
+      },
+      "event": "delivered",
+      "timestamp": 1789554638.287666,
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.58"
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "campaigns": []
+    },
+    {
+      "recipient-provider": "Gmail",
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "BvzqVd8mSE60bSPLChFqrw",
+      "tags": [],
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA"
+      },
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 151038,
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "log-level": "info",
+      "delivery-status": {
+        "code": 250,
+        "session-seconds": 1.121,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "tls": true,
+        "description": "",
+        "certificate-verified": true,
+        "mx-host-ip": "172.253.62.27",
+        "enhanced-code": "2.0.0",
+        "message": "2.0.0 OK  1789554637 d75a77b69052e-5326a6e57fcsi21047811cf.270 - gsmtp",
+        "utf8": true,
+        "attempt-no": 1,
+        "first-delivery-attempt-seconds": 0.407
+      },
+      "event": "delivered",
+      "timestamp": 1789554637.6021473,
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sending-ip": "159.135.228.62"
+      },
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "campaigns": []
+    },
+    {
+      "tags": [],
+      "id": "l6bHvE_cT1-HNZ8ET9LXvg",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789554636.852035,
+      "message": {
+        "size": 140105,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "acijubairislamdaief@gmail.com",
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "user-variables": {},
+      "event": "accepted",
+      "timestamp": 1789554636.852035,
+      "originating-ip": "116.68.205.66",
+      "message": {
+        "attachments": [
+          {
+            "content-type": "image/png",
+            "size": 123948,
+            "filename": "logo.png"
+          }
+        ],
+        "size": 140105,
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning"
+        }
+      },
+      "flags": {
+        "is-authenticated": true,
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false
+      },
+      "log-level": "info",
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com",
+      "method": "HTTP",
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ"
+      },
+      "recipient-domain": "aci-bd.com",
+      "id": "s0vsOVskRiyT3i22catqYw",
+      "envelope": {
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com"
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": []
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "uOgUD5r8R3mJ1Mv281je1g",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQVd6rFJupJ4R9NKbYV3H-IAlhfYZQ"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 140105,
+        "headers": {
+          "to": "acijubairislamdaief@gmail.com",
+          "message-id": "63d3e8406abedca4cfbc845dfeb593d7@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789554636.852035,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "Daief@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "Daief@aci-bd.com",
+      "recipient": "Daief@aci-bd.com"
+    },
+    {
+      "tags": [],
+      "id": "5nJFN-VaRK62j7OgNRDG8Q",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789554636.1654394,
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "message-id": "0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "Daief@aci-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "targets": "Daief@aci-bd.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "Daief@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "tags": [],
+      "id": "wgP1T-EGSNK7KNHMnS7UmQ",
+      "storage": {
+        "region": "us-west1",
+        "key": "BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA",
+        "env": "production",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA"
+      },
+      "method": "HTTP",
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      },
+      "log-level": "info",
+      "timestamp": 1789554636.1654394,
+      "message": {
+        "size": 151038,
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ],
+        "headers": {
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "to": "Daief@aci-bd.com",
+          "message-id": "0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        }
+      },
+      "recipient": "acijubairislamdaief@gmail.com",
+      "recipient-domain": "gmail.com",
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "user-variables": {},
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "originating-ip": "116.68.205.66",
+      "event": "accepted"
+    },
+    {
+      "flags": {
+        "is-system-test": false,
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true
+      },
+      "id": "mdReh6TaRpCi-9MjJDe9Vg",
+      "tags": [],
+      "storage": {
+        "env": "production",
+        "key": "BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA",
+        "region": "us-west1",
+        "url": "https://storage-us-west1.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAADAQUhVPCWAfbrNIxPb5lEVJt5vrNRaA"
+      },
+      "originating-ip": "116.68.205.66",
+      "user-variables": {},
+      "api-key-id": "44ec4598-bf411f2f",
+      "message": {
+        "size": 151038,
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "0a183181295cfac0e95a603a4a610416@mg.yrc-bd.com",
+          "subject": "Upcoming Content Reminder: Scheduled for Mon, Sep 21, 2026 (in 5 days) - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "attachments": [
+          {
+            "filename": "logo.png",
+            "size": 123948,
+            "content-type": "image/png"
+          }
+        ]
+      },
+      "method": "HTTP",
+      "log-level": "info",
+      "event": "accepted",
+      "timestamp": 1789554636.1654394,
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "targets": "oshin@aci-bd.com",
+        "transport": "smtp"
+      },
+      "recipient_pat": "oshin@aci-bd.com",
+      "recipient": "oshin@aci-bd.com"
+    },
+    {
+      "delivery-status": {
+        "description": "",
+        "mx-host-ip": "52.101.137.2",
+        "attempt-no": 1,
+        "enhanced-code": "2.6.0",
+        "tls": true,
+        "first-delivery-attempt-seconds": 0.07,
+        "code": 250,
+        "certificate-verified": true,
+        "session-seconds": 4.851,
+        "mx-host": "acibd-com0i.mail.protection.outlook.com",
+        "message": "2.6.0 <8ca19d3f60374d578b77d10b1190fde1@mg.yrc-bd.com> [InternalId=108658377632798, Hostname=PUZPR06MB5435.apcprd06.prod.outlook.com] 13060 bytes in 0.152, 83.637 KB/sec Queued mail for delivery",
+        "utf8": true
+      },
+      "recipient-provider": "Outlook 365",
+      "api-key-id": "44ec4598-bf411f2f",
+      "tags": [],
+      "log-level": "info",
+      "id": "vGLzYjKGRRueYEUngpXVrg",
+      "recipient": "Daief@aci-bd.com",
+      "timestamp": 1789554412.1026342,
+      "event": "delivered",
+      "recipient_pat": "Daief@aci-bd.com",
+      "message": {
+        "size": 491,
+        "attachments": [],
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "subject": "Final Test - Mailgun Verified Domain - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "message-id": "8ca19d3f60374d578b77d10b1190fde1@mg.yrc-bd.com"
+        }
+      },
+      "campaigns": [],
+      "storage": {
+        "region": "us-east4",
+        "env": "production",
+        "key": "BAABAAUrOFWCIPmZWQdAn5vNjkifqTCPZA",
+        "url": "https://storage-us-east4.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAAUrOFWCIPmZWQdAn5vNjkifqTCPZA"
+      },
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "recipient-domain": "aci-bd.com",
+      "envelope": {
+        "targets": "Daief@aci-bd.com",
+        "sending-ip": "159.135.228.62",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp"
+      },
+      "flags": {
+        "is-test-mode": false,
+        "is-authenticated": true,
+        "is-routed": false,
+        "is-system-test": false
+      },
+      "user-variables": {}
+    },
+    {
+      "user-variables": {},
+      "campaigns": [],
+      "tags": [],
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "message": {
+        "size": 504,
+        "attachments": [],
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "message-id": "1441f4ca7225822ca872434313755bb6@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com",
+          "subject": "Final Test - Mailgun Verified Domain - YC Content Planning"
+        }
+      },
+      "storage": {
+        "key": "BAABAAUZFt2EehIyeKxGTaKQPPCv8H4qaA",
+        "region": "us-east4",
+        "env": "production",
+        "url": "https://storage-us-east4.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAAUZFt2EehIyeKxGTaKQPPCv8H4qaA"
+      },
+      "event": "delivered",
+      "timestamp": 1789554407.7393634,
+      "recipient": "acijubairislamdaief@gmail.com",
+      "id": "4kCR2GVSQjWg8mzrS_5-TA",
+      "recipient-provider": "Gmail",
+      "envelope": {
+        "sending-ip": "159.135.228.62",
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "acijubairislamdaief@gmail.com"
+      },
+      "delivery-status": {
+        "description": "",
+        "attempt-no": 1,
+        "session-seconds": 0.998,
+        "mx-host": "gmail-smtp-in.l.google.com",
+        "mx-host-ip": "172.253.62.26",
+        "enhanced-code": "2.0.0",
+        "utf8": true,
+        "code": 250,
+        "message": "2.0.0 OK  1789554407 af79cd13be357-93bc106a279si25758985a.499 - gsmtp",
+        "tls": true,
+        "certificate-verified": true,
+        "first-delivery-attempt-seconds": 0.031
+      },
+      "log-level": "info",
+      "recipient-domain": "gmail.com",
+      "primary-dkim": "mx._domainkey.mg.yrc-bd.com",
+      "flags": {
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-system-test": false,
+        "is-authenticated": true
+      },
+      "api-key-id": "44ec4598-bf411f2f"
+    },
+    {
+      "recipient": "Daief@aci-bd.com",
+      "api-key-id": "44ec4598-bf411f2f",
+      "recipient_pat": "Daief@aci-bd.com",
+      "id": "DZm6edMNRRa3-mH9pRdFDQ",
+      "log-level": "info",
+      "method": "HTTP",
+      "tags": [],
+      "recipient-domain": "aci-bd.com",
+      "message": {
+        "headers": {
+          "to": "Daief@aci-bd.com",
+          "message-id": "8ca19d3f60374d578b77d10b1190fde1@mg.yrc-bd.com",
+          "subject": "Final Test - Mailgun Verified Domain - YC Content Planning",
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>"
+        },
+        "size": 491,
+        "attachments": []
+      },
+      "timestamp": 1789554407.2504234,
+      "originating-ip": "116.68.205.66",
+      "storage": {
+        "env": "production",
+        "key": "BAABAAUrOFWCIPmZWQdAn5vNjkifqTCPZA",
+        "region": "us-east4",
+        "url": "https://storage-us-east4.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAAUrOFWCIPmZWQdAn5vNjkifqTCPZA"
+      },
+      "event": "accepted",
+      "user-variables": {},
+      "envelope": {
+        "sender": "no-reply@mg.yrc-bd.com",
+        "transport": "smtp",
+        "targets": "Daief@aci-bd.com"
+      },
+      "flags": {
+        "is-test-mode": false,
+        "is-routed": false,
+        "is-authenticated": true,
+        "is-system-test": false
+      }
+    },
+    {
+      "recipient_pat": "acijubairislamdaief@gmail.com",
+      "event": "accepted",
+      "envelope": {
+        "targets": "acijubairislamdaief@gmail.com",
+        "transport": "smtp",
+        "sender": "no-reply@mg.yrc-bd.com"
+      },
+      "tags": [],
+      "flags": {
+        "is-routed": false,
+        "is-test-mode": false,
+        "is-system-test": false,
+        "is-authenticated": true
+      },
+      "recipient-domain": "gmail.com",
+      "timestamp": 1789554406.7347884,
+      "method": "HTTP",
+      "user-variables": {},
+      "message": {
+        "size": 504,
+        "attachments": [],
+        "headers": {
+          "from": "YC Content Planning <no-reply@mg.yrc-bd.com>",
+          "message-id": "1441f4ca7225822ca872434313755bb6@mg.yrc-bd.com",
+          "to": "acijubairislamdaief@gmail.com",
+          "subject": "Final Test - Mailgun Verified Domain - YC Content Planning"
+        }
+      },
+      "api-key-id": "44ec4598-bf411f2f",
+      "log-level": "info",
+      "originating-ip": "116.68.205.66",
+      "recipient": "acijubairislamdaief@gmail.com",
+      "storage": {
+        "env": "production",
+        "region": "us-east4",
+        "key": "BAABAAUZFt2EehIyeKxGTaKQPPCv8H4qaA",
+        "url": "https://storage-us-east4.api.mailgun.net/v3/domains/mg.yrc-bd.com/messages/BAABAAUZFt2EehIyeKxGTaKQPPCv8H4qaA"
+      },
+      "id": "YxZF18yrRoGfoiToCF99Xg"
+    }
+  ],
+  "paging": {
+    "previous": "https://api.mailgun.net/v3/mg.yrc-bd.com/events/WzMseyJiIjoiMjAyNi0wOS0xNlQxMToxMDo0Mi4zMjMrMDA6MDAiLCJlIjoiMjAyNi0wOS0xNVQxMToxMDo0Mi4zMzMrMDA6MDAifSx7ImIiOiIyMDI2LTA5LTE2VDExOjA0OjIwLjAzOCswMDowMCIsImUiOiIyMDI2LTA5LTE2VDExOjEwOjQyLjMyMyswMDowMCJ9LCJfZG9jI1VpcnpqUjBmU1BlYk9PSjg5X0J1NmciLFsicCIsImYiXSxudWxsLFtbImFjY291bnQuaWQiLCI2YWFhMzk4MWJkZjQ5ZGQ0NDBhZmY2NWYiXSxbImRvbWFpbi5uYW1lIiwibWcueXJjLWJkLmNvbSJdXSwzMDBd",
+    "next": "https://api.mailgun.net/v3/mg.yrc-bd.com/events/WzMseyJiIjoiMjAyNi0wOS0xNlQxMToxMDo0Mi4zMjMrMDA6MDAiLCJlIjoiMjAyNi0wOS0xNVQxMToxMDo0Mi4zMzMrMDA6MDAifSx7ImIiOiIyMDI2LTA5LTE2VDEwOjI2OjQ2LjczNCswMDowMCIsImUiOiIyMDI2LTA5LTE1VDExOjEwOjQyLjMzMyswMDowMCJ9LCJfZG9jI1l4WkYxOHlyUm9HZm9pVG9DRjk5WGciLFsiZiJdLG51bGwsW1siYWNjb3VudC5pZCIsIjZhYWEzOTgxYmRmNDlkZDQ0MGFmZjY1ZiJdLFsiZG9tYWluLm5hbWUiLCJtZy55cmMtYmQuY29tIl1dLDMwMF0=",
+    "first": "https://api.mailgun.net/v3/mg.yrc-bd.com/events/WzMseyJiIjoiMjAyNi0wOS0xNlQxMToxMDo0Mi4zMjMrMDA6MDAiLCJlIjoiMjAyNi0wOS0xNVQxMToxMDo0Mi4zMzMrMDA6MDAifSx7ImIiOiIyMDI2LTA5LTE2VDExOjEwOjQyLjMyMyswMDowMCIsImUiOiIyMDI2LTA5LTE1VDExOjEwOjQyLjMzMyswMDowMCJ9LG51bGwsWyJmIl0sbnVsbCxbWyJhY2NvdW50LmlkIiwiNmFhYTM5ODFiZGY0OWRkNDQwYWZmNjVmIl0sWyJkb21haW4ubmFtZSIsIm1nLnlyYy1iZC5jb20iXV0sMzAwXQ==",
+    "last": "https://api.mailgun.net/v3/mg.yrc-bd.com/events/WzMseyJiIjoiMjAyNi0wOS0xNlQxMToxMDo0Mi4zMjMrMDA6MDAiLCJlIjoiMjAyNi0wOS0xNVQxMToxMDo0Mi4zMzMrMDA6MDAifSx7ImIiOiIyMDI2LTA5LTE1VDExOjEwOjQyLjMzMyswMDowMCIsImUiOiIyMDI2LTA5LTE2VDExOjEwOjQyLjMyMyswMDowMCJ9LG51bGwsWyJwIiwiZiJdLG51bGwsW1siYWNjb3VudC5pZCIsIjZhYWEzOTgxYmRmNDlkZDQ0MGFmZjY1ZiJdLFsiZG9tYWluLm5hbWUiLCJtZy55cmMtYmQuY29tIl1dLDMwMF0="
+  }
+}
