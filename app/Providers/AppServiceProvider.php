@@ -19,31 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
-            $settings = \App\Models\Setting::all()->pluck('value', 'key');
-            if ($settings->has('MAIL_MAILER')) {
-                // Port 465 uses implicit TLS (smtps); 587/25 rely on STARTTLS
-                $scheme = $settings->get('MAIL_SCHEME')
-                    ?? ((int) $settings->get('MAIL_PORT', 587) === 465 ? 'smtps' : null);
-                config([
-                    'mail.default' => $settings->get('MAIL_MAILER', 'smtp'),
-                    'mail.mailers.smtp.host' => $settings->get('MAIL_HOST', ''),
-                    'mail.mailers.smtp.port' => $settings->get('MAIL_PORT', 587),
-                    'mail.mailers.smtp.scheme' => $scheme,
-                    'mail.mailers.smtp.url' => $settings->get('MAIL_URL'),
-                    'mail.mailers.smtp.username' => $settings->get('MAIL_USERNAME', ''),
-                    'mail.mailers.smtp.password' => $settings->get('MAIL_PASSWORD', ''),
-                    'mail.mailers.smtp.timeout' => $settings->get('MAIL_TIMEOUT'),
-                    'mail.mailers.smtp.local_domain' => $settings->get('MAIL_EHLO_DOMAIN', 'yrc-bd.com'),
-                    'mail.mailers.postmark.token' => $settings->get('POSTMARK_TOKEN'),
-                    'mail.mailers.mailgun.domain' => $settings->get('MAILGUN_DOMAIN'),
-                    'mail.mailers.mailgun.secret' => $settings->get('MAILGUN_SECRET'),
-                    'mail.mailers.mailgun.endpoint' => $settings->get('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-                    'mail.from.address' => $settings->get('MAIL_FROM_ADDRESS', ''),
-                    'mail.from.name' => $settings->get('MAIL_FROM_NAME', 'YC Content Planning'),
-                ]);
-            }
-        }
+        // Email config now comes from .env only (DB override removed per requirement)
         // Dynamically detect current domain when accessed via browser
         if (!app()->runningInConsole() && request()->hasHeader('Host')) {
             try {
