@@ -66,7 +66,7 @@
                     </div>
 
                     @php
-                        $defaultCcList = "mirajul@aci-bd.com,richard@aci-bd.com,adhikary@aci-bd.com,efaz@aci-bd.com,Sourav.Bikash@aci-bd.com,Sultana.Nishi@aci-bd.com,Swagata@aci-bd.com,arnob@aci-bd.com,Nabil.Sarker@aci-bd.com,Abu.siddik@aci-bd.com,priasa@aci-bd.com,azmyen@aci-bd.com,Ashif.Ahmed@aci-bd.com";
+                        $defaultCcList = implode(',', \App\Mail\EventNotificationMail::fallbackReminderRecipients());
                         $ccString = $settings['MAIL_CC_ADDRESS'] ?? $defaultCcList;
                     @endphp
 
@@ -85,7 +85,7 @@
                     }">
                         <div>
                             <input type="hidden" name="MAIL_CC_ADDRESS" :value="emails.join(',')">
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-3">Mail CC Address</label>
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-3">Reminder notification emails</label>
                             
                             <div class="space-y-3">
                                 <template x-for="(email, index) in emails" :key="index">
@@ -105,7 +105,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <p class="text-xs text-gray-500 mt-3 font-medium">Edit an email directly, or add a new one. Click the trash icon to remove.</p>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">These addresses are copied on the reminder. The reminder itself is sent to the assignee at 11:00 AM, 5 days before the content deadline. Edit an email, add a new one, or use the trash icon to remove.</p>
                         </div>
                     </div>
                     

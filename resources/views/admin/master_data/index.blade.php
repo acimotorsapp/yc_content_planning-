@@ -170,6 +170,8 @@
                                 <option value="">All Teams</option>
                                 <option value="product_team" {{ request('team_type') == 'product_team' ? 'selected' : '' }}>Product Team</option>
                                 <option value="digital_team" {{ request('team_type') == 'digital_team' ? 'selected' : '' }}>Digital Team</option>
+                                <option value="brand_team" {{ request('team_type') == 'brand_team' ? 'selected' : '' }}>Brand Events</option>
+                                <option value="service_team" {{ request('team_type') == 'service_team' ? 'selected' : '' }}>Service Events</option>
                                 <option value="global_team" {{ request('team_type') == 'global_team' ? 'selected' : '' }}>Global Events</option>
                             </select>
                         </div>
@@ -234,8 +236,8 @@
                             <div class="min-w-0 flex-1">
                                 <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider border
-                                        {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : ($event->team_type == 'digital_team' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
-                                        {{ str_replace('_', ' ', $event->team_type) }}
+                                        {{ $event->teamBadgeClasses() }}">
+                                        {{ $event->teamLabel() }}
                                     </span>
                                     <span class="text-[11px] font-extrabold text-gray-900">{{ $event->event_date->format('M d, Y') }}</span>
                                     <span class="text-[10px] font-medium text-gray-400">{{ $event->event_date->format('D') }}</span>
@@ -339,8 +341,8 @@
                                     <!-- Team Type Badge -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold uppercase tracking-wider border
-                                            {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : ($event->team_type == 'digital_team' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
-                                            {{ str_replace('_', ' ', $event->team_type) }}
+                                            {{ $event->teamBadgeClasses() }}">
+                                            {{ $event->teamLabel() }}
                                         </span>
                                     </td>
 

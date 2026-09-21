@@ -25,6 +25,7 @@ class CalendarEvent extends Model
         'post_no',
         'product_focus',
         'status',
+        'sort_order',
         'source_key',
         'source_sheet',
     ];
@@ -32,6 +33,7 @@ class CalendarEvent extends Model
     protected $attributes = [
         'boosting_budget' => '0',
         'financial_budget' => '0',
+        'status' => 'not_done',
     ];
 
     protected $casts = [
@@ -59,15 +61,61 @@ class CalendarEvent extends Model
         return (is_null($value) || trim((string)$value) === '') ? '0' : $value;
     }
 
+    protected static function booted(): void
+    {
+        static::creating(function (CalendarEvent $event) {
+            if ($event->status === null || $event->status === '') {
+                $event->status = 'not_done';
+            }
+
+            if (! array_key_exists('sort_order', $event->getAttributes()) || $event->sort_order === null) {
+                $event->sort_order = (int) static::where('status', $event->status)->max('sort_order') + 1;
+            }
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function boardColumn(): string
+    {
+        return match ($this->status) {
+            'done' => 'done',
+            'in_progress' => 'in_progress',
+            default => 'not_done',
+        };
     }
 
     public function displayTitle(): string
     {
         return $this->content_title
             ?: ($this->post_no ? 'Post #'.$this->post_no : 'Untitled Event');
+    }
+
+    public function teamLabel(): string
+    {
+        return match ($this->team_type) {
+            'product_team' => 'Product',
+            'digital_team' => 'Digital',
+            'brand_team' => 'Brand',
+            'service_team' => 'Service',
+            'global_team' => 'Global',
+            default => ucwords(str_replace('_', ' ', (string) $this->team_type)),
+        };
+    }
+
+    public function teamBadgeClasses(): string
+    {
+        return match ($this->team_type) {
+            'product_team' => 'bg-amber-50 text-amber-700 border-amber-200',
+            'digital_team' => 'bg-purple-50 text-purple-700 border-purple-200',
+            'brand_team' => 'bg-sky-50 text-sky-700 border-sky-200',
+            'service_team' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            'global_team' => 'bg-rose-50 text-rose-700 border-rose-200',
+            default => 'bg-gray-50 text-gray-700 border-gray-200',
+        };
     }
 
     /**

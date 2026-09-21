@@ -302,29 +302,6 @@
                     });
                 });
 
-                @if(auth()->check() && auth()->user()->role === 'super_admin')
-                (function pollSheetSync() {
-                    var lastHash = null;
-                    function tick() {
-                        fetch('{{ route('admin.sheets.status') }}', {
-                            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
-                        })
-                        .then(function(response) { return response.ok ? response.json() : null; })
-                        .then(function(data) {
-                            if (!data || !data.hash) return;
-                            if (lastHash && data.hash !== lastHash) {
-                                window.location.reload();
-                                return;
-                            }
-                            lastHash = data.hash;
-                        })
-                        .catch(function() {});
-                    }
-                    tick();
-                    setInterval(tick, 30000);
-                })();
-                @endif
-
                 // Global AJAX Pagination
                 document.addEventListener('click', function(e) {
                     let link = e.target.closest('nav[role="navigation"] a') || e.target.closest('.pagination a');

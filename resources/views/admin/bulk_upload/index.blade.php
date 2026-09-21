@@ -373,6 +373,8 @@
                                     <option value="auto">✨ Auto-Detect (YAMAHA Content Plan Workbook - Reads All 5 Sheets)</option>
                                     <option value="product_team">Product Team Events (Single Sheet)</option>
                                     <option value="digital_team">Digital Team Events (Single Sheet)</option>
+                                    <option value="brand_team">Brand Events (Single Sheet)</option>
+                                    <option value="service_team">Service Events (Single Sheet)</option>
                                     <option value="global_team">Global Events</option>
                                 </select>
                                 <p class="text-[11px] text-gray-500 mt-1.5 leading-relaxed">

@@ -15,11 +15,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin filtering routes
     Route::get('/admin/events/product', [\App\Http\Controllers\CalendarEventController::class, 'adminProduct'])->name('admin.events.product');
     Route::get('/admin/events/digital', [\App\Http\Controllers\CalendarEventController::class, 'adminDigital'])->name('admin.events.digital');
+    Route::get('/admin/events/brand', [\App\Http\Controllers\CalendarEventController::class, 'adminBrand'])->name('admin.events.brand');
+    Route::get('/admin/events/service', [\App\Http\Controllers\CalendarEventController::class, 'adminService'])->name('admin.events.service');
     Route::get('/admin/events/global', [\App\Http\Controllers\CalendarEventController::class, 'adminGlobal'])->name('admin.events.global');
     Route::get('/admin/events/done', [\App\Http\Controllers\CalendarEventController::class, 'adminDone'])->name('admin.events.done');
     Route::get('/admin/events/not-done', [\App\Http\Controllers\CalendarEventController::class, 'adminNotDone'])->name('admin.events.not_done');
     Route::get('/admin/budget', [\App\Http\Controllers\CalendarEventController::class, 'budgetProvision'])->name('admin.budget.index');
-    Route::get('/admin/sheets/status', [\App\Http\Controllers\GoogleSheetsSyncController::class, 'status'])->name('admin.sheets.status');
     
     // Settings Route
     Route::get('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'mailSettings'])->name('admin.settings');
@@ -45,16 +46,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/events/product', [\App\Http\Controllers\CalendarEventController::class, 'storeProduct'])->name('events.product.store');
     Route::post('/events/digital', [\App\Http\Controllers\CalendarEventController::class, 'storeDigital'])->name('events.digital.store');
+    Route::post('/events/brand', [\App\Http\Controllers\CalendarEventController::class, 'storeBrand'])->name('events.brand.store');
+    Route::post('/events/service', [\App\Http\Controllers\CalendarEventController::class, 'storeService'])->name('events.service.store');
     Route::post('/events/global', [\App\Http\Controllers\CalendarEventController::class, 'storeGlobal'])->name('events.global.store');
     
     Route::get('/my-events', [\App\Http\Controllers\CalendarEventController::class, 'myEvents'])->name('events.my');
     Route::get('/events/create', [\App\Http\Controllers\CalendarEventController::class, 'create'])->name('events.create');
+    Route::patch('/events/board/reorder', [\App\Http\Controllers\CalendarEventController::class, 'reorderBoard'])->name('events.reorder_board');
     Route::get('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'show'])->name('events.show');
     Route::get('/events/{event}/edit', [\App\Http\Controllers\CalendarEventController::class, 'edit'])->name('events.edit');
     Route::put('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'update'])->name('events.update');
     Route::patch('/events/{event}/title', [\App\Http\Controllers\CalendarEventController::class, 'updateTitle'])->name('events.update_title');
     Route::delete('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'destroy'])->name('events.destroy');
     Route::patch('/events/{event}/status', [\App\Http\Controllers\CalendarEventController::class, 'updateStatus'])->name('events.update_status');
+    Route::patch('/events/{event}/reschedule', [\App\Http\Controllers\CalendarEventController::class, 'reschedule'])->name('events.reschedule');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -66,6 +71,4 @@ require __DIR__.'/auth.php';
 // Public Cron Notification Endpoint (Allows triggering daily mail via Web URL / cPanel curl / external cron)
 Route::match(['get', 'post'], '/cron/events-notify', [\App\Http\Controllers\CronNotificationController::class, 'notify'])->name('cron.events.notify');
 Route::match(['get', 'post'], '/api/cron/events-notify', [\App\Http\Controllers\CronNotificationController::class, 'notify'])->name('api.cron.events.notify');
-Route::match(['get', 'post'], '/cron/sheets-sync', [\App\Http\Controllers\GoogleSheetsSyncController::class, 'sync'])->name('cron.sheets.sync');
-Route::match(['get', 'post'], '/api/cron/sheets-sync', [\App\Http\Controllers\GoogleSheetsSyncController::class, 'sync'])->name('api.cron.sheets.sync');
 

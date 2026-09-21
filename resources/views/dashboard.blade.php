@@ -64,6 +64,7 @@
 
 
 
+        <div id="month-calendar-print" data-month="{{ $month ?? now()->format('Y-m') }}">
         @if(auth()->user()->role === 'super_admin' && !isset($filter))
             @php
                 $monthKey = $month ?? now()->format('Y-m');
@@ -164,8 +165,8 @@
         <!-- Dashboard Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 sm:mb-8 gap-3 sm:gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
             <div class="min-w-0">
-                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">{{ $filter ?? 'Schedule Overview' }}</h1>
-                <p class="text-gray-500 text-xs sm:text-sm mt-1 font-medium">Manage and track your upcoming content pipeline.</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">{{ $filter ?? 'Final Content Calendar' }}</h1>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1 font-medium">{{ isset($filter) ? 'Manage and track your upcoming content pipeline.' : 'Plan, prioritize, and finalize content entirely in the platform.' }}</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -180,15 +181,19 @@
         @endif
 
         <!-- FullCalendar Container -->
-        <div class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm p-3 sm:p-6 lg:p-8 mb-6 sm:mb-12 overflow-hidden animate-fade-in-up" style="animation-delay: 0.3s;">
+        <div class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm p-3 sm:p-6 lg:p-8 mb-6 sm:mb-12">
             <!-- Colour legend (most useful on small screens where badges are compact) -->
             <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3 sm:mb-4 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-500">
                 <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 ring-1 ring-amber-200"></span>Product</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400 ring-1 ring-purple-200"></span>Digital</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 ring-1 ring-sky-200"></span>Brand</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 ring-1 ring-emerald-200"></span>Service</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 ring-1 ring-rose-200"></span>Global</span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-amber-400 to-purple-400 ring-1 ring-gray-200"></span>Mixed</span>
+                <span class="hidden sm:inline text-gray-400 font-semibold normal-case tracking-normal">· Drag an event onto another day to reschedule</span>
             </div>
             <div id="calendar"></div>
+        </div>
         </div>
 
         <!-- FullCalendar Dependencies -->
@@ -205,6 +210,7 @@
                     'title' => $title,
                     'start' => $event->event_date->format('Y-m-d'),
                     'allDay' => true,
+                    'editable' => auth()->user()->role === 'super_admin' || auth()->id() === $event->user_id,
                     'extendedProps' => [
                         'userName' => $userName,
                         'aipePillar' => $event->aipe_pillar ?? 'N/A',
@@ -223,6 +229,81 @@
                 var calendarEl = document.getElementById('calendar');
                 
                 var eventsData = @json($formattedEvents);
+                var dateCounts = @json($dateCounts ?? []);
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                function isoDate(value) {
+                    if (!value) return '';
+                    if (typeof value === 'string') return value.slice(0, 10);
+                    var y = value.getFullYear();
+                    var m = String(value.getMonth() + 1).padStart(2, '0');
+                    var d = String(value.getDate()).padStart(2, '0');
+                    return y + '-' + m + '-' + d;
+                }
+
+                function formatCardDate(iso) {
+                    var parts = String(iso).split('-');
+                    if (parts.length < 3) return iso;
+                    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    return months[parseInt(parts[1], 10) - 1] + ' ' + parts[2];
+                }
+
+                function countOnDate(iso, exceptId) {
+                    var total = dateCounts[iso] ? Number(dateCounts[iso]) : 0;
+                    var match = eventsData.find(function(ev) { return String(ev.id) === String(exceptId); });
+                    if (match && match.start === iso) total = Math.max(0, total - 1);
+                    return total;
+                }
+
+                function applyMovedDate(eventId, oldDate, newDate) {
+                    if (oldDate && dateCounts[oldDate]) {
+                        dateCounts[oldDate] = Math.max(0, Number(dateCounts[oldDate]) - 1);
+                    }
+                    dateCounts[newDate] = (dateCounts[newDate] ? Number(dateCounts[newDate]) : 0) + 1;
+
+                    eventsData.forEach(function(ev) {
+                        if (String(ev.id) === String(eventId)) ev.start = newDate;
+                    });
+
+                    var card = document.querySelector('.js-board-card[data-event-id="' + eventId + '"]');
+                    if (card) {
+                        card.setAttribute('data-date', newDate);
+                        var label = card.querySelector('.js-card-date');
+                        if (label) label.textContent = formatCardDate(newDate);
+                    }
+
+                    if (window.contentCalendar) {
+                        var calEvent = window.contentCalendar.getEventById(String(eventId));
+                        if (calEvent && calEvent.startStr.slice(0, 10) !== newDate) {
+                            calEvent.setStart(newDate, { maintainDuration: true });
+                        }
+                    }
+                }
+
+                window.rescheduleEventDate = function(eventId, newDate, oldDate) {
+                    return fetch('/events/' + eventId + '/reschedule', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({ event_date: newDate })
+                    }).then(function(response) {
+                        return response.json().then(function(data) {
+                            if (!response.ok || !data.success) {
+                                var message = data.message;
+                                if (!message && data.errors && data.errors.event_date) {
+                                    message = data.errors.event_date[0];
+                                }
+                                throw new Error(message || 'Could not reschedule');
+                            }
+                            applyMovedDate(eventId, oldDate || '', newDate);
+                            return data;
+                        });
+                    });
+                };
                 
                 // Categorize dates by team type
                 var dateTeamMap = {};
@@ -238,12 +319,16 @@
                 function applyDayCellClass(el, dateStr) {
                     if (!dateStr || !dateTeamMap[dateStr]) return;
                     var teams = dateTeamMap[dateStr];
-                    if (teams.has('product_team') && teams.has('digital_team')) {
+                    if (teams.size > 1) {
                         el.classList.add('fc-has-mixed-event-day');
                     } else if (teams.has('digital_team')) {
                         el.classList.add('fc-has-digital-event-day');
                     } else if (teams.has('product_team')) {
                         el.classList.add('fc-has-product-event-day');
+                    } else if (teams.has('brand_team')) {
+                        el.classList.add('fc-has-brand-event-day');
+                    } else if (teams.has('service_team')) {
+                        el.classList.add('fc-has-service-event-day');
                     } else if (teams.has('global_team')) {
                         el.classList.add('fc-has-global-event-day');
                     }
@@ -336,6 +421,48 @@
                     },
                     noEventsContent: 'No events scheduled this month',
                     events: eventsData,
+                    editable: true,
+                    eventStartEditable: true,
+                    eventDurationEditable: false,
+                    eventDragMinDistance: 6,
+                    dragScroll: true,
+                    eventDrop: function(info) {
+                        var newDate = isoDate(info.event.startStr);
+                        var oldDate = isoDate(info.oldEvent ? info.oldEvent.startStr : '');
+                        if (!newDate || newDate === oldDate) return;
+
+                        if (countOnDate(newDate, info.event.id) >= 6) {
+                            info.revert();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Date fully booked',
+                                text: 'A maximum of 6 events can be scheduled on ' + newDate + '.',
+                                confirmButtonColor: '#2563eb',
+                                customClass: { popup: 'rounded-2xl shadow-xl' }
+                            });
+                            return;
+                        }
+
+                        window.rescheduleEventDate(info.event.id, newDate, oldDate).then(function() {
+                            var monthKey = newDate.slice(0, 7);
+                            @if(!isset($filter) && !empty($month))
+                            if (monthKey !== '{{ $month }}') {
+                                var url = new URL(window.location.href);
+                                url.searchParams.set('month', monthKey);
+                                window.location.href = url.toString();
+                            }
+                            @endif
+                        }).catch(function(err) {
+                            info.revert();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Could not reschedule',
+                                text: err.message || 'Please try another date.',
+                                confirmButtonColor: '#2563eb',
+                                customClass: { popup: 'rounded-2xl shadow-xl' }
+                            });
+                        });
+                    },
                     datesSet: function(dateInfo) {
                         var mid = new Date((dateInfo.start.getTime() + dateInfo.end.getTime()) / 2);
                         var viewType = dateInfo.view.type || '';
@@ -385,16 +512,22 @@
 
                         var dotColor = teamType === 'digital_team' ? 'bg-purple-500'
                                      : teamType === 'product_team' ? 'bg-amber-500'
+                                     : teamType === 'brand_team'   ? 'bg-sky-500'
+                                     : teamType === 'service_team' ? 'bg-emerald-500'
                                      : teamType === 'global_team'  ? 'bg-rose-500'
                                      : 'bg-blue-500';
 
                         var chipClass = teamType === 'digital_team' ? 'bg-purple-50 text-purple-900 border-purple-200'
                                       : teamType === 'product_team' ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                      : teamType === 'brand_team'   ? 'bg-sky-50 text-sky-900 border-sky-200'
+                                      : teamType === 'service_team' ? 'bg-emerald-50 text-emerald-900 border-emerald-200'
                                       : teamType === 'global_team'  ? 'bg-rose-50 text-rose-900 border-rose-200'
                                       : 'bg-blue-50 text-blue-900 border-blue-200';
 
                         var teamLabel = teamType === 'digital_team' ? 'Digital'
                                       : teamType === 'product_team' ? 'Product'
+                                      : teamType === 'brand_team'   ? 'Brand'
+                                      : teamType === 'service_team' ? 'Service'
                                       : teamType === 'global_team'  ? 'Global'
                                       : 'Event';
 
@@ -448,6 +581,12 @@
                         } else if (teamType === 'product_team') {
                             teamClass = 'bg-amber-50 text-amber-900 border-amber-200 shadow-xs';
                             teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">Product</span>';
+                        } else if (teamType === 'brand_team') {
+                            teamClass = 'bg-sky-50 text-sky-900 border-sky-200 shadow-xs';
+                            teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-sky-100 text-sky-800 border border-sky-200">Brand</span>';
+                        } else if (teamType === 'service_team') {
+                            teamClass = 'bg-emerald-50 text-emerald-900 border-emerald-200 shadow-xs';
+                            teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200">Service</span>';
                         } else if (teamType === 'global_team') {
                             teamClass = 'bg-rose-50 text-rose-900 border-rose-200 shadow-xs';
                             teamBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200">Global</span>';
@@ -523,13 +662,16 @@
                         return { html: html };
                     },
                     eventClassNames: function(arg) {
-                        return ['!bg-transparent', '!border-none', '!p-0', 'hover:opacity-95', 'transition-all'];
+                        var classes = ['!bg-transparent', '!border-none', '!p-0', 'hover:opacity-95', 'transition-all'];
+                        if (arg.event.startEditable !== false) classes.push('fc-event-draggable');
+                        return classes;
                     },
                     eventClick: function(info) {
                         window.location.href = '/events/' + info.event.id;
                     }
                 });
                 calendar.render();
+                window.contentCalendar = calendar;
 
                 // Re-shape the calendar when the viewport crosses the phone breakpoint
                 var wasSmall = startedSmall;
@@ -574,6 +716,15 @@
             }
 
             /* Ultra Modern styling for FullCalendar in Light Theme */
+            .fc-event-draggable,
+            .fc-event-draggable .fc-event-main { cursor: grab; }
+            .fc-event-dragging,
+            .fc-event-dragging .fc-event-main { cursor: grabbing !important; }
+            .fc-daygrid-day.board-date-target {
+                outline: 2px dashed #60a5fa;
+                outline-offset: -4px;
+                background-color: #eff6ff !important;
+            }
             .fc {
                 --fc-border-color: #e2e8f0;
                 --fc-button-bg-color: #ffffff;
@@ -669,6 +820,34 @@
                 border-color: #d8b4fe !important;
             }
 
+            /* BRAND EVENTS DATES: LIGHT SKY */
+            .fc-daygrid-day.fc-has-brand-event-day,
+            .fc-has-brand-event-day,
+            .fc-has-brand-event-day .fc-daygrid-day-frame {
+                background-color: #f0f9ff !important;
+            }
+            .fc-has-brand-event-day .fc-daygrid-day-frame {
+                border: 1px solid #bae6fd !important;
+            }
+            .fc-has-brand-event-day:hover .fc-daygrid-day-frame {
+                background-color: #e0f2fe !important;
+                border-color: #7dd3fc !important;
+            }
+
+            /* SERVICE EVENTS DATES: LIGHT EMERALD */
+            .fc-daygrid-day.fc-has-service-event-day,
+            .fc-has-service-event-day,
+            .fc-has-service-event-day .fc-daygrid-day-frame {
+                background-color: #ecfdf5 !important;
+            }
+            .fc-has-service-event-day .fc-daygrid-day-frame {
+                border: 1px solid #a7f3d0 !important;
+            }
+            .fc-has-service-event-day:hover .fc-daygrid-day-frame {
+                background-color: #d1fae5 !important;
+                border-color: #6ee7b7 !important;
+            }
+
             /* MIXED DATES: DUAL PASTEL GRADIENT */
             .fc-daygrid-day.fc-has-mixed-event-day,
             .fc-has-mixed-event-day,
@@ -723,7 +902,7 @@
             .fc .fc-day-today {
                 background-color: transparent !important;
             }
-            .fc .fc-day-today:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day) .fc-daygrid-day-frame {
+            .fc .fc-day-today:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day):not(.fc-has-brand-event-day):not(.fc-has-service-event-day) .fc-daygrid-day-frame {
                 background-color: #ffffff !important;
                 border: 2px solid #3b82f6 !important;
             }
@@ -756,7 +935,7 @@
             }
             
             /* Faded past days */
-            .fc-day-past:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day) {
+            .fc-day-past:not(.fc-has-product-event-day):not(.fc-has-digital-event-day):not(.fc-has-mixed-event-day):not(.fc-has-global-event-day):not(.fc-has-brand-event-day):not(.fc-has-service-event-day) {
                 opacity: 0.8;
             }
 
@@ -882,8 +1061,12 @@
             $upcomingEvents = $events->where('event_date', '>=', now()->startOfDay())->take(5);
         @endphp
 
-        <!-- Upcoming Events Table -->
-        @if(!isset($filter) && $upcomingEvents->count() > 0)
+        @if(!isset($filter))
+            @include('dashboard.content-board')
+        @endif
+
+        <!-- Upcoming Events Table is replaced by the Trello board on the main calendar -->
+        @if(false && !isset($filter) && $upcomingEvents->count() > 0)
         <div class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden mb-6 sm:mb-12 animate-fade-in-up" style="animation-delay: 0.4s;">
             <div class="px-4 sm:px-8 py-4 sm:py-5 border-b border-gray-100 flex flex-wrap justify-between items-center gap-2 sm:gap-3 bg-slate-50/50">
                 <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
@@ -903,8 +1086,8 @@
                         <div class="min-w-0 flex-1">
                             <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
-                                    {{ str_replace('_', ' ', $event->team_type) }}
+                                    {{ $event->teamBadgeClasses() }}">
+                                    {{ $event->teamLabel() }}
                                 </span>
                                 <span class="text-[11px] font-bold text-gray-900">{{ $event->event_date->format('M d, Y') }}</span>
                                 <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider">{{ $event->event_date->format('D') }}</span>
@@ -1026,8 +1209,8 @@
                             <!-- Team Column -->
                             <td class="px-8 py-5 whitespace-nowrap">
                                 <span class="inline-flex items-center px-3 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
-                                    {{ str_replace('_', ' ', $event->team_type) }}
+                                    {{ $event->teamBadgeClasses() }}">
+                                    {{ $event->teamLabel() }}
                                 </span>
                             </td>
 
@@ -1125,6 +1308,7 @@
         </div>
         @endif
 
+        @if(isset($filter))
         <!-- Clean Linear-style Data Table -->
         <div id="schedule" class="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden mb-6 sm:mb-12 animate-fade-in-up scroll-mt-24" style="animation-delay: 0.5s;">
             <div class="px-4 sm:px-8 py-4 sm:py-5 border-b border-gray-100 flex flex-wrap justify-between items-center gap-2 bg-slate-50/50">
@@ -1140,8 +1324,8 @@
                         <div class="min-w-0 flex-1">
                             <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
-                                    {{ str_replace('_', ' ', $event->team_type) }}
+                                    {{ $event->teamBadgeClasses() }}">
+                                    {{ $event->teamLabel() }}
                                 </span>
                                 <span class="text-[11px] font-bold text-gray-900">{{ $event->event_date->format('M d, Y') }}</span>
                                 <span class="text-[10px] font-medium text-gray-500">{{ $event->event_date->format('D') }}</span>
@@ -1279,8 +1463,8 @@
                             <!-- Team Column -->
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border
-                                    {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-purple-50 text-purple-700 border-purple-200' }}">
-                                    {{ str_replace('_', ' ', $event->team_type) }}
+                                    {{ $event->teamBadgeClasses() }}">
+                                    {{ $event->teamLabel() }}
                                 </span>
                             </td>
 
@@ -1405,6 +1589,7 @@
                 </div>
             @endif
         </div>
+        @endif
 
         @php
             $globalEventsRaw = \App\Models\CalendarEvent::where('team_type', 'global_team')
@@ -1527,6 +1712,139 @@
                 </div>
             </div>
         </div>
+
+        <div class="mt-10 sm:mt-14 flex justify-center no-print">
+            <button type="button"
+                    id="print-month-calendar"
+                    class="inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 text-sm font-bold text-white rounded-xl bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-all shadow-md shadow-gray-900/20 cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Print
+            </button>
+        </div>
+
+        <script>
+            (function() {
+                var printBtn = document.getElementById('print-month-calendar');
+                if (!printBtn) return;
+
+                function loadHtml2Pdf() {
+                    if (window.html2pdf) return Promise.resolve();
+                    return new Promise(function(resolve, reject) {
+                        var existing = document.querySelector('script[data-html2pdf]');
+                        if (existing) {
+                            existing.addEventListener('load', resolve);
+                            existing.addEventListener('error', function() { reject(new Error('Could not load PDF library')); });
+                            return;
+                        }
+                        var script = document.createElement('script');
+                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                        script.setAttribute('data-html2pdf', '1');
+                        script.onload = resolve;
+                        script.onerror = function() { reject(new Error('Could not load PDF library')); };
+                        document.head.appendChild(script);
+                    });
+                }
+
+                function calendarMonthLabel() {
+                    if (window.contentCalendar) {
+                        var date = window.contentCalendar.getDate();
+                        return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    var source = document.getElementById('month-calendar-print');
+                    var key = source && source.getAttribute('data-month');
+                    if (key && /^\d{4}-\d{2}$/.test(key)) {
+                        var parts = key.split('-');
+                        return new Date(Number(parts[0]), Number(parts[1]) - 1, 1)
+                            .toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                    }
+                    return new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                }
+
+                function resetButton(label) {
+                    printBtn.disabled = false;
+                    printBtn.innerHTML = label || printBtn.dataset.originalHtml;
+                }
+
+                printBtn.dataset.originalHtml = printBtn.innerHTML;
+
+                printBtn.addEventListener('click', function() {
+                    var source = document.getElementById('month-calendar-print');
+                    if (!source) return;
+
+                    printBtn.disabled = true;
+                    printBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg> Preparing PDF…';
+
+                    if (window.contentCalendar) {
+                        try {
+                            window.contentCalendar.changeView('dayGridMonth');
+                            window.contentCalendar.updateSize();
+                        } catch (err) {}
+                    }
+
+                    var monthLabel = calendarMonthLabel();
+                    var filename = 'YC-Content-Calendar-' + monthLabel.replace(/\s+/g, '-') + '.pdf';
+
+                    loadHtml2Pdf()
+                        .then(function() {
+                            return new Promise(function(resolve) { setTimeout(resolve, 200); });
+                        })
+                        .then(function() {
+                            var options = {
+                                margin: [8, 8, 8, 8],
+                                filename: filename,
+                                image: { type: 'jpeg', quality: 0.95 },
+                                html2canvas: {
+                                    scale: 2,
+                                    useCORS: true,
+                                    logging: false,
+                                    backgroundColor: '#ffffff',
+                                    windowWidth: 1400,
+                                    onclone: function(clonedDoc) {
+                                        var root = clonedDoc.getElementById('month-calendar-print');
+                                        if (!root) return;
+                                        root.style.width = '1400px';
+                                        root.style.maxWidth = '1400px';
+                                        root.style.background = '#ffffff';
+                                        root.style.padding = '8px';
+                                        clonedDoc.querySelectorAll('.no-print').forEach(function(el) { el.remove(); });
+                                        clonedDoc.querySelectorAll('.fc-button').forEach(function(el) {
+                                            el.style.display = 'none';
+                                        });
+                                        clonedDoc.querySelectorAll('[class*="animate-"]').forEach(function(el) {
+                                            el.style.animation = 'none';
+                                            el.style.transform = 'none';
+                                            el.style.opacity = '1';
+                                        });
+                                        var heading = clonedDoc.createElement('div');
+                                        heading.style.cssText = 'margin:0 0 16px 0;padding-bottom:12px;border-bottom:1px solid #e2e8f0;';
+                                        heading.innerHTML = '<div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#64748b;">YC Content Planning</div>' +
+                                            '<div style="font-size:22px;font-weight:900;color:#0f172a;margin-top:4px;">Final Content Calendar · ' + monthLabel + '</div>';
+                                        root.insertBefore(heading, root.firstChild);
+                                    }
+                                },
+                                jsPDF: { unit: 'mm', format: 'a3', orientation: 'landscape' },
+                                pagebreak: { mode: ['css', 'legacy'] }
+                            };
+                            return window.html2pdf().set(options).from(source).save();
+                        })
+                        .then(function() {
+                            resetButton();
+                        })
+                        .catch(function(err) {
+                            resetButton();
+                            if (window.Swal) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Could not create PDF',
+                                    text: (err && err.message) ? err.message : 'Please try again.',
+                                    confirmButtonColor: '#111827',
+                                    customClass: { popup: 'rounded-2xl shadow-xl' }
+                                });
+                            }
+                        });
+                });
+            })();
+        </script>
 
     </div>
 </x-app-layout>

@@ -23,7 +23,7 @@ class EventNotificationService
     public function sendNotifications(int $daysAhead = 5, ?string $specificDate = null, bool $force = false): array
     {
         $targetDate = $specificDate ? Carbon::parse($specificDate)->toDateString() : Carbon::today()->addDays($daysAhead)->toDateString();
-        $actualDaysAhead = Carbon::today()->diffInDays(Carbon::parse($targetDate), false);
+        $actualDaysAhead = (int) Carbon::today()->diffInDays(Carbon::parse($targetDate), false);
 
         // Duplicate protection: one successful notification run per target date,
         // so repeated endpoint hits (or cron + manual hit) don't email users twice.
@@ -48,10 +48,8 @@ class EventNotificationService
         }
 
         $events = CalendarEvent::whereDate('event_date', $targetDate)
-            ->when($actualDaysAhead === 0, function ($query) {
-                $query->where(function ($inner) {
-                    $inner->where('status', '!=', 'done')->orWhereNull('status');
-                });
+            ->where(function ($query) {
+                $query->where('status', '!=', 'done')->orWhereNull('status');
             })
             ->get();
         $eventsByUser = $events->groupBy('user_id');
@@ -83,7 +81,7 @@ class EventNotificationService
             }
 
             try {
-                $mailable = new EventNotificationMail($user, $userEvents, $targetDate, $actualDaysAhead);
+                $mailable = new EventNotificationMail($user, $userEvents, $targetDate, $actualDaysAhead, true);
                 Mail::to($user->email)->send($mailable);
                 $sentCount++;
                 $results[] = [

@@ -6,9 +6,7 @@ use App\Mail\EventNotificationMail;
 use App\Models\CalendarEvent;
 use App\Models\User;
 use App\Services\EventNotificationService;
-use App\Services\GoogleSheetsSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -48,6 +46,7 @@ class SuperAdminUpdatesTest extends TestCase
         $september->assertOk();
         $september->assertSee('Month filter');
         $september->assertSee('Budget Provision');
+        $september->assertSee('Service Event');
         $september->assertSee('(Sep)');
         $this->assertSame(1, $september->viewData('monthEvents')->count());
         $this->assertSame('September Post', $september->viewData('tableEvents')->first()->content_title);
@@ -135,41 +134,73 @@ class SuperAdminUpdatesTest extends TestCase
         $this->assertSame(['Cheap Boost', 'Expensive Shoot'], $orderedLow);
     }
 
-    public function test_google_sheet_sync_upserts_all_recognised_tabs(): void
+    public function test_dashboard_shows_a_trello_board_instead_of_the_schedule_table(): void
     {
-        $this->admin();
+        $admin = $this->admin();
+        CalendarEvent::create([
+            'user_id' => $admin->id,
+            'team_type' => 'digital_team',
+            'event_date' => '2026-09-18',
+            'content_title' => 'Board Card One',
+            'status' => 'not_done',
+        ]);
 
-        Http::fake(function ($request) {
-            if (str_contains($request->url(), 'values:batchGet')) {
-                return Http::response([
-                    'valueRanges' => [[
-                        'range' => 'Product Team!A1:Z',
-                        'values' => [
-                            ['Date', 'Day', 'Content', 'Publish Date', 'Budget', 'Product'],
-                            ['September', '', 'Sheet Synced Review', '2026-09-22', '25000', 'FZ25'],
-                        ],
-                    ]],
-                ], 200);
-            }
+        $this->actingAs($admin)->get('/dashboard')->assertOk();
 
-            return Http::response([
-                'sheets' => [
-                    ['properties' => ['title' => 'Product Team']],
-                ],
-            ], 200);
-        });
-
-        $summary = app(GoogleSheetsSyncService::class)->sync(true);
-
-        $this->assertTrue($summary['synced']);
-        $event = CalendarEvent::where('content_title', 'Sheet Synced Review')->first();
-        $this->assertNotNull($event);
-        $this->assertSame('25000', $event->financial_budget);
-        $this->assertSame('FZ25', $event->product);
-        $this->assertNotEmpty($event->source_key);
+        $response = $this->actingAs($admin)->get('/dashboard?month=2026-09');
+        $response->assertOk();
+        $response->assertSee('Final Content Calendar');
+        $response->assertSee('Board Card One');
+        $response->assertSee('id="content-board"', false);
+        $response->assertSee('>Planned<', false);
+        $response->assertSee('>In Progress<', false);
+        $response->assertSee('Drag an event onto another day to reschedule');
+        $response->assertSee('Print');
+        $response->assertSee('id="print-month-calendar"', false);
+        $response->assertSee('id="month-calendar-print"', false);
     }
 
-    public function test_submission_reminder_is_sent_to_the_assignee_for_today(): void
+    public function test_super_admin_can_drag_reorder_and_reschedule_content_cards(): void
+    {
+        $admin = $this->admin();
+        $first = CalendarEvent::create([
+            'user_id' => $admin->id,
+            'team_type' => 'digital_team',
+            'event_date' => '2026-09-10',
+            'content_title' => 'First Priority',
+            'status' => 'not_done',
+            'sort_order' => 0,
+        ]);
+        $second = CalendarEvent::create([
+            'user_id' => $admin->id,
+            'team_type' => 'product_team',
+            'event_date' => '2026-09-12',
+            'content_title' => 'Second Priority',
+            'status' => 'not_done',
+            'sort_order' => 1,
+        ]);
+
+        $reorder = $this->actingAs($admin)->patchJson(route('events.reorder_board'), [
+            'status' => 'in_progress',
+            'ordered_ids' => [$second->id, $first->id],
+        ]);
+        $reorder->assertOk()->assertJson(['success' => true]);
+        $this->assertSame('in_progress', $second->fresh()->status);
+        $this->assertSame(0, (int) $second->fresh()->sort_order);
+        $this->assertSame(1, (int) $first->fresh()->sort_order);
+
+        $reschedule = $this->actingAs($admin)->patchJson(route('events.reschedule', $first), [
+            'event_date' => '2026-09-28',
+            'content_title' => 'Rescheduled Card',
+            'status' => 'not_done',
+        ]);
+        $reschedule->assertOk()->assertJson(['success' => true]);
+        $this->assertSame('2026-09-28', $first->fresh()->event_date->format('Y-m-d'));
+        $this->assertSame('Rescheduled Card', $first->fresh()->content_title);
+        $this->assertSame('not_done', $first->fresh()->status);
+    }
+
+    public function test_reminder_is_sent_to_the_assignee_five_days_before_deadline(): void
     {
         Mail::fake();
 
@@ -183,17 +214,18 @@ class SuperAdminUpdatesTest extends TestCase
         CalendarEvent::create([
             'user_id' => $assignee->id,
             'team_type' => 'digital_team',
-            'event_date' => now()->toDateString(),
-            'content_title' => 'Submit This Today',
+            'event_date' => now()->addDays(5)->toDateString(),
+            'content_title' => 'Due In Five Days',
             'status' => 'not_done',
         ]);
 
-        $summary = app(EventNotificationService::class)->sendNotifications(0);
+        $summary = app(EventNotificationService::class)->sendNotifications(5);
 
         $this->assertSame(1, $summary['sent_count']);
+        $this->assertSame(5, $summary['days_ahead']);
         Mail::assertSent(EventNotificationMail::class, function (EventNotificationMail $mail) use ($assignee) {
             return $mail->hasTo($assignee->email)
-                && str_contains($mail->envelope()->subject, 'Content Submission Reminder');
+                && str_contains($mail->envelope()->subject, 'in 5 days');
         });
     }
 }

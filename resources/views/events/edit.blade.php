@@ -55,8 +55,8 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border
-                                {{ $event->team_type == 'product_team' ? 'bg-amber-50 text-amber-700 border-amber-200' : ($event->team_type == 'digital_team' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
-                                {{ str_replace('_', ' ', $event->team_type) }}
+                                {{ $event->teamBadgeClasses() }}">
+                                {{ $event->teamLabel() }}
                             </span>
                         </div>
                         <h1 class="text-lg sm:text-2xl font-black text-gray-900 tracking-tight mt-0.5">
@@ -72,8 +72,8 @@
                     @csrf
                     @method('PUT')
 
-                    @if($event->team_type === 'product_team')
-                        <!-- Product Team Form Fields -->
+                    @if($event->team_type === 'product_team' || $event->team_type === 'brand_team' || $event->team_type === 'service_team')
+                        <!-- Product / Brand Form Fields -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <div class="flex items-center justify-between mb-2">

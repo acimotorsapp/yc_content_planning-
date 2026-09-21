@@ -23,39 +23,31 @@ class EventNotificationMail extends Mailable
     public $events;
     public $targetDate;
     public $daysAhead;
+    public bool $includeCc;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, Collection $events, ?string $targetDate = null, ?int $daysAhead = null)
+    public function __construct(User $user, Collection $events, ?string $targetDate = null, ?int $daysAhead = null, bool $includeCc = true)
     {
         $this->user = $user;
         $this->events = $events;
         $this->targetDate = $targetDate ?? ($events->first()?->event_date?->toDateString() ?? Carbon::today()->toDateString());
         $this->daysAhead = $daysAhead !== null ? $daysAhead : Carbon::today()->diffInDays(Carbon::parse($this->targetDate), false);
+        $this->includeCc = $includeCc;
     }
 
     /**
-     * Default CC recipients for event notifications.
+     * Fallback reminder recipients when Mail CC Address has not been saved yet.
      */
-    public static function getDefaultCcRecipients(): array
+    public static function fallbackReminderRecipients(): array
     {
-        $ccSetting = \App\Models\Setting::where('key', 'MAIL_CC_ADDRESS')->value('value');
-        if (!empty($ccSetting)) {
-            $emails = array_filter(array_map('trim', explode(',', $ccSetting)));
-            $emails = array_filter($emails, fn($email) => filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
-            if (!empty($emails)) {
-                return array_values($emails);
-            }
-        }
-
-        $defaults = [
+        return [
             'mirajul@aci-bd.com',
             'richard@aci-bd.com',
             'adhikary@aci-bd.com',
             'efaz@aci-bd.com',
             'Sourav.Bikash@aci-bd.com',
-            'acijubairislamdaief@gmail.com',
             'Swagata@aci-bd.com',
             'arnob@aci-bd.com',
             'Nabil.Sarker@aci-bd.com',
@@ -63,9 +55,23 @@ class EventNotificationMail extends Mailable
             'priasa@aci-bd.com',
             'azmyen@aci-bd.com',
             'Ashif.Ahmed@aci-bd.com',
+            'oshin@aci-bd.com',
+            'zahidul@aci-bd.com',
+            'Daief@aci-bd.com',
         ];
+    }
 
-        return array_values(array_filter($defaults, fn($email) => filter_var($email, FILTER_VALIDATE_EMAIL) !== false));
+    /**
+     * Recipients from Email Configuration → Mail CC Address.
+     */
+    public static function getDefaultCcRecipients(): array
+    {
+        $ccSetting = \App\Models\Setting::where('key', 'MAIL_CC_ADDRESS')->value('value');
+        $source = !empty($ccSetting) ? $ccSetting : implode(',', self::fallbackReminderRecipients());
+        $emails = array_filter(array_map('trim', explode(',', $source)));
+        $emails = array_filter($emails, fn ($email) => filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+
+        return array_values(array_unique($emails));
     }
 
     /**
@@ -75,8 +81,11 @@ class EventNotificationMail extends Mailable
     {
         $recipientEmail = strtolower(trim($this->user->email ?? ''));
 
-        // Add CC recipients without filtering to ensure no CC is automatically deleted
-        $ccRecipients = self::getDefaultCcRecipients();
+        $ccRecipients = $this->includeCc ? self::getDefaultCcRecipients() : [];
+        $ccRecipients = array_values(array_filter(
+            $ccRecipients,
+            fn ($email) => strtolower((string) $email) !== $recipientEmail
+        ));
 
         $formattedDate = Carbon::parse($this->targetDate)->format('D, M j, Y');
 

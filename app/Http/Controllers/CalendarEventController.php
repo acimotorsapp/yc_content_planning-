@@ -80,9 +80,75 @@ class CalendarEventController extends Controller
         return redirect()->route('dashboard')->with('success', 'Digital Team Event added successfully!');
     }
 
+    public function storeBrand(Request $request)
+    {
+        $validated = $request->validate([
+            'event_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $count = CalendarEvent::whereDate('event_date', $value)->count();
+                    if ($count >= 6) {
+                        $fail("A maximum of 6 events can be scheduled on the same date ({$value}). This date is fully booked.");
+                    }
+                },
+            ],
+            'content_title' => 'required|string',
+            'aipe_pillar' => 'nullable|string',
+            'content_objective' => 'nullable|string',
+            'format' => 'nullable|string',
+            'boosting_budget' => 'nullable|string',
+            'financial_budget' => 'nullable|string',
+            'platform' => 'nullable|string',
+            'product' => 'nullable|string',
+            'drive_link' => 'nullable|string',
+            'remarks' => 'nullable|string',
+        ]);
+
+        $validated['team_type'] = 'brand_team';
+        $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
+        $validated['financial_budget'] = !empty($validated['financial_budget']) ? $validated['financial_budget'] : '0';
+        $request->user()->events()->create($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Brand Event added successfully!');
+    }
+
+    public function storeService(Request $request)
+    {
+        $validated = $request->validate([
+            'event_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $count = CalendarEvent::whereDate('event_date', $value)->count();
+                    if ($count >= 6) {
+                        $fail("A maximum of 6 events can be scheduled on the same date ({$value}). This date is fully booked.");
+                    }
+                },
+            ],
+            'content_title' => 'required|string',
+            'aipe_pillar' => 'nullable|string',
+            'content_objective' => 'nullable|string',
+            'format' => 'nullable|string',
+            'boosting_budget' => 'nullable|string',
+            'financial_budget' => 'nullable|string',
+            'platform' => 'nullable|string',
+            'product' => 'nullable|string',
+            'drive_link' => 'nullable|string',
+            'remarks' => 'nullable|string',
+        ]);
+
+        $validated['team_type'] = 'service_team';
+        $validated['boosting_budget'] = !empty($validated['boosting_budget']) ? $validated['boosting_budget'] : '0';
+        $validated['financial_budget'] = !empty($validated['financial_budget']) ? $validated['financial_budget'] : '0';
+        $request->user()->events()->create($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Service Event added successfully!');
+    }
+
     public function dashboard(Request $request)
     {
-        $events = CalendarEvent::with('user')->orderBy('event_date', 'asc')->get();
+        $events = CalendarEvent::with('user')->orderBy('sort_order')->orderBy('event_date')->get();
         $month = $this->resolveMonth($request->query('month'));
         [$year, $monthNum] = array_map('intval', explode('-', $month));
 
@@ -257,22 +323,100 @@ class CalendarEventController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:done,not_done',
+            'status' => 'required|in:done,not_done,in_progress',
         ]);
 
         $event->update([
             'status' => $validated['status'],
         ]);
 
+        $label = match ($event->status) {
+            'done' => 'Done',
+            'in_progress' => 'In Progress',
+            default => 'Not Done',
+        };
+
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,
                 'status' => $event->status,
-                'message' => 'Event marked as ' . ($event->status === 'done' ? 'Done' : 'Not Done') . ' successfully!',
+                'message' => 'Event marked as '.$label.' successfully!',
             ]);
         }
 
-        return back()->with('success', 'Event marked as ' . ($event->status === 'done' ? 'Done' : 'Not Done') . ' successfully!');
+        return back()->with('success', 'Event marked as '.$label.' successfully!');
+    }
+
+    public function reorderBoard(Request $request)
+    {
+        if (auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized action. Only Super Admin can reorder the content board.');
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:done,not_done,in_progress',
+            'ordered_ids' => 'present|array',
+            'ordered_ids.*' => 'integer|exists:calendar_events,id',
+        ]);
+
+        foreach ($validated['ordered_ids'] as $index => $id) {
+            CalendarEvent::whereKey($id)->update([
+                'status' => $validated['status'],
+                'sort_order' => $index,
+            ]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function reschedule(Request $request, CalendarEvent $event)
+    {
+        if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validated = $request->validate([
+            'event_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($event) {
+                    $count = CalendarEvent::whereDate('event_date', $value)
+                        ->where('id', '!=', $event->id)
+                        ->count();
+                    if ($count >= 6) {
+                        $fail("A maximum of 6 events can be scheduled on the same date ({$value}). This date is fully booked.");
+                    }
+                },
+            ],
+            'content_title' => 'nullable|string|max:255',
+            'status' => 'nullable|in:done,not_done,in_progress',
+        ]);
+
+        $payload = [
+            'event_date' => $validated['event_date'],
+        ];
+
+        if (! empty($validated['content_title'])) {
+            $payload['content_title'] = $validated['content_title'];
+        }
+
+        if (! empty($validated['status']) && auth()->user()->role === 'super_admin') {
+            $payload['status'] = $validated['status'];
+        }
+
+        $event->update($payload);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'event_date' => $event->event_date->format('Y-m-d'),
+                'content_title' => $event->displayTitle(),
+                'status' => $event->status,
+                'message' => 'Content rescheduled.',
+            ]);
+        }
+
+        return back()->with('success', 'Content rescheduled.');
     }
 
     public function storeGlobal(Request $request)
@@ -327,6 +471,32 @@ class CalendarEventController extends Controller
             'events' => $events,
             'tableEvents' => CollectionPaginator::make($events, 10)->fragment('schedule'),
             'filter' => 'Digital Team Events',
+            'masterData' => $masterData,
+        ]);
+    }
+
+    public function adminBrand()
+    {
+        if (auth()->user()->role !== 'super_admin') abort(403);
+        $events = CalendarEvent::with('user')->where('team_type', 'brand_team')->orderBy('event_date', 'asc')->get();
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', [
+            'events' => $events,
+            'tableEvents' => CollectionPaginator::make($events, 10)->fragment('schedule'),
+            'filter' => 'Brand Events',
+            'masterData' => $masterData,
+        ]);
+    }
+
+    public function adminService()
+    {
+        if (auth()->user()->role !== 'super_admin') abort(403);
+        $events = CalendarEvent::with('user')->where('team_type', 'service_team')->orderBy('event_date', 'asc')->get();
+        $masterData = \App\Models\MasterData::where('is_active', true)->get()->groupBy('category');
+        return view('dashboard', [
+            'events' => $events,
+            'tableEvents' => CollectionPaginator::make($events, 10)->fragment('schedule'),
+            'filter' => 'Service Events',
             'masterData' => $masterData,
         ]);
     }
