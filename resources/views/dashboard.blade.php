@@ -210,7 +210,8 @@
                     'title' => $title,
                     'start' => $event->event_date->format('Y-m-d'),
                     'allDay' => true,
-                    'editable' => auth()->user()->role === 'super_admin' || auth()->id() === $event->user_id,
+                    'editable' => auth()->user()->canUseContentBoard(),
+                    'startEditable' => auth()->user()->canUseContentBoard(),
                     'extendedProps' => [
                         'userName' => $userName,
                         'aipePillar' => $event->aipe_pillar ?? 'N/A',

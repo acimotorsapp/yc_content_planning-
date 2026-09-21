@@ -31,8 +31,8 @@
                 @endif
             </div>
 
-            @if(auth()->user()->role === 'super_admin')
-            <!-- Super Admin Status Toggle -->
+            @if(auth()->user()->canManageEvent($event))
+            <!-- Status Toggle -->
             <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-2xl border border-gray-200 shadow-xs">
                 <span class="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider">Status:</span>
                 <div class="inline-flex items-center p-0.5 rounded-xl bg-gray-100 border border-gray-200/80">
@@ -186,13 +186,34 @@
                     </div>
                 </div>
 
-                @if($event->remarks || $event->drive_link)
+                @if($event->remarks || $event->drive_link || $event->feedback || auth()->user()->canManageEvent($event))
                 <div class="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-100 space-y-6">
                     @if($event->remarks)
                     <div>
                         <h3 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-2">Remarks</h3>
                         <div class="bg-slate-50 p-4 rounded-2xl border border-gray-200 text-gray-800 font-medium">
                             {{ $event->remarks }}
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(auth()->user()->canManageEvent($event))
+                    <div>
+                        <h3 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-2">Feedback</h3>
+                        <form action="{{ route('events.update_feedback', $event) }}" method="POST" class="space-y-3">
+                            @csrf
+                            @method('PATCH')
+                            <textarea name="feedback" rows="4" maxlength="2000" class="w-full rounded-2xl border-gray-200 bg-slate-50 text-sm font-medium text-gray-900 focus:bg-white focus:border-indigo-500 focus:ring-indigo-500" placeholder="Leave feedback on this task...">{{ old('feedback', $event->feedback) }}</textarea>
+                            <button type="submit" class="inline-flex items-center px-4 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl">
+                                Save feedback
+                            </button>
+                        </form>
+                    </div>
+                    @elseif($event->feedback)
+                    <div>
+                        <h3 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-2">Feedback</h3>
+                        <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 text-gray-800 font-medium">
+                            {{ $event->feedback }}
                         </div>
                     </div>
                     @endif

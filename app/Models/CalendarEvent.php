@@ -25,6 +25,7 @@ class CalendarEvent extends Model
         'post_no',
         'product_focus',
         'status',
+        'feedback',
         'sort_order',
         'source_key',
         'source_sheet',

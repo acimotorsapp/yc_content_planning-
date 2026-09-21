@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/events/{event}/title', [\App\Http\Controllers\CalendarEventController::class, 'updateTitle'])->name('events.update_title');
     Route::delete('/events/{event}', [\App\Http\Controllers\CalendarEventController::class, 'destroy'])->name('events.destroy');
     Route::patch('/events/{event}/status', [\App\Http\Controllers\CalendarEventController::class, 'updateStatus'])->name('events.update_status');
+    Route::patch('/events/{event}/feedback', [\App\Http\Controllers\CalendarEventController::class, 'updateFeedback'])->name('events.update_feedback');
     Route::patch('/events/{event}/reschedule', [\App\Http\Controllers\CalendarEventController::class, 'reschedule'])->name('events.reschedule');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -200,6 +200,81 @@ class SuperAdminUpdatesTest extends TestCase
         $this->assertSame('not_done', $first->fresh()->status);
     }
 
+    public function test_product_team_user_can_drag_mark_status_and_leave_feedback(): void
+    {
+        $product = User::factory()->create([
+            'role' => 'product_team',
+            'email' => 'product@example.org',
+            'email_verified_at' => now(),
+        ]);
+        $digital = User::factory()->create([
+            'role' => 'digital_team',
+            'email' => 'digital@example.org',
+            'email_verified_at' => now(),
+        ]);
+
+        $own = CalendarEvent::create([
+            'user_id' => $product->id,
+            'team_type' => 'product_team',
+            'event_date' => '2026-09-18',
+            'content_title' => 'Product Shoot Card',
+            'status' => 'not_done',
+        ]);
+        $other = CalendarEvent::create([
+            'user_id' => $digital->id,
+            'team_type' => 'digital_team',
+            'event_date' => '2026-09-18',
+            'content_title' => 'Digital Only Card',
+            'status' => 'not_done',
+        ]);
+
+        $dashboard = $this->actingAs($product)->get('/dashboard?month=2026-09');
+        $dashboard->assertOk();
+        $dashboard->assertSee('Product Shoot Card');
+        $dashboard->assertSee('Not Done');
+        $dashboard->assertSee('Done');
+        $dashboard->assertSee('Feedback');
+        $dashboard->assertSee('js-board-draggable', false);
+
+        $this->actingAs($product)->patchJson(route('events.update_status', $own), [
+            'status' => 'done',
+        ])->assertOk()->assertJson(['success' => true]);
+        $this->assertSame('done', $own->fresh()->status);
+
+        $this->actingAs($product)->patchJson(route('events.update_feedback', $own), [
+            'feedback' => 'Need extra B-roll for this shoot.',
+        ])->assertOk()->assertJson(['success' => true]);
+        $this->assertSame('Need extra B-roll for this shoot.', $own->fresh()->feedback);
+
+        $this->actingAs($product)->patchJson(route('events.reorder_board'), [
+            'status' => 'not_done',
+            'ordered_ids' => [$own->id],
+        ])->assertOk();
+        $this->assertSame('not_done', $own->fresh()->status);
+
+        $global = CalendarEvent::create([
+            'user_id' => $digital->id,
+            'team_type' => 'global_team',
+            'event_date' => '2026-09-06',
+            'content_title' => 'San Marino GP',
+            'status' => 'not_done',
+        ]);
+        $this->actingAs($product)->patchJson(route('events.reschedule', $global), [
+            'event_date' => '2026-09-16',
+        ])->assertOk()->assertJson(['success' => true]);
+        $this->assertSame('2026-09-16', $global->fresh()->event_date->format('Y-m-d'));
+        $dashboard = $this->actingAs($product)->get('/dashboard?month=2026-09');
+        $dashboard->assertSee('"editable":true', false);
+
+        $this->actingAs($product)->patchJson(route('events.update_status', $other), [
+            'status' => 'done',
+        ])->assertForbidden();
+
+        $this->actingAs($product)->patchJson(route('events.update_feedback', $other), [
+            'feedback' => 'Should not save',
+        ])->assertForbidden();
+    }
+
     public function test_reminder_is_sent_to_the_assignee_five_days_before_deadline(): void
     {
         Mail::fake();

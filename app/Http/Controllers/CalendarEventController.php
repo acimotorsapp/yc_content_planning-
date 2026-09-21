@@ -318,12 +318,16 @@ class CalendarEventController extends Controller
 
     public function updateStatus(Request $request, CalendarEvent $event)
     {
-        if (auth()->user()->role !== 'super_admin') {
-            abort(403, 'Unauthorized action. Only Super Admin can update event status.');
+        if (! $request->user()->canManageEvent($event)) {
+            abort(403, 'Unauthorized action.');
         }
 
+        $allowed = $request->user()->isSuperAdmin()
+            ? 'done,not_done,in_progress'
+            : 'done,not_done';
+
         $validated = $request->validate([
-            'status' => 'required|in:done,not_done,in_progress',
+            'status' => 'required|in:'.$allowed,
         ]);
 
         $event->update([
@@ -347,20 +351,54 @@ class CalendarEventController extends Controller
         return back()->with('success', 'Event marked as '.$label.' successfully!');
     }
 
-    public function reorderBoard(Request $request)
+    public function updateFeedback(Request $request, CalendarEvent $event)
     {
-        if (auth()->user()->role !== 'super_admin') {
-            abort(403, 'Unauthorized action. Only Super Admin can reorder the content board.');
+        if (! $request->user()->canManageEvent($event)) {
+            abort(403, 'Unauthorized action.');
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:done,not_done,in_progress',
+            'feedback' => 'nullable|string|max:2000',
+        ]);
+
+        $event->update([
+            'feedback' => $validated['feedback'] ?: null,
+        ]);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'feedback' => $event->feedback,
+                'message' => 'Feedback saved.',
+            ]);
+        }
+
+        return back()->with('success', 'Feedback saved.');
+    }
+
+    public function reorderBoard(Request $request)
+    {
+        if (! $request->user()->canUseContentBoard()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $allowed = $request->user()->isSuperAdmin()
+            ? 'done,not_done,in_progress'
+            : 'done,not_done';
+
+        $validated = $request->validate([
+            'status' => 'required|in:'.$allowed,
             'ordered_ids' => 'present|array',
             'ordered_ids.*' => 'integer|exists:calendar_events,id',
         ]);
 
         foreach ($validated['ordered_ids'] as $index => $id) {
-            CalendarEvent::whereKey($id)->update([
+            $event = CalendarEvent::find($id);
+            if (! $event || ! $request->user()->canManageEvent($event)) {
+                abort(403, 'Unauthorized action.');
+            }
+
+            $event->update([
                 'status' => $validated['status'],
                 'sort_order' => $index,
             ]);
@@ -371,7 +409,7 @@ class CalendarEventController extends Controller
 
     public function reschedule(Request $request, CalendarEvent $event)
     {
-        if (auth()->id() !== $event->user_id && auth()->user()->role !== 'super_admin') {
+        if (! $request->user()->canUseContentBoard()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -400,8 +438,10 @@ class CalendarEventController extends Controller
             $payload['content_title'] = $validated['content_title'];
         }
 
-        if (! empty($validated['status']) && auth()->user()->role === 'super_admin') {
-            $payload['status'] = $validated['status'];
+        if (! empty($validated['status']) && $request->user()->canManageEvent($event)) {
+            if ($request->user()->isSuperAdmin() || in_array($validated['status'], ['done', 'not_done'], true)) {
+                $payload['status'] = $validated['status'];
+            }
         }
 
         $event->update($payload);

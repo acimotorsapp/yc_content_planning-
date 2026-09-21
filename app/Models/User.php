@@ -54,4 +54,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(CalendarEvent::class);
     }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    public function canUseContentBoard(): bool
+    {
+        return in_array($this->role, ['super_admin', 'product_team', 'digital_team'], true);
+    }
+
+    public function canManageEvent(CalendarEvent $event): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        if ((int) $this->id === (int) $event->user_id) {
+            return true;
+        }
+
+        return $this->role === $event->team_type;
+    }
 }
