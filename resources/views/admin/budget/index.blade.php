@@ -40,7 +40,7 @@
             </div>
             <div class="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm">
                 <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Boosting</p>
-                <h3 class="text-2xl font-black text-teal-600 mt-1">৳ {{ number_format($boostTotal, 0) }}</h3>
+                <h3 class="text-2xl font-black text-teal-600 mt-1">$ {{ number_format($boostTotal, 0) }}</h3>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
                         <div class="text-xs text-gray-500 mt-1">{{ $event->event_date->format('M d, Y') }} · {{ str_replace('_', ' ', $event->team_type) }}</div>
                         <div class="flex flex-wrap gap-2 mt-3">
                             <span class="px-2 py-1 rounded-lg text-[11px] font-bold bg-gray-100 text-gray-700">Financial ৳ {{ number_format($event->budgetAmount('financial'), 0) }}</span>
-                            <span class="px-2 py-1 rounded-lg text-[11px] font-bold bg-teal-50 text-teal-700">Boost ৳ {{ number_format($event->budgetAmount('boosting'), 0) }}</span>
+                            <span class="px-2 py-1 rounded-lg text-[11px] font-bold bg-teal-50 text-teal-700">Boost $ {{ number_format($event->budgetAmount('boosting'), 0) }}</span>
                             <span class="px-2 py-1 rounded-lg text-[11px] font-black bg-blue-50 text-blue-700">Total ৳ {{ number_format($event->budgetAmount(), 0) }}</span>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-right text-sm font-semibold text-gray-800">৳ {{ number_format($event->budgetAmount('financial'), 0) }}</td>
-                                <td class="px-6 py-4 text-right text-sm font-semibold text-teal-700">৳ {{ number_format($event->budgetAmount('boosting'), 0) }}</td>
+                                <td class="px-6 py-4 text-right text-sm font-semibold text-teal-700">$ {{ number_format($event->budgetAmount('boosting'), 0) }}</td>
                                 <td class="px-6 py-4 text-right text-sm font-black text-gray-900">৳ {{ number_format($event->budgetAmount(), 0) }}</td>
                             </tr>
                         @empty

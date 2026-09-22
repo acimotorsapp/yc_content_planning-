@@ -553,7 +553,7 @@
                                 if (props.financialBudget && props.financialBudget !== '0') {
                                     meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200">Fin: ৳ ' + esc(props.financialBudget) + '</span>');
                                 }
-                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">Boost: ৳ ' + esc(props.boostingBudget || '0') + '</span>');
+                                meta.push('<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">Boost: $ ' + esc(props.boostingBudget || '0') + '</span>');
                             }
                             return { html:
                                 '<div class="py-2 px-3 min-w-0 rounded-xl shadow-xs border ' + chipClass + '" style="margin: -2px 0;">' +
@@ -637,7 +637,7 @@
                                 ${fHtml}
                                 <div class="mt-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[9px] flex items-center justify-between shadow-2xs">
                                     <span>Boost:</span>
-                                    <span class="font-extrabold text-emerald-700">৳ ${bVal}</span>
+                                    <span class="font-extrabold text-emerald-700">$ ${bVal}</span>
                                 </div>
                             `;
                         }

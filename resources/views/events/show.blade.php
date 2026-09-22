@@ -179,7 +179,7 @@
                                 Boosting Budget
                             </h3>
                             <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold text-sm shadow-xs">
-                                ৳ {{ $event->boosting_budget ?? '0' }}
+                                $ {{ $event->boosting_budget ?? '0' }}
                             </span>
                         </div>
                         @endif
