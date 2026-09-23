@@ -67,7 +67,7 @@
                                             @if(($daysAhead ?? 0) > 0)
                                                 Schedule Reminder
                                             @else
-                                                Content Submission Reminder
+                                                Daily Event Notification
                                             @endif
                                         </span>
                                     </td>
@@ -91,7 +91,7 @@
                             </p>
                             @else
                             <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
-                                This is your 11:00 AM content submission reminder. You have <strong style="color: #0f172a; font-weight: 700;">{{ $events->count() }}</strong> content event(s) assigned to you for today. Please review and submit the work below:
+                                You have <strong style="color: #0f172a; font-weight: 700;">{{ $events->count() }}</strong> content event(s) scheduled for today. Please review the details below:
                             </p>
                             @endif
                         </td>
@@ -176,7 +176,7 @@
                                         <table border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="event-btn-td" bgcolor="#0f172a" style="background-color: #0f172a; border-radius: 6px;">
-                                                    <a class="event-btn-link" href="{{ ($baseUrl ?? url('/')) . '/events/' . $event->id }}" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 12px; font-weight: 700; color: #ffffff; text-decoration: none; border-radius: 6px;">
+                                                    <a class="event-btn-link" href="{{ route('events.show', ['event' => $event->id]) }}" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 12px; font-weight: 700; color: #ffffff; text-decoration: none; border-radius: 6px;">
                                                         View Event Details &rarr;
                                                     </a>
                                                 </td>

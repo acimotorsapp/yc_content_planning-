@@ -22,8 +22,9 @@ class EventNotificationService
      */
     public function sendNotifications(int $daysAhead = 5, ?string $specificDate = null, bool $force = false): array
     {
+        $toRecipient = EventNotificationMail::primaryToRecipient();
         $targetDate = $specificDate ? Carbon::parse($specificDate)->toDateString() : Carbon::today()->addDays($daysAhead)->toDateString();
-        $actualDaysAhead = (int) Carbon::today()->diffInDays(Carbon::parse($targetDate), false);
+        $actualDaysAhead = Carbon::today()->diffInDays(Carbon::parse($targetDate), false);
 
         // Duplicate protection: one successful notification run per target date,
         // so repeated endpoint hits (or cron + manual hit) don't email users twice.
@@ -35,8 +36,8 @@ class EventNotificationService
                 'days_ahead' => $actualDaysAhead,
                 'already_sent' => true,
                 'sent_at' => Cache::get($sentMarkerKey),
-                'cc_recipients_count' => count(EventNotificationMail::getDefaultCcRecipients()),
-                'cc_recipients' => EventNotificationMail::getDefaultCcRecipients(),
+                'cc_recipients_count' => count(EventNotificationMail::getDefaultCcRecipients($toRecipient)),
+                'cc_recipients' => EventNotificationMail::getDefaultCcRecipients($toRecipient),
                 'total_events' => 0,
                 'total_users' => 0,
                 'sent_count' => 0,
@@ -47,11 +48,7 @@ class EventNotificationService
             ];
         }
 
-        $events = CalendarEvent::whereDate('event_date', $targetDate)
-            ->where(function ($query) {
-                $query->where('status', '!=', 'done')->orWhereNull('status');
-            })
-            ->get();
+        $events = CalendarEvent::whereDate('event_date', $targetDate)->get();
         $eventsByUser = $events->groupBy('user_id');
 
         $results = [];
@@ -65,28 +62,13 @@ class EventNotificationService
                 continue;
             }
 
-            // Skip dummy development placeholder emails to avoid SMTP 550 bounces
-            if (str_ends_with($user->email, '@test.com') || str_ends_with($user->email, '@example.com')) {
-                $skippedCount++;
-                $results[] = [
-                    'user' => $user->name,
-                    'email' => $user->email,
-                    'cc' => EventNotificationMail::getDefaultCcRecipients(),
-                    'events_count' => $userEvents->count(),
-                    'target_date' => $targetDate,
-                    'days_ahead' => $actualDaysAhead,
-                    'status' => 'skipped (dummy email)',
-                ];
-                continue;
-            }
-
             try {
-                $mailable = new EventNotificationMail($user, $userEvents, $targetDate, $actualDaysAhead, true);
-                Mail::to($user->email)->send($mailable);
+                $mailable = new EventNotificationMail($user, $userEvents, $targetDate, $actualDaysAhead);
+                Mail::to($toRecipient)->send($mailable);
                 $sentCount++;
                 $results[] = [
                     'user' => $user->name,
-                    'email' => $user->email,
+                    'email' => $toRecipient,
                     'cc' => array_map(fn($addr) => is_string($addr) ? $addr : $addr->address, $mailable->envelope()->cc),
                     'events_count' => $userEvents->count(),
                     'target_date' => $targetDate,
@@ -95,10 +77,10 @@ class EventNotificationService
                 ];
             } catch (\Throwable $e) {
                 $failedCount++;
-                Log::error("Failed to send event notification to {$user->email}: " . $e->getMessage());
+                Log::error("Failed to send event notification to {$toRecipient}: " . $e->getMessage());
                 $results[] = [
                     'user' => $user->name,
-                    'email' => $user->email,
+                    'email' => $toRecipient,
                     'events_count' => $userEvents->count(),
                     'target_date' => $targetDate,
                     'days_ahead' => $actualDaysAhead,
@@ -118,8 +100,8 @@ class EventNotificationService
             'run_date' => Carbon::today()->toDateString(),
             'target_date' => $targetDate,
             'days_ahead' => $actualDaysAhead,
-            'cc_recipients_count' => count(EventNotificationMail::getDefaultCcRecipients()),
-            'cc_recipients' => EventNotificationMail::getDefaultCcRecipients(),
+            'cc_recipients_count' => count(EventNotificationMail::getDefaultCcRecipients($toRecipient)),
+            'cc_recipients' => EventNotificationMail::getDefaultCcRecipients($toRecipient),
             'total_events' => $events->count(),
             'total_users' => count($eventsByUser),
             'sent_count' => $sentCount,

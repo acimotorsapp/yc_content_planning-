@@ -14,7 +14,7 @@ class CronNotificationController extends Controller
     public function notify(Request $request, EventNotificationService $service): JsonResponse
     {
         // Check for secret token if configured
-        $configuredToken = env('CRON_TOKEN');
+        $configuredToken = config('event_notifications.cron_token');
         if ($configuredToken && $request->query('token') !== $configuredToken) {
             return response()->json([
                 'status' => 'error',

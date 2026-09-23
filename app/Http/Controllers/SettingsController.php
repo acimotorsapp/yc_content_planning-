@@ -25,35 +25,14 @@ class SettingsController extends Controller
         }
 
         $request->validate([
-            'MAIL_MAILER' => 'required|string',
-            'MAIL_HOST' => 'required|string',
-            'MAIL_PORT' => 'required|numeric',
-            'MAIL_USERNAME' => 'required|string',
-            'MAIL_PASSWORD' => 'required|string',
-            'MAIL_FROM_ADDRESS' => 'required|string',
             'MAIL_CC_ADDRESS' => 'nullable|string',
         ]);
 
-        $keys = [
-            'MAIL_MAILER',
-            'MAIL_HOST',
-            'MAIL_PORT',
-            'MAIL_USERNAME',
-            'MAIL_PASSWORD',
-            'MAIL_FROM_ADDRESS',
-            'MAIL_CC_ADDRESS',
-        ];
+        Setting::updateOrCreate(
+            ['key' => 'MAIL_CC_ADDRESS'],
+            ['value' => $request->input('MAIL_CC_ADDRESS')]
+        );
 
-        foreach ($keys as $key) {
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $request->input($key)]
-            );
-        }
-
-        // Clear config cache to apply changes immediately
-        \Illuminate\Support\Facades\Artisan::call('config:clear');
-
-        return back()->with('success', 'Email configuration updated successfully!');
+        return back()->with('success', 'Mail CC settings updated successfully.');
     }
 }

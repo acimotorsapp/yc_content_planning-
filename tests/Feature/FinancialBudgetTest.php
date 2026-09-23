@@ -65,58 +65,6 @@ class FinancialBudgetTest extends TestCase
         $this->assertSame('digital_team', $event->team_type);
     }
 
-    public function test_can_create_brand_event(): void
-    {
-        $user = User::factory()->create([
-            'role' => 'super_admin',
-        ]);
-
-        $this->actingAs($user);
-
-        $response = $this->post(route('events.brand.store'), [
-            'event_date' => '2026-10-20',
-            'content_title' => 'Yamaha Brand Day',
-            'financial_budget' => '80000',
-            'boosting_budget' => '15000',
-            'content_objective' => 'Brand awareness',
-        ]);
-
-        $response->assertRedirect(route('dashboard'));
-        $response->assertSessionHasNoErrors();
-
-        $event = CalendarEvent::whereDate('event_date', '2026-10-20')->first();
-        $this->assertNotNull($event);
-        $this->assertSame('brand_team', $event->team_type);
-        $this->assertSame('Yamaha Brand Day', $event->content_title);
-        $this->assertSame('Brand', $event->teamLabel());
-    }
-
-    public function test_can_create_service_event(): void
-    {
-        $user = User::factory()->create([
-            'role' => 'super_admin',
-        ]);
-
-        $this->actingAs($user);
-
-        $response = $this->post(route('events.service.store'), [
-            'event_date' => '2026-10-21',
-            'content_title' => 'Free Service Camp',
-            'financial_budget' => '25000',
-            'boosting_budget' => '5000',
-            'content_objective' => 'After-sales service awareness',
-        ]);
-
-        $response->assertRedirect(route('dashboard'));
-        $response->assertSessionHasNoErrors();
-
-        $event = CalendarEvent::whereDate('event_date', '2026-10-21')->first();
-        $this->assertNotNull($event);
-        $this->assertSame('service_team', $event->team_type);
-        $this->assertSame('Free Service Camp', $event->content_title);
-        $this->assertSame('Service', $event->teamLabel());
-    }
-
     public function test_can_update_event_financial_budget(): void
     {
         $user = User::factory()->create([

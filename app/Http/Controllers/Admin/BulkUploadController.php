@@ -49,7 +49,7 @@ class BulkUploadController extends Controller
 
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls,csv,txt|max:20480',
-            'team_type' => 'required|in:auto,product_team,digital_team,brand_team,service_team,global_team',
+            'team_type' => 'required|in:auto,product_team,digital_team,global_team',
             'target_year' => 'nullable|integer|min:2020|max:2035',
         ]);
 

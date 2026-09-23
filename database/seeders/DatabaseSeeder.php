@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $adminUser = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@test.com',
-            'password' => bcrypt('123456'),
+            'password' => bcrypt('password'),
             'role' => 'super_admin',
         ]);
 
@@ -118,10 +118,5 @@ class DatabaseSeeder extends Seeder
                 'content_objective' => 'Global observance',
             ]);
         }
-
-        \App\Models\Setting::updateOrCreate(
-            ['key' => 'MAIL_CC_ADDRESS'],
-            ['value' => implode(',', \App\Mail\EventNotificationMail::fallbackReminderRecipients())]
-        );
     }
 }

@@ -69,24 +69,9 @@
                 <span>Digital Events</span>
             </a>
 
-            <a href="{{ route('admin.events.brand') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.events.brand') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
-                <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.events.brand') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                <span>Brand Events</span>
-            </a>
-
-            <a href="{{ route('admin.events.service') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.events.service') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
-                <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.events.service') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"></path></svg>
-                <span>Service Events</span>
-            </a>
-
             <a href="{{ route('admin.events.global') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.events.global') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
                 <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.events.global') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span>Global Events</span>
-            </a>
-
-            <a href="{{ route('admin.budget.index') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.budget.*') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
-                <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.budget.*') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span>Budget Provision</span>
             </a>
 
             <a href="{{ route('admin.master_data.index') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.master_data.*') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
@@ -102,6 +87,16 @@
             <a href="{{ route('admin.bulk_upload.index') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.bulk_upload.*') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
                 <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.bulk_upload.*') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                 <span>Bulk Upload</span>
+            </a>
+            
+            <a href="{{ route('admin.send-email.index') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.send-email.*') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
+                <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.send-email.*') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <span>Send Email</span>
+            </a>
+
+            <a href="{{ route('admin.notification-logs.index') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.notification-logs.*') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
+                <svg class="w-5 h-5 shrink-0 {{ request()->routeIs('admin.notification-logs.*') ? 'text-blue-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h8M9 17H5a2 2 0 01-2-2V7a2 2 0 012-2h8m-4 12l3 3m0 0l3-3m-3 3V9"></path></svg>
+                <span>Email Logs</span>
             </a>
 
             <a href="{{ route('admin.settings') }}" @click="sidebarOpen = false" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.settings') ? 'bg-blue-50 text-blue-600 font-bold shadow-xs' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
