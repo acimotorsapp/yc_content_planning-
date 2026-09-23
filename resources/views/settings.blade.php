@@ -24,49 +24,20 @@
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-gray-900 tracking-tight">Mail Configuration</h3>
-                    <p class="text-sm text-gray-500 font-medium mt-0.5">Setup SMTP credentials for system notifications.</p>
+                    <p class="text-sm text-gray-500 font-medium mt-0.5">Manage notification CC recipients.</p>
                 </div>
             </div>
             
             <div class="px-5 sm:px-8 py-5 sm:py-6">
                 <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
                     @csrf
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Mailer</label>
-                            <input type="text" name="MAIL_MAILER" value="{{ $settings['MAIL_MAILER'] ?? env('MAIL_MAILER', 'smtp') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Host</label>
-                            <input type="text" name="MAIL_HOST" value="{{ $settings['MAIL_HOST'] ?? env('MAIL_HOST', 'sandbox.smtp.mailtrap.io') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Port</label>
-                            <input type="number" name="MAIL_PORT" value="{{ $settings['MAIL_PORT'] ?? env('MAIL_PORT', '2525') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Username</label>
-                            <input type="text" name="MAIL_USERNAME" value="{{ $settings['MAIL_USERNAME'] ?? env('MAIL_USERNAME') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail Password</label>
-                            <input type="password" name="MAIL_PASSWORD" value="{{ $settings['MAIL_PASSWORD'] ?? env('MAIL_PASSWORD') }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-2">Mail From Address</label>
-                            <input type="email" name="MAIL_FROM_ADDRESS" value="{{ $settings['MAIL_FROM_ADDRESS'] ?? env('MAIL_FROM_ADDRESS', env('MAIL_USERNAME')) }}" required class="w-full bg-slate-50 border border-gray-300 text-gray-900 rounded-xl px-4 py-2.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all shadow-xs font-medium">
-                        </div>
+
+                    <div class="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800">
+                        SMTP server and sender configuration are managed from the application environment (.env).
                     </div>
 
                     @php
-                        $defaultCcList = implode(',', \App\Mail\EventNotificationMail::fallbackReminderRecipients());
+                        $defaultCcList = "mirajul@aci-bd.com,richard@aci-bd.com,adhikary@aci-bd.com,efaz@aci-bd.com,Sourav.Bikash@aci-bd.com,Sultana.Nishi@aci-bd.com,Swagata@aci-bd.com,arnob@aci-bd.com,Nabil.Sarker@aci-bd.com,Abu.siddik@aci-bd.com,priasa@aci-bd.com,azmyen@aci-bd.com,Ashif.Ahmed@aci-bd.com";
                         $ccString = $settings['MAIL_CC_ADDRESS'] ?? $defaultCcList;
                     @endphp
 
@@ -85,7 +56,7 @@
                     }">
                         <div>
                             <input type="hidden" name="MAIL_CC_ADDRESS" :value="emails.join(',')">
-                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-3">Reminder notification emails</label>
+                            <label class="block text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-3">Mail CC Address</label>
                             
                             <div class="space-y-3">
                                 <template x-for="(email, index) in emails" :key="index">
@@ -105,7 +76,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <p class="text-xs text-gray-500 mt-3 font-medium">These addresses are copied on the reminder. The reminder itself is sent to the assignee at 11:00 AM, 5 days before the content deadline. Edit an email, add a new one, or use the trash icon to remove.</p>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">Edit an email directly, or add a new one. Click the trash icon to remove.</p>
                         </div>
                     </div>
                     

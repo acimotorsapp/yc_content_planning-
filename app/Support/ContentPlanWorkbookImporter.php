@@ -29,11 +29,6 @@ class ContentPlanWorkbookImporter
     /** Max events the app allows on a single date. */
     private const MAX_EVENTS_PER_DATE = 6;
 
-    /** When true, existing rows (matched by source_key or date+title) are updated. */
-    private bool $upsert = false;
-
-    private ?string $currentSheetName = null;
-
     /**
      * Password given to accounts created from the staff sheet, so the team can sign
      * in straight after an import. Change it with `php artisan users:default-password`.
@@ -43,22 +38,19 @@ class ContentPlanWorkbookImporter
     /**
      * Import every sheet the workbook contains.
      *
-     * @return array{sheets: array<int, array>, imported: int, updated: int, duplicates: int, skipped: int, errors: array<int, string>}
+     * @return array{sheets: array<int, array>, imported: int, duplicates: int, skipped: int, errors: array<int, string>}
      */
-    public function importWorkbook(Spreadsheet $spreadsheet, int $targetYear, bool $upsert = false): array
+    public function importWorkbook(Spreadsheet $spreadsheet, int $targetYear): array
     {
-        $this->upsert = $upsert;
         $summary = $this->blankSummary();
 
         foreach ($spreadsheet->getAllSheets() as $sheet) {
             $name = $sheet->getTitle();
-            $this->currentSheetName = $name;
             $lower = strtolower(trim($name));
 
             $result = match (true) {
                 str_contains($lower, 'staff') => $this->tag($this->importStaffSheet($sheet), 'users'),
                 str_contains($lower, 'logic') => $this->tag($this->importLogicSheet($sheet, $name), 'content_plan_logics'),
-                str_contains($lower, 'offline') => $this->tag($this->importOfflineSheet($sheet, $targetYear), 'product_team'),
                 str_contains($lower, 'product') => $this->tag($this->importProductSheet($sheet, $targetYear), 'product_team'),
                 str_contains($lower, 'digital') => $this->tag($this->importDigitalSheet($sheet, $targetYear), 'digital_team'),
                 str_contains($lower, 'calend') => $this->tag($this->importFinalCalendarSheet($sheet, $targetYear), 'digital_team'),
@@ -76,7 +68,6 @@ class ContentPlanWorkbookImporter
             $result['name'] = $name;
             $summary['sheets'][] = $result;
             $summary['imported'] += $result['imported'];
-            $summary['updated'] += $result['updated'] ?? 0;
             $summary['duplicates'] += $result['duplicates'];
             $summary['capped'] += $result['capped'];
             $summary['skipped'] += $result['skipped'];
@@ -92,8 +83,6 @@ class ContentPlanWorkbookImporter
      */
     public function importSheetAs($sheet, string $teamType, int $targetYear): array
     {
-        $this->currentSheetName = method_exists($sheet, 'getTitle') ? $sheet->getTitle() : $teamType;
-
         return match ($teamType) {
             'product_team' => $this->importProductSheet($sheet, $targetYear),
             'digital_team' => $this->importDigitalSheet($sheet, $targetYear),
@@ -150,10 +139,24 @@ class ContentPlanWorkbookImporter
             $title = $this->cleanTitle($this->headline($gist) ?: ($rtm ?: 'Content Calendar (' . $eventDate->format('d M') . ')'));
             $postNo++;
 
+            if ($this->dateIsFull($eventDate)) {
+                $result['capped']++;
+                $result['errors'][] = $eventDate->format('d M Y') . ' already holds ' . self::MAX_EVENTS_PER_DATE . ' events — row not stored.';
+                continue;
+            }
+
+            if ($this->eventExists($eventDate, 'digital_team', $title)) {
+                $result['duplicates']++;
+                continue;
+            }
+
             $contentType = $this->cell($row, $contentTypeCol);
 
-            $this->persistCalendarEvent($result, $eventDate, 'digital_team', $title, [
+            CalendarEvent::create([
                 'user_id' => $user?->id,
+                'team_type' => 'digital_team',
+                'event_date' => $eventDate->format('Y-m-d'),
+                'content_title' => $title,
                 'post_no' => (string) $postNo,
                 'aipe_pillar' => $this->cell($row, $colMap['aipe_pillar'] ?? null),
                 'product_focus' => $this->cell($row, $productCol),
@@ -165,7 +168,9 @@ class ContentPlanWorkbookImporter
                 'financial_budget' => $this->cell($row, $colMap['financial_budget'] ?? $colMap['budget'] ?? null),
                 'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null),
                 'remarks' => $contentType ? "Content Type: {$contentType}" : null,
-            ], $this->sourceKey($rowIndex));
+            ]);
+
+            $result['imported']++;
         }
 
         return $result;
@@ -374,10 +379,24 @@ class ContentPlanWorkbookImporter
                 $contentTitle = $this->cleanTitle($product ? "Product: {$product}" : 'Product Content (' . $eventDate->format('d M') . ')');
             }
 
+            if ($this->dateIsFull($eventDate)) {
+                $result['capped']++;
+                $result['errors'][] = $eventDate->format('d M Y') . ' already holds ' . self::MAX_EVENTS_PER_DATE . ' events — row not stored.';
+                continue;
+            }
+
+            if ($this->eventExists($eventDate, 'product_team', $contentTitle)) {
+                $result['duplicates']++;
+                continue;
+            }
+
             $shootDate = $this->parseDateValue($row[$colMap['shoot_date'] ?? ''] ?? null, $targetYear);
 
-            $this->persistCalendarEvent($result, $eventDate, 'product_team', $contentTitle, [
+            CalendarEvent::create([
                 'user_id' => $user?->id,
+                'team_type' => 'product_team',
+                'event_date' => $eventDate->format('Y-m-d'),
+                'content_title' => $contentTitle,
                 'aipe_pillar' => $this->cell($row, $colMap['aipe_pillar'] ?? null),
                 'content_objective' => $objective,
                 'shoot_date' => $shootDate?->format('Y-m-d'),
@@ -389,7 +408,9 @@ class ContentPlanWorkbookImporter
                 'product' => $product,
                 'drive_link' => $this->cell($row, $colMap['drive_link'] ?? $colMap['asset_link'] ?? null),
                 'remarks' => $this->cell($row, $colMap['remarks'] ?? null),
-            ], $this->sourceKey($rowIndex));
+            ]);
+
+            $result['imported']++;
         }
 
         return $result;
@@ -447,8 +468,22 @@ class ContentPlanWorkbookImporter
                 ? "Post #{$postNo}: {$productFocus}"
                 : ($postNo !== '' ? "Post #{$postNo}" : 'Digital Content'));
 
-            $this->persistCalendarEvent($result, $eventDate, 'digital_team', $contentTitle, [
+            if ($this->dateIsFull($eventDate)) {
+                $result['capped']++;
+                $result['errors'][] = $eventDate->format('d M Y') . ' already holds ' . self::MAX_EVENTS_PER_DATE . ' events — row not stored.';
+                continue;
+            }
+
+            if ($this->eventExists($eventDate, 'digital_team', $contentTitle)) {
+                $result['duplicates']++;
+                continue;
+            }
+
+            CalendarEvent::create([
                 'user_id' => $user?->id,
+                'team_type' => 'digital_team',
+                'event_date' => $eventDate->format('Y-m-d'),
+                'content_title' => $contentTitle,
                 'post_no' => $postNo ?: null,
                 'aipe_pillar' => $this->cell($row, $colMap['aipe_pillar'] ?? null),
                 'product_focus' => $productFocus ?: null,
@@ -458,7 +493,9 @@ class ContentPlanWorkbookImporter
                 'remarks' => $this->cell($row, $colMap['remarks'] ?? null),
                 'financial_budget' => $this->cell($row, $colMap['financial_budget'] ?? $colMap['budget'] ?? null),
                 'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null),
-            ], $this->sourceKey($rowIndex));
+            ]);
+
+            $result['imported']++;
         }
 
         return $result;
@@ -480,7 +517,7 @@ class ContentPlanWorkbookImporter
         $colMap = $this->mapColumns($headerRow);
         $user = $this->fallbackUser('super_admin');
 
-        foreach ($rows as $rowIndex => $row) {
+        foreach ($rows as $row) {
             // Blank rows are just sheet padding — not worth reporting.
             if (!$this->rowHasContent($row)) {
                 continue;
@@ -495,75 +532,26 @@ class ContentPlanWorkbookImporter
                 continue;
             }
 
-            $this->persistCalendarEvent($result, $eventDate, 'global_team', $title, [
+            if ($this->dateIsFull($eventDate)) {
+                $result['capped']++;
+                $result['errors'][] = $eventDate->format('d M Y') . ' already holds ' . self::MAX_EVENTS_PER_DATE . ' events — row not stored.';
+                continue;
+            }
+
+            if ($this->eventExists($eventDate, 'global_team', $title)) {
+                $result['duplicates']++;
+                continue;
+            }
+
+            CalendarEvent::create([
                 'user_id' => $user?->id,
+                'team_type' => 'global_team',
+                'event_date' => $eventDate->format('Y-m-d'),
+                'content_title' => $title,
                 'content_objective' => $objective ?: 'Global observance',
-            ], $this->sourceKey($rowIndex));
-        }
+            ]);
 
-        return $result;
-    }
-
-    /**
-     * "Offline activites" — monthly activations stored as product-team events.
-     */
-    public function importOfflineSheet($sheet, int $targetYear): array
-    {
-        $rows = $sheet->toArray(null, true, true, true);
-        $result = $this->blankResult();
-
-        if (empty($rows)) {
-            return $result;
-        }
-
-        $headerRowIndex = $this->findHeaderRow($rows, ['content', 'date']);
-        if ($headerRowIndex === null) {
-            $result['errors'][] = 'Could not locate a header row.';
-            return $result;
-        }
-
-        $colMap = $this->mapColumns($rows[$headerRowIndex]);
-        $user = $this->fallbackUser('product_team');
-
-        foreach ($rows as $rowIndex => $row) {
-            if ($rowIndex <= $headerRowIndex || !$this->rowHasContent($row)) {
-                continue;
-            }
-
-            $title = $this->cleanTitle($this->cell($row, $colMap['content'] ?? $colMap['content_title'] ?? null));
-            $objective = $this->cell($row, $colMap['content_objective'] ?? null);
-            $place = $this->cell($row, $colMap['place'] ?? null);
-
-            $eventDate = $this->parseDateValue($row[$colMap['publish_date'] ?? ''] ?? null, $targetYear)
-                ?: $this->parseDateValue($row[$colMap['date'] ?? ''] ?? null, $targetYear);
-
-            if (!$eventDate) {
-                $monthHint = $this->cell($row, $colMap['date'] ?? null);
-                $eventDate = $this->firstOfMonthFromLabel($monthHint, $targetYear);
-            }
-
-            if (!$eventDate || $title === '') {
-                $result['skipped']++;
-                continue;
-            }
-
-            $remarks = trim(implode(' | ', array_filter([
-                $this->cell($row, $colMap['remarks'] ?? null),
-                $place !== '' ? "Place: {$place}" : null,
-            ])));
-
-            $this->persistCalendarEvent($result, $eventDate, 'product_team', $title, [
-                'user_id' => $user?->id,
-                'aipe_pillar' => $this->cell($row, $colMap['aipe_pillar'] ?? null),
-                'content_objective' => $objective,
-                'format' => $this->cell($row, $colMap['format'] ?? null),
-                'financial_budget' => $this->cell($row, $colMap['financial_budget'] ?? $colMap['budget'] ?? null),
-                'boosting_budget' => $this->cell($row, $colMap['boosting_budget'] ?? null),
-                'platform' => $this->cell($row, $colMap['platform'] ?? null),
-                'product' => $this->cell($row, $colMap['product'] ?? null),
-                'drive_link' => $this->cell($row, $colMap['drive_link'] ?? $colMap['asset_link'] ?? null),
-                'remarks' => $remarks !== '' ? $remarks : null,
-            ], $this->sourceKey($rowIndex));
+            $result['imported']++;
         }
 
         return $result;
@@ -571,97 +559,14 @@ class ContentPlanWorkbookImporter
 
     // ---------------------------------------------------------------- helpers
 
-    private function persistCalendarEvent(array &$result, Carbon $eventDate, string $teamType, string $title, array $attributes, ?string $sourceKey = null): void
-    {
-        $attributes['team_type'] = $teamType;
-        $attributes['event_date'] = $eventDate->format('Y-m-d');
-        $attributes['content_title'] = $title;
-        $attributes['source_sheet'] = $this->currentSheetName;
-        if ($sourceKey) {
-            $attributes['source_key'] = $sourceKey;
-        }
-
-        $existing = null;
-        if ($sourceKey) {
-            $existing = CalendarEvent::where('source_key', $sourceKey)->first();
-        }
-        if (!$existing) {
-            $existing = CalendarEvent::whereDate('event_date', $eventDate->format('Y-m-d'))
-                ->where('team_type', $teamType)
-                ->whereRaw('LOWER(content_title) = ?', [Str::lower($this->cleanTitle($title))])
-                ->first();
-        }
-
-        if ($existing) {
-            if ($this->upsert) {
-                unset($attributes['user_id']);
-                $existing->update($attributes);
-                $result['updated']++;
-                return;
-            }
-
-            $result['duplicates']++;
-            return;
-        }
-
-        if ($this->dateIsFull($eventDate)) {
-            $result['capped']++;
-            $result['errors'][] = $eventDate->format('d M Y') . ' already holds ' . self::MAX_EVENTS_PER_DATE . ' events — row not stored.';
-            return;
-        }
-
-        if (empty($attributes['user_id'])) {
-            $attributes['user_id'] = $this->fallbackUser($teamType)?->id ?? User::first()?->id;
-        }
-
-        CalendarEvent::create($attributes);
-        $result['imported']++;
-    }
-
-    private function sourceKey(int|string $rowIndex): ?string
-    {
-        if (!$this->currentSheetName) {
-            return null;
-        }
-
-        return $this->currentSheetName . ':' . $rowIndex;
-    }
-
-    private function firstOfMonthFromLabel(string $label, int $year): ?Carbon
-    {
-        $label = trim($label);
-        if ($label === '') {
-            return null;
-        }
-
-        try {
-            $parsed = Carbon::parse($label);
-            return Carbon::create($year, $parsed->month, 1);
-        } catch (\Throwable $e) {
-        }
-
-        $months = [
-            'january' => 1, 'february' => 2, 'march' => 3, 'april' => 4, 'may' => 5, 'june' => 6,
-            'july' => 7, 'august' => 8, 'september' => 9, 'october' => 10, 'november' => 11, 'december' => 12,
-        ];
-
-        foreach ($months as $name => $num) {
-            if (str_contains(strtolower($label), $name)) {
-                return Carbon::create($year, $num, 1);
-            }
-        }
-
-        return null;
-    }
-
     private function blankResult(): array
     {
-        return ['imported' => 0, 'updated' => 0, 'duplicates' => 0, 'capped' => 0, 'skipped' => 0, 'errors' => []];
+        return ['imported' => 0, 'duplicates' => 0, 'capped' => 0, 'skipped' => 0, 'errors' => []];
     }
 
     private function blankSummary(): array
     {
-        return ['sheets' => [], 'imported' => 0, 'updated' => 0, 'duplicates' => 0, 'capped' => 0, 'skipped' => 0, 'errors' => []];
+        return ['sheets' => [], 'imported' => 0, 'duplicates' => 0, 'capped' => 0, 'skipped' => 0, 'errors' => []];
     }
 
     private function tag(array $result, string $target): array
@@ -888,9 +793,6 @@ class ContentPlanWorkbookImporter
             }
             if (in_array($normalized, ['remarks', 'remark', 'note', 'notes', 'comment'])) {
                 $map['remarks'] = $colLetter;
-            }
-            if (in_array($normalized, ['place', 'location', 'venue', 'city'])) {
-                $map['place'] = $colLetter;
             }
         }
 

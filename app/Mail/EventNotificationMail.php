@@ -2,14 +2,17 @@
 
 namespace App\Mail;
 
+use App\Models\Setting;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Sent synchronously (not queued) so notification emails go out immediately
@@ -19,35 +22,52 @@ class EventNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public const PRIMARY_TO_RECIPIENT = 'sultana.nishi@aci-bd.com';
+
     public $user;
+
     public $events;
+
     public $targetDate;
+
     public $daysAhead;
-    public bool $includeCc;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, Collection $events, ?string $targetDate = null, ?int $daysAhead = null, bool $includeCc = true)
+    public function __construct(User $user, Collection $events, ?string $targetDate = null, ?int $daysAhead = null)
     {
         $this->user = $user;
         $this->events = $events;
         $this->targetDate = $targetDate ?? ($events->first()?->event_date?->toDateString() ?? Carbon::today()->toDateString());
         $this->daysAhead = $daysAhead !== null ? $daysAhead : Carbon::today()->diffInDays(Carbon::parse($this->targetDate), false);
-        $this->includeCc = $includeCc;
     }
 
     /**
-     * Fallback reminder recipients when Mail CC Address has not been saved yet.
+     * Default CC recipients for event notifications.
      */
-    public static function fallbackReminderRecipients(): array
+    public static function primaryToRecipient(): string
     {
-        return [
+        return self::PRIMARY_TO_RECIPIENT;
+    }
+
+    public static function getDefaultCcRecipients(?string $primaryRecipient = null): array
+    {
+        $ccSetting = Setting::where('key', 'MAIL_CC_ADDRESS')->value('value');
+        if (! empty($ccSetting)) {
+            $emails = self::normalizeCcRecipients(explode(',', $ccSetting), $primaryRecipient);
+            if (! empty($emails)) {
+                return $emails;
+            }
+        }
+
+        $defaults = [
             'mirajul@aci-bd.com',
             'richard@aci-bd.com',
             'adhikary@aci-bd.com',
             'efaz@aci-bd.com',
             'Sourav.Bikash@aci-bd.com',
+            'acijubairislamdaief@gmail.com',
             'Swagata@aci-bd.com',
             'arnob@aci-bd.com',
             'Nabil.Sarker@aci-bd.com',
@@ -55,23 +75,35 @@ class EventNotificationMail extends Mailable
             'priasa@aci-bd.com',
             'azmyen@aci-bd.com',
             'Ashif.Ahmed@aci-bd.com',
-            'oshin@aci-bd.com',
-            'zahidul@aci-bd.com',
-            'Daief@aci-bd.com',
         ];
+
+        return self::normalizeCcRecipients($defaults, $primaryRecipient);
     }
 
-    /**
-     * Recipients from Email Configuration → Mail CC Address.
-     */
-    public static function getDefaultCcRecipients(): array
+    public static function normalizeCcRecipients(array $emails, ?string $primaryRecipient = null): array
     {
-        $ccSetting = \App\Models\Setting::where('key', 'MAIL_CC_ADDRESS')->value('value');
-        $source = !empty($ccSetting) ? $ccSetting : implode(',', self::fallbackReminderRecipients());
-        $emails = array_filter(array_map('trim', explode(',', $source)));
-        $emails = array_filter($emails, fn ($email) => filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+        $primaryRecipient = strtolower(trim((string) $primaryRecipient));
+        $seen = [];
+        $recipients = [];
 
-        return array_values(array_unique($emails));
+        foreach ($emails as $email) {
+            $email = trim((string) $email);
+            $key = strtolower($email);
+
+            if (
+                $email === ''
+                || ! filter_var($email, FILTER_VALIDATE_EMAIL)
+                || $key === $primaryRecipient
+                || isset($seen[$key])
+            ) {
+                continue;
+            }
+
+            $seen[$key] = true;
+            $recipients[] = $email;
+        }
+
+        return $recipients;
     }
 
     /**
@@ -79,22 +111,17 @@ class EventNotificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $recipientEmail = strtolower(trim($this->user->email ?? ''));
-
-        $ccRecipients = $this->includeCc ? self::getDefaultCcRecipients() : [];
-        $ccRecipients = array_values(array_filter(
-            $ccRecipients,
-            fn ($email) => strtolower((string) $email) !== $recipientEmail
-        ));
+        $recipientEmail = self::primaryToRecipient();
+        $ccRecipients = self::getDefaultCcRecipients($recipientEmail);
 
         $formattedDate = Carbon::parse($this->targetDate)->format('D, M j, Y');
 
         if ($this->daysAhead > 0) {
-            $subject = "Upcoming Content Reminder: Scheduled for {$formattedDate} (in {$this->daysAhead} days) - YC Content Planning";
+            $subject = "Content Schedule Reminder - {$formattedDate}";
         } elseif ($this->daysAhead === 0) {
-            $subject = "Content Submission Reminder for Today ({$formattedDate}) - YC Content Planning";
+            $subject = "Content Schedule for Today ({$formattedDate})";
         } else {
-            $subject = "Scheduled Content Notice for {$formattedDate} - YC Content Planning";
+            $subject = "Content Schedule Notice - {$formattedDate}";
         }
 
         return new Envelope(
@@ -126,21 +153,23 @@ class EventNotificationMail extends Mailable
     protected function resolveBaseUrl(): string
     {
         // 1. If currently inside a web request with Host header
-        if (!app()->runningInConsole() && request()->hasHeader('Host')) {
+        if (! app()->runningInConsole() && request()->hasHeader('Host')) {
             $scheme = request()->isSecure() ? 'https' : 'http';
-            return $scheme . '://' . request()->getHttpHost();
+
+            return $scheme.'://'.request()->getHttpHost();
         }
 
         // 2. Check if cached live domain exists (from user visits)
         try {
-            if ($cached = \Illuminate\Support\Facades\Cache::get('app_live_url')) {
+            if ($cached = Cache::get('app_live_url')) {
                 return rtrim($cached, '/');
             }
-        } catch (\Throwable $e) {}
+        } catch (\Throwable $e) {
+        }
 
         // 3. Check APP_URL from configuration
         $configUrl = config('app.url');
-        if (!empty($configUrl) && !str_contains($configUrl, 'localhost')) {
+        if (! empty($configUrl) && ! str_contains($configUrl, 'localhost')) {
             return rtrim($configUrl, '/');
         }
 
@@ -150,7 +179,7 @@ class EventNotificationMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {
